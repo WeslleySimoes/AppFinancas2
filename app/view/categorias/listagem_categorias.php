@@ -1,0 +1,1 @@
+<a href="<?= HOME_URL ?>/categorias/cadastrar">Nova Categoria</a>

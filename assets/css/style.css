@@ -1,0 +1,219 @@
+.informacoes-monetarias{
+    display: flex;
+    flex-wrap: wrap;
+    /* border: 1px solid black; */
+    height: 100px;
+    margin: 10px 0;
+}
+
+.item-info{
+    flex-grow: 1;
+    /* border: 1px solid black; */
+}
+
+.item-info-1{
+    background-color: #1C9E74;
+}
+
+.item-info-2{
+    margin: 0 10px 0 10px;
+    background-color: #D06447;
+}
+
+.item-info-3{
+    background-color: #2A76B5;
+}
+
+/* formulário usuário */
+.formularioUsuario{
+    background-color: white;
+    border: 1px solid #cecdcd;
+    margin-bottom: 1.75rem;
+}
+
+.formularioUsuario h3{
+    background-color: #EAEDEA;
+    padding: 10px;
+}
+
+.containerForm{
+    margin: 20px;
+}
+
+
+#formCadastroUsuário input[type="text"],
+#formCadastroUsuário input[type="email"],
+#formCadastroUsuário input[type="password"]
+{
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    margin-bottom: 12px;
+}
+
+.btn-success{
+    background-color: #28A745;
+    border: none;
+    padding: 10px;
+    font-size: 1.01rem;
+    font-weight: bold;
+    color: white;
+}
+
+/* Dashboard */
+.dadosFinanceiros{
+    display: flex;
+    margin-bottom: 20px;
+    /* border: 1px solid black; */
+}
+
+.dadoItem{
+    width: 33%;
+    height: 100px;
+    /* border: 1px solid black; */
+    
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    border-radius: 25px;
+}
+
+.dadoItem-1{
+    background-color: #03b87e;
+}
+
+.dadoItem-2{
+    background-color: #F1536E;
+    margin: 0 20px;
+}
+
+.dadoItem-3{
+    background-color: #3CA5F4;
+}
+
+.outrosDados{
+    display: flex;
+}
+
+.outrosDados > div{
+    width: 50%;
+}
+
+.outrosDados div:first-child
+{
+    margin-right: 20px;
+}
+
+.dsd{
+    height: 300px;
+}
+
+.dadosFinanceiros div{
+    color: white;
+    font-weight: bold;
+}
+.dadosFinanceiros i
+{
+    display: inline-block;
+    font-size: 35px;
+    color: white;
+    margin-right: 10px;
+}
+
+
+
+input[type=text],input[type=email], select, textarea {
+    width: 100%;
+    padding: 12px; 
+    border: 1px solid #ccc; 
+    border-radius: 4px; 
+    box-sizing: border-box; 
+    margin-top: 6px; 
+    margin-bottom: 16px; 
+    resize: vertical;
+    font-size: 16PX;
+}
+
+
+/*ALERTAS*/
+.alert{
+    border: 1px solid black;
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    /* font-size: 17px; */
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.alert ul li
+{
+    margin-left: 20px;
+}
+
+.alert button{
+     border: none;
+    padding: 0 5px;
+    background-color: Transparent;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.info-alert
+{  
+    background-color:#CCE5FF;
+    border-color: #B8DAFF;
+    color: #004085; 
+}
+
+.success-alert
+{  
+    background-color:#D4EDDA;
+    border-color: #C3E5CB;
+    color: #155724; 
+}
+
+.warning-alert
+{  
+    background-color:#ffeeba;
+    border-color: #FFF3CD;
+    color:#856404; 
+}
+
+.error-alert
+{  
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+
+
+
+/*FORMS*/
+
+.container-form{
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #cecdcd;
+}
+
+.container-form label{
+    color: #464646;
+}
+
+.title-form{
+    margin-bottom: 20px;
+}
+
+.btn-success
+{
+    background-color: #121E2D;
+    font-weight: normal;
+    font-size: 0.9rem;
+}
+
+.btn-success:hover{
+    background-color: #464646;
+}

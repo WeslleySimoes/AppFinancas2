@@ -1,0 +1,197 @@
+/* CONFIGURAÇÃO INICIAL - RESET GLOBAL */
+*{
+    padding: 0; 
+    margin: 0; 
+    box-sizing: border-box; 
+    /* font-family: 'Roboto', sans-serif; */
+    /* font-family: 'Open Sans', sans-serif; */
+    font-family: 'Lato', sans-serif;
+}
+
+
+/* MENU LATERAL */
+#menuLateral{
+    position:fixed;
+    left: 0;
+    top: 0;
+    /* background-color:#263D52; */
+    background-color: #121E2D;
+    width: 250px;
+    min-height: 100vh;
+}
+
+#menu_links_lateral
+{
+    /* font-weight: 300; */
+    list-style: none;
+    padding: 0px !important;
+}
+
+.itens_menu_lateral{
+    display: flex;
+    justify-content: center;
+
+}
+
+.link-menu-lateral
+{
+    display: block;
+    padding: 12px 0px 12px 20px;
+    /* color: white !important; */
+    color: #8fa6bf;
+    text-decoration: none;
+    border-right: 4px solid #121E2D;
+    /* border: 1px solid black; */
+    font-size: 0.97rem;
+    font-weight:500;
+
+}
+
+.link-menu-lateral:hover{
+    background-color: #31485B;
+    color: white;
+    border-right: 4px solid #3A9C95;
+}
+
+/* LOGO DA EMPRESA NO MENU LATERAL */
+#logo_empresa
+{
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    color: white;
+    text-decoration: none;
+    height: 60px;
+    border-bottom: 1.5px solid #273952;
+    
+    /* border: 1px solid white; */
+}
+
+/* DEFININDO TAMANHO DO ICON DO LOGO DA EMPRESA */
+#logo_empresa i{font-size: 20px; color: greenyellow;}
+
+/* DEFININDO MARGIN LATERAL PARA O CONTEUDO E O MENU SUPERIOR */
+.conteudo, #menuSuperior{margin-left: 250px;}
+
+/* MENU SUPERIOR */
+#menuSuperior{
+    position: fixed;
+    top: 0;
+    left: 50;
+    height: 60px;
+    width:calc(100% - 250px);
+    /* background-color: white; */
+    background-color: #0476B9;
+    padding: 0 20px;
+
+    display: flex;
+    /* align-items: center; */
+    justify-content: space-between;
+    border-bottom: 1px solid #cecdcd;
+    z-index: 1000;
+}
+
+.larguraMenuSuperior{
+    width: 100vw !important;
+}
+
+.larguraMenuSuperior2{
+    width: calc(100% - 250px) !important;
+}
+
+#menuUsuario{
+    list-style: none;
+}
+
+#menuUsuario li {
+    /* border: 1px solid black; */
+    height: 100%;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: white;
+}
+
+#menuUsuario > li:hover > ul
+{
+    display: block;
+}   
+
+#menuUsuario li > ul{
+    display: none;
+    list-style: none;
+    /* border: 1px solid black; */
+    position: fixed;
+    top: 60px;
+    right: 0;
+    z-index: 100;
+    /* background-color: #EAEDEA; */
+    background-color: white;
+    border: 1px solid #cecdcd;
+
+    
+}
+
+#menuUsuario li > ul li a {
+    /* border: 1px solid black; */
+    display: block;
+    width: 100%;
+    text-decoration: none;
+    color: black;
+    padding: 10px;
+}
+
+#menuUsuario li > ul li a:hover{
+    /* background-color: #cecece; */
+    background-color: rgb(243, 243, 243);
+
+}
+
+
+/* CONTEUDO PRINCIPAL */
+.conteudo{
+    margin-top: 90px;
+    min-height: calc(100vh - 90px);
+    padding: 1.75rem 1.312rem 0 1.312rem ;
+    /* background-color: #F5F8F5; */
+    /* background-color: #F8F8F8; */
+    background-color: #F8F8FB;
+}
+
+/* BOTTON TOGGLE MENU LATERAL */
+#btnMenuToggle{
+    display: inline-block;
+    border: none;
+    /* background-color: white; */
+    background-color: #0476B9;
+    /* color: #263D52; */
+    color: #F8F8FB;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+/* CONFIGURAÇÃO PARA APARECER E DESAPARECER MENU LATERAL */
+.moverMenuLateral{
+    transform:translateX(-250px) !important;
+}
+.moverMenuLateral2{
+    transform:translateX(0) !important;
+}
+
+.marginLeftMS{
+    margin-left: 0px !important;
+}
+
+.marginLeftMS2{
+    margin-left: 250px !important;
+}
+/* FIM DA PARTE DE CONFIGURAÇÃO DO MENU LATERAL */
+
+
+/* RESPONSIVIDADE DO DASHBOARD */
+@media only screen and (max-width: 700px) 
+{
+    #menuLateral{transform:translateX(-250px)}
+    #menuSuperior,.conteudo{margin-left: 0;}
+    #menuSuperior{width: 100vw;}
+}
