@@ -116,6 +116,7 @@
             padding: 5px 20px;
             border-bottom: 1px solid #cecdcd;
             color: #495057;
+            z-index: 1;
         }
     </style>
     <div class="exemplo">

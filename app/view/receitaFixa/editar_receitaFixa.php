@@ -4,7 +4,6 @@
         display: block;
     }
 
-
     input[type='date']
     {
         display: block;

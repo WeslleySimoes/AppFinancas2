@@ -46,23 +46,23 @@
 .tooltip {
   position: relative;
   display: inline-block;
-  border-bottom: 1px dotted black;
+  /* border-bottom: 1px dotted black; */
 }
 
 .tooltip .tooltiptext {
   visibility: hidden;
-  width: 100px;
   background-color: #555;
   color: #fff;
   text-align: center;
   border-radius: 6px;
-  padding: 5px 0;
+  padding: 5px;
   position: absolute;
   z-index: 1;
   bottom: 100%;
   left: 50%;
-  margin-left: -60px;
-
+  margin-left: -22px;
+  /* font-weight: bold; */
+  font-size: 0.75rem;
   
   /* Fade in tooltip - takes 1 second to go from 0% to 100% opac: */
   opacity: 0;
@@ -97,7 +97,7 @@
 
   <!-- Tabela não fica com a largura completa por causa desta linha de codigo abaixo -->
   <div class="dropdown">
-    <button onclick="myFunction2()" class="dropbtn">Filtrar</button>
+    <button onclick="myFunction2()" class="dropbtn">Transações</button>
     <div id="myDropdown2" class="dropdown-content">
     <a href="<?= HOME_URL ?>/transacoes">Transações</a>
     <a href="<?= HOME_URL ?>/transacoes?s=receitasFixas">Receitas fixas e/ou parceladas</a>
@@ -202,7 +202,17 @@ tr td:last-child {
 
 
             <?php if($tc->status_trans == 'pendente'): ?>
-              <a href="<?= HOME_URL ?>/receita/efetivar?id=<?= $tc->idTransacao ?>" style="color:green;"><i class="fa fa-check-circle-o" aria-hidden="true"></i></a> |
+
+               <!-- INÍCIO DO TOOLTIP -->
+              <div class="tooltip"> 
+                <a href="<?= HOME_URL ?>/receita/efetivar?id=<?= $tc->idTransacao ?>" style="color:green;"><i class="fa fa-check-circle-o" aria-hidden="true"></i></a> |
+                <span class="tooltiptext">
+                  Efetivar
+                </span>
+              </div>
+              <!-- FINAL DO TOOLTIP  -->
+
+
             <?php endif ?>
 
             <!-- INÍCIO DO TOOLTIP -->
@@ -213,28 +223,95 @@ tr td:last-child {
             </div>
             <!-- FINAL DO TOOLTIP  -->
             |
-            <a href="<?= HOME_URL ?>/receita/remover?id=<?= $tc->idTransacao ?>" style="color:red;"><i class="fa fa-trash-o" aria-hidden="true" onclick="return confirm('Tem certeza que deseja Remover?');"></i></a>
+            <!-- INÍCIO DO TOOLTIP -->
+            <div class="tooltip"> 
+              <a href="<?= HOME_URL ?>/receita/remover?id=<?= $tc->idTransacao ?>" style="color:red;"><i class="fa fa-trash-o" aria-hidden="true" onclick="return confirm('Tem certeza que deseja Remover?');"></i></a>
+
+              <span class="tooltiptext">
+                Excluir
+              </span>
+            </div>
+            <!-- FINAL DO TOOLTIP  -->
+
           </td>
           
         <?php elseif($tc->tipo == 'transferencia'): ?>
           <td> 
 
             <?php if($tc->status_trans == 'pendente'): ?>
-              <a href="<?= HOME_URL ?>/transferencia/efetivar?id=<?= $tc->idTransacao ?>" style="color:green;"><i class="fa fa-check-circle-o" aria-hidden="true"></i></a> |
+
+               <!-- INÍCIO DO TOOLTIP -->
+               <div class="tooltip"> 
+                 <a href="<?= HOME_URL ?>/transferencia/efetivar?id=<?= $tc->idTransacao ?>" style="color:green;"><i class="fa fa-check-circle-o" aria-hidden="true"></i></a> 
+                
+                <span class="tooltiptext">
+                  Efetivar
+                </span>
+              </div>
+              <!-- FINAL DO TOOLTIP  -->
+              |
             <?php endif ?>
 
-            <a href="<?= HOME_URL ?>/transferencia/editar?id=<?= $tc->idTransacao ?>" style="color:blue;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> |
-            <a href="<?= HOME_URL ?>/transferencia/remover?id=<?= $tc->idTransacao ?>" style="color:red;"><i class="fa fa-trash-o" aria-hidden="true" onclick="return confirm('Tem certeza que deseja Remover?');"></i></a>
+            <!-- INÍCIO DO TOOLTIP -->
+            <div class="tooltip"> 
+              <a href="<?= HOME_URL ?>/transferencia/editar?id=<?= $tc->idTransacao ?>" style="color:blue;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> 
+                
+              <span class="tooltiptext">
+                Editar
+              </span>
+            </div>
+            <!-- FINAL DO TOOLTIP  -->
+
+            |
+
+            <!-- INÍCIO DO TOOLTIP -->
+            <div class="tooltip"> 
+              
+              <a href="<?= HOME_URL ?>/transferencia/remover?id=<?= $tc->idTransacao ?>" style="color:red;"><i class="fa fa-trash-o" aria-hidden="true" onclick="return confirm('Tem certeza que deseja Remover?');"></i></a>
+                
+              <span class="tooltiptext">
+                Excluir
+              </span>
+            </div>
+            <!-- FINAL DO TOOLTIP  -->
+
           </td>
         <?php else: ?>
           <td> 
 
             <?php if($tc->status_trans == 'pendente'): ?>
-              <a href="<?= HOME_URL ?>/despesa/efetivar?id=<?= $tc->idTransacao ?>" style="color:green;"><i class="fa fa-check-circle-o" aria-hidden="true"></i></a> |
+              <!-- INÍCIO DO TOOLTIP -->
+              <div class="tooltip"> 
+                <a href="<?= HOME_URL ?>/despesa/efetivar?id=<?= $tc->idTransacao ?>" style="color:green;"><i class="fa fa-check-circle-o" aria-hidden="true"></i></a> |
+                   
+                <span class="tooltiptext">
+                  Efetivar
+                </span>
+              </div>
+              <!-- FINAL DO TOOLTIP  -->
             <?php endif ?>
 
-            <a href="<?= HOME_URL ?>/despesa/editar?id=<?= $tc->idTransacao ?>" style="color:blue;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> |
-            <a href="<?= HOME_URL ?>/despesa/remover?id=<?= $tc->idTransacao ?>" style="color:red;"><i class="fa fa-trash-o" aria-hidden="true" onclick="return confirm('Tem certeza que deseja Remover?');"></i></a>
+             <!-- INÍCIO DO TOOLTIP -->
+             <div class="tooltip"> 
+              <a href="<?= HOME_URL ?>/despesa/editar?id=<?= $tc->idTransacao ?>" style="color:blue;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> 
+                
+              <span class="tooltiptext">
+                Editar
+              </span>
+            </div>
+            <!-- FINAL DO TOOLTIP  -->
+
+            |
+             <!-- INÍCIO DO TOOLTIP -->
+             <div class="tooltip"> 
+
+               <a href="<?= HOME_URL ?>/despesa/remover?id=<?= $tc->idTransacao ?>" style="color:red;"><i class="fa fa-trash-o" aria-hidden="true" onclick="return confirm('Tem certeza que deseja Remover?');"></i></a>
+                
+              <span class="tooltiptext">
+                Excluir
+              </span>
+            </div>
+            <!-- FINAL DO TOOLTIP  -->            
           </td>
         <?php endif; ?>
 
