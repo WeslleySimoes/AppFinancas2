@@ -1,3 +1,6 @@
+<!-- POPUP FORM -->
+<?php require_once VIEW_DIR.'/templates/popup.php' ?>
+<!-- FIM POPUP FORM -->
 <style>
 .dropbtn {
   background-color: #3498DB;
@@ -331,6 +334,7 @@ tr td:last-child {
         <th>Categoria</th>
         <th>Data início</th>
         <th>Data final</th>
+        <th>Tipo</th>
         <th>Ações</th>
       </tr>
 
@@ -352,21 +356,52 @@ tr td:last-child {
           <td><?= formataDataBR($dados->data_fim) ?></td>
         <?php endif ?>
 
+        <?php if($dados->data_fim == '0000-00-00'): ?>
+
+          <td>Fixo</td>
+
+        <?php else: ?>
+
+          <td>Parcelado</td>
+
+        <?php endif; ?>
+
         <td> 
+
+        <!-- INÍCIO DO TOOLTIP -->
+        <div class="tooltip"> 
+
           <?php if($dados->data_fim == '0000-00-00'): ?>
         
+            
           <a href="<?= HOME_URL ?>/receita/editarFP?id=<?= $dados->idRec ?>&t=fixa" style="color:blue;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
           
           <?php else: ?>
-
+  
           <a href="<?= HOME_URL ?>/receita/editarFP?id=<?= $dados->idRec ?>&t=parcelada" style="color:blue;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
           
           <?php endif ?>
+
+          <span class="tooltiptext">
+          Editar
+          </span>
+        </div>
+        <!-- FINAL DO TOOLTIP  --> 
           
-
-
           |
-          <a href="<?= HOME_URL ?>/receita/remover?id=<?= $dados->idRec ?>&t=fixa" style="color:red;"><i class="fa fa-trash-o" aria-hidden="true"></i></a></td>
+
+          <!-- INÍCIO DO TOOLTIP -->
+          <div class="tooltip"> 
+
+            <button class="remove-RFP" value="<?= $dados->idRec ?>"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+
+            <span class="tooltiptext">
+            Excluir
+            </span>
+          </div>
+          <!-- FINAL DO TOOLTIP  --> 
+
+
 
         <!-- LISTAGEM DE DESPESAS FIXAS OU PARCELADAS  -->
         <?php else: ?>
@@ -383,8 +418,41 @@ tr td:last-child {
             <td><?= formataDataBR($dados->data_fim) ?></td>
           <?php endif ?>
 
+          <?php if($dados->data_fim == '0000-00-00'): ?>
+
+          <td>Fixo</td>
+
+          <?php else: ?>
+
+          <td>Parcelado</td>
+
+          <?php endif; ?>
+
           <td> 
-            <a href="#Editar" style="color:blue;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> |
+
+
+            <!-- INÍCIO DO TOOLTIP -->
+        <div class="tooltip"> 
+
+          <?php if($dados->data_fim == '0000-00-00'): ?>
+            
+          <a href="<?= HOME_URL ?>/despesa/editarFP?id=<?= $dados->idDesp ?>&t=fixa" style="color:blue;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+
+          <?php else: ?>
+
+          <a href="<?= HOME_URL ?>/despesa/editarFP?id=<?= $dados->idDesp ?>&t=parcelada" style="color:blue;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+
+          <?php endif ?>
+
+          <span class="tooltiptext">
+          Editar
+          </span>
+        </div>
+        <!-- FINAL DO TOOLTIP  --> 
+            
+            
+            
+            |
             <a href="#Remover" style="color:red;"><i class="fa fa-trash-o" aria-hidden="true"></i></a></td>
 
 
@@ -396,7 +464,10 @@ tr td:last-child {
 
   <?php endif ?>
 </table>
-<div class="pagination" style="margin-top: 20px;">
+
+
+<!-- PAGINAÇÃO -->
+<!-- <div class="pagination" style="margin-top: 20px;">
   <a href="#">&laquo;</a>
   <a href="#">1</a>
   <a class="active" href="#">2</a>
@@ -405,7 +476,9 @@ tr td:last-child {
   <a href="#">5</a>
   <a href="#">6</a>
   <a href="#">&raquo;</a>
-</div>
+</div> -->
+
+<!-- FIM DA PAGINAÇÃO -->
 
 
 <!-- </div> -->
@@ -441,4 +514,5 @@ window.onclick = function(event) {
 }
 </script>
 
+<script src="<?=ASSET_JS_URL ?>/popup-form-remove.js"></script>
 

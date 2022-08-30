@@ -64,7 +64,8 @@ class Transacoes extends BaseController
                 
                 Transaction::open('db');
     
-                $dados['transacoes_cliente'] = Transacao::loadALl(UsuarioSession::get('id'));
+                //ORDENANDO TRANSAÇÕES PELA DATA DA MAIOR PARA O MENOR
+                $dados['transacoes_cliente'] = Transacao::findBy('id_usuario = '.UsuarioSession::get('id').' ORDER BY data_trans DESC');
     
                 Transaction::close();
     

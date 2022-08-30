@@ -1,12 +1,16 @@
 <?php 
 
 //Função de debug
-function dd($var)
+function dd($var,$config = true)
 {
     echo '<pre>';
     var_dump($var);
     echo '</pre>';
-    exit();
+
+    if($config)
+    {
+        exit();
+    }
 }
 
 /*Formata o float para moeda */
@@ -49,3 +53,4 @@ function formataDataBR($data)
     $data = new \DateTime($data);
     return $data->format('d/m/Y');
 }
+

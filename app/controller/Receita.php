@@ -378,7 +378,7 @@ class Receita extends BaseController
     }
 
     //=========================================================================================
-    // MÉTODO REPONSÁVEL POR EDITAR RECEITA FIXA
+    // MÉTODO REPONSÁVEL POR EDITAR RECEITA FIXA/PARCELADA
     //=========================================================================================
     public function editarFP()
     {
@@ -506,4 +506,53 @@ class Receita extends BaseController
         ],$dados);
     }
 
+
+    //=========================================================================================
+    // MÉTODO REPONSÁVEL POR REMOVER RECEITA FIXA/PARCELADA
+    //=========================================================================================
+    public function removerFP()
+    {
+        UsuarioSession::deslogado();
+
+        if(isset($_GET['idR'])and is_numeric($_GET['idR']) and intval($_GET['idR']) > 0 and isset($_GET['t']))
+        {
+            if($_GET['t'] == 'futuras' || $_GET['t'] == 'todas' )
+            {
+                try {
+                    Transaction::open('db');
+    
+                    //OBTENDO A RECEITA FIXA/PARCELADA
+                    $rf = ReceitaFixaModel::findBy("id_usuario = ".UsuarioSession::get('id')." and idRec = {$_GET['idR']}");
+                    
+                    switch($_GET['t'])
+                    {
+                        case 'futuras':
+                            $resultado = $rf[0]->removeFuturas();
+                            break;
+                        case 'todas':
+                            $resultado = $rf[0]->removeTodas();
+                            break;
+                    }
+
+                    Transaction::close();  
+
+                    if($resultado)
+                    {
+                        FlashMessage::set('Receita Removida com sucesso!','success',"transacoes?s=receitasFixas");
+                    }
+                    else{
+                        FlashMessage::set('Erro ao tentar remover receita!','error',"transacoes?s=receitasFixas");
+                    }
+                    
+                } catch (\Exception $e) {
+                    Transaction::rollback();
+                }
+            }
+            else {
+                echo 'Página não encontrada';
+                exit;
+            }
+        }
+    }   
+    
 }

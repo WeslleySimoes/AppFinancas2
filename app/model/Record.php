@@ -18,10 +18,10 @@ abstract class Record
         }
     }
 
-    public function __clone()
-    {
-        unset($this->data[constant('self::TABLE_PK')]);
-    }
+    // public function __clone()
+    // {
+    //     unset($this->data[constant('self::TABLE_PK')]);
+    // }
 
     public function __set($prop,$value)
     {
@@ -292,5 +292,10 @@ abstract class Record
         else{
             throw new \Exception('Não há transação ativa!');
         }
+    }
+
+    public function removeProp($propName)
+    {
+        unset($this->data[$propName]);
     }
 }

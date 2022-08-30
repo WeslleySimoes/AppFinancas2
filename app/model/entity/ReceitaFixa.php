@@ -6,6 +6,8 @@ use app\model\Record;
 use app\model\Transaction;
 use app\helpers\FormataMoeda;
 use app\model\entity\Categoria;
+use app\model\entity\Transacao as TransacaoModel;
+use app\session\Usuario as UsuarioSession;
 
 class ReceitaFixa extends Record
 {
@@ -38,4 +40,41 @@ class ReceitaFixa extends Record
             echo $e->getMessage();
         }
     }
+
+    //REMOVER RECEITAS FIXAS/FUTURAS FUTURAS
+    public function removeFuturas()
+    {
+
+        //OBTENDO A TRANSAÇÃO RELACIONA A FIXA/PARCELADA ATUAL
+        $t = TransacaoModel::findBy("id_usuario = ".UsuarioSession::get('id')." and id_receitaFixa = {$this->data['idRec']}");
+
+        //ALTERANDO ID_RECEITAFIXAS PARA NULL, para não haver conflito
+        foreach($t as $transacao)
+        {
+          $t2 = clone $transacao;
+          $t2->removeProp('idTransacao');
+          $t2->removeProp('id_receitaFixa');
+
+          $transacao->delete();
+          $t2->store();
+        }
+
+        return parent::delete();
+    }
+
+    //REMOVER TODAS RECEITAS FIXAS/FUTURAS
+    public function removeTodas()
+    {
+        //OBTENDO A TRANSAÇÃO RELACIONA A FIXA/PARCELADA ATUAL
+        $t = TransacaoModel::findBy("id_usuario = ".UsuarioSession::get('id')." and id_receitaFixa = {$this->data['idRec']}");
+
+        //ALTERANDO ID_RECEITAFIXAS PARA NULL, para não haver conflito
+        foreach($t as $transacao)
+        {
+            $transacao->delete();
+        }
+
+        return parent::delete();
+    }
+
 }

@@ -29,12 +29,14 @@
 	$rota->add('/receita/remover','receita@remover');
 	$rota->add('/receita/efetivar','receita@efetivar');
 	$rota->add('/receita/editarFP','receita@editarFP');
+	$rota->add('/receita/removerFP','receita@removerFP');
 
 	// Area de despesas
 	$rota->add('/despesa/cadastrar','despesa@cadastrar');
 	$rota->add('/despesa/editar','despesa@editar');
 	$rota->add('/despesa/remover','despesa@remover');
 	$rota->add('/despesa/efetivar','despesa@efetivar');
+	$rota->add('/despesa/editarFP','despesa@editarFP');
 
 	// Area de categorias
 	$rota->add('/categorias','categoria@index');

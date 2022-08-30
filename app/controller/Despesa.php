@@ -383,4 +383,131 @@ class Despesa extends BaseController
         }
     }
 
+    //=========================================================================================
+    // MÉTODO REPONSÁVEL POR EDITAR DESPESA FIXA/PARCELADA
+    //=========================================================================================
+    public function editarFP()
+    {
+        UsuarioSession::deslogado();
+
+        $dados = [
+            'usuario_logado' => UsuarioSession::get('nome'),
+            'msg' => FlashMessage::get()
+        ];
+
+        switch($_GET['t'])
+        {
+            case 'fixa':
+                $dados['titulo'] = 'Editar depesa fixa';
+                break;
+            case 'parcelada':
+                $dados['titulo'] = 'Editar despesa parcelada';
+                break;
+        }
+
+        // VALIDANDO ID INSERIDO NA URL 
+        if(isset($_GET['id']) and is_numeric($_GET['id']) and intval($_GET['id']) > 0)
+        {
+
+            //LISTAGEM DOS CAMPOS CATEGORIAS E CONTAS E RECEITA
+            try {
+                Transaction::open('db');
+
+                $dados['listaCategorias'] = CategoriaModel::findBy("id_usuario = ".UsuarioSession::get('id')." and tipo = 'despesa'");
+                
+                $dados['listaContas'] = ContaModel::findBy('id_usuario = '.UsuarioSession::get('id'));
+
+                $r = DespesaFixaModel::findBy('idDesp = '.$_GET['id'].' and id_usuario = '.UsuarioSession::get('id'));
+                
+                $dados['dadosEdicao'] = $r;
+
+                Transaction::close();
+
+                if(!$r)
+                {
+                    echo 'Página não encontrada';
+                    exit();
+                }
+
+            } catch (\Exception $e) {
+                Transaction::rollback();
+            } 
+        }
+        else{
+            echo 'Página não encontrada!';
+            exit;
+        }
+
+        //EDITAR RECEITA FIXA
+        if($_SERVER['REQUEST_METHOD'] == 'POST')
+        {
+            //EDITAR RECEITA FIXA
+
+            $v = new Validacao;
+
+            $v->setCampo('Valor (R$)')
+                ->moeda($_POST['valor']);
+
+            $v->setCampo('Descrição')
+                ->min_caracteres($_POST['descricao'])
+                ->max_caracteres($_POST['descricao']);
+
+            if($v->validar())
+            {
+                try {
+                    Transaction::open('db');
+
+                    if(!CategoriaModel::find($_POST['categoriaDespesa']))
+                    {
+                        FlashMessage::set('Categoria escolhida não existe!','error',"despesa/editarFP?id={$_GET['id']}&t={$_GET['t']}");
+                    }
+
+                    if(!ContaModel::find($_POST['ContaDespesa']))
+                    {
+                        FlashMessage::set('Conta escolhida não existe!','error',"despesa/editarFP?id={$_GET['id']}&t={$_GET['t']}");
+                    }
+    
+                    $rf = new DespesaFixaModel($_GET['id']);
+                    $rf->valor          = $_POST['valor'];
+                    $rf->descricao      = $_POST['descricao'];
+                    $rf->id_categoria   = $_POST['categoriaDespesa'];
+                    $rf->id_conta       = $_POST['ContaDespesa'];
+    
+                    if(isset($_POST['despesaRecebida']))
+                    {
+                        $rf->status_desp = 'fechado';
+                    }
+                    else{
+                        $rf->status_desp = 'aberto';
+                    }
+    
+                    $resultado = $rf->store();
+    
+                    Transaction::close();
+    
+                    if($resultado)
+                    {
+                        FlashMessage::set('Despesa alterada com sucesso!','success',"despesa/editarFP?id={$_GET['id']}&t={$_GET['t']}");
+                    }
+                    else{
+                        FlashMessage::set('Erro ao alterar despesa!','error',"despesa/editarFP?id={$_GET['id']}&t={$_GET['t']}");
+                    }
+    
+                } catch (\Exception $e) {
+                    Transaction::rollback();
+                }
+            }
+            else{
+                FlashMessage::set($v->getMsgErros(),'error',"despesa/editarFP?id={$_GET['id']}&t={$_GET['t']}");
+            }
+        }
+
+        $this->view([
+            'templates/header',
+            'despesaFixa/editar_despesaFixa',
+            'templates/footer'
+        ],$dados);
+    }
+
+
 }
