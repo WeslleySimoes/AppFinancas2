@@ -93,5 +93,29 @@ class Transacao extends Record
             echo $e->getMessage();
         }
     }
+
+    public static function total(int $id_usuario)
+    {
+        $classe = get_called_class();
+
+        $sql = "SELECT COUNT(*) AS total FROM ".constant("{$classe}::TABLENAME")." WHERE id_usuario =  {$id_usuario}";
+
+        if($conn = Transaction::get())
+        {
+            $result = $conn->query($sql);
+
+            return $result->fetch();
+        }
+        else{
+            throw new \Exception('Não há transação ativa!');
+        }
+        
+    }
+
+
+    // public static findByPg($inicio,$qtd,$where = '')
+    // {
+    //     "SELECT COUNT(*) AS total FROM ".constant("{$classe}::TABLENAME")." WHERE id_usuario =  {$id_usuario}";
+    // }
 }
 

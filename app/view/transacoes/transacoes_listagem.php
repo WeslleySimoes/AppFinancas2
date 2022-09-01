@@ -140,7 +140,7 @@ tr:nth-child(even) {
 }
 
 .pagination a.active {
-  background-color: #4CAF50;
+  background-color: #0476B9;
   color: white;
 }
 
@@ -453,7 +453,16 @@ tr td:last-child {
             
             
             |
-            <a href="#Remover" style="color:red;"><i class="fa fa-trash-o" aria-hidden="true"></i></a></td>
+            <!-- INÍCIO DO TOOLTIP -->
+          <div class="tooltip"> 
+
+          <button class="remove-RFP" value="<?= $dados->idDesp ?>"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+
+          <span class="tooltiptext">
+          Excluir
+          </span>
+          </div>
+          <!-- FINAL DO TOOLTIP  --> 
 
 
         <?php endif; ?>
@@ -466,17 +475,43 @@ tr td:last-child {
 </table>
 
 
+
 <!-- PAGINAÇÃO -->
-<!-- <div class="pagination" style="margin-top: 20px;">
-  <a href="#">&laquo;</a>
-  <a href="#">1</a>
-  <a class="active" href="#">2</a>
-  <a href="#">3</a>
-  <a href="#">4</a>
-  <a href="#">5</a>
-  <a href="#">6</a>
-  <a href="#">&raquo;</a>
-</div> -->
+
+<?php if(!isset($_GET['s'])): ?>
+
+<div class="pagination" style="margin-top: 20px;">         
+  <a href="<?= HOME_URL ?>/transacoes">&laquo; Inicio</a>
+  
+  <!-- Páginas anteriores -->
+  <?php for($pg_ant = $pg_atual - $max_links; $pg_ant <= $pg_atual-1; $pg_ant++): ?>   
+  
+    <?php if($pg_ant >= 1): ?>
+      <a href="<?= HOME_URL ?>/transacoes?pg=<?= $pg_ant ?>"><?= $pg_ant ?></a>
+    <?php endif; ?>
+
+  <?php endfor; ?>
+  <!-- fim das páginas anteriores -->
+    
+  <!-- Página atual -->
+  <a href="<?= HOME_URL ?>/transacoes?pg=<?= $pg_atual ?>" class="active"><?= $pg_atual ?></a>
+
+  <!-- Páginas posteriores -->
+  <?php for($pg_dep = $pg_atual + 1; $pg_dep <= $pg_atual+$max_links; $pg_dep++): ?>   
+  
+    <?php if($pg_dep <= $num_pag): ?>
+      <a href="<?= HOME_URL ?>/transacoes?pg=<?= $pg_dep ?>"><?= $pg_dep ?></a>
+    <?php endif; ?>
+
+  <?php endfor; ?>
+  <!-- fim das páginas posteriores -->
+
+
+
+  <a href="<?= HOME_URL ?>/transacoes?pg=<?= $num_pag ?>">Fim &raquo;</a>
+</div>  
+
+<?php endif ?>
 
 <!-- FIM DA PAGINAÇÃO -->
 

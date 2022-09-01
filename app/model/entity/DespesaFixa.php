@@ -6,6 +6,8 @@ use DateTime;
 use app\model\Record;
 use app\model\Transaction;
 use app\helpers\FormataMoeda;
+use app\model\entity\Transacao as TransacaoModel;
+use app\session\Usuario as UsuarioSession;
 
 class DespesaFixa extends Record
 {
@@ -37,5 +39,41 @@ class DespesaFixa extends Record
             Transaction::rollback();
             echo $e->getMessage();
         }
+    }
+
+    //REMOVER DESPESAS FIXAS/FUTURAS FUTURAS
+    public function removeFuturas()
+    {
+
+        //OBTENDO A TRANSAÇÃO RELACIONA A FIXA/PARCELADA ATUAL
+        $t = TransacaoModel::findBy("id_usuario = ".UsuarioSession::get('id')." and id_despesaFixa = {$this->data['idDesp']}");
+
+        //ALTERANDO id_despesaFixas PARA NULL, para não haver conflito
+        foreach($t as $transacao)
+        {
+            $t2 = clone $transacao;
+            $t2->removeProp('idTransacao');
+            $t2->removeProp('id_despesaFixa');
+
+            $transacao->delete();
+            $t2->store();
+        }
+
+        return parent::delete();
+    }
+
+    //REMOVER TODAS DESPESAS FIXAS/FUTURAS
+    public function removeTodas()
+    {
+        //OBTENDO A TRANSAÇÃO RELACIONA A FIXA/PARCELADA ATUAL
+        $t = TransacaoModel::findBy("id_usuario = ".UsuarioSession::get('id')." and id_despesaFixa = {$this->data['idDesp']}");
+
+        //ALTERANDO ID_RECEITAFIXAS PARA NULL, para não haver conflito
+        foreach($t as $transacao)
+        {
+            $transacao->delete();
+        }
+
+        return parent::delete();
     }
 }

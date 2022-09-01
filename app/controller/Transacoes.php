@@ -59,15 +59,52 @@ class Transacoes extends BaseController
             }
         }
         else{
-            
+        
+            if(isset($_GET['pg']) and $_GET['pg'] < 1)
+            {
+                header('location: '.HOME_URL.'/transacoes');
+                exit;
+            }
+
             try {
                 
                 Transaction::open('db');
-    
+
+                //Verifica se existe o get chamado 'pg'
+                $pg = isset($_GET['pg']) ? intval($_GET['pg']) : 1;
+                $dados['pg_atual'] = $pg;
+
+                //Obtendo total de transações
+                $totalT = Transacao::total(UsuarioSession::get('id'))['total'];
+
+                //Quantidade de transações por página
+                $quantidade_pg = 15;
+
+                //Total de links antes e depois da página atual
+                $dados['max_links'] = 2;
+
+                //Calculando total de páginas
+                $num_pag = ceil($totalT/$quantidade_pg);
+
+                $dados['num_pag'] = $num_pag;
+
+                //Calcular o inicio da visualização
+                $inicio = ($quantidade_pg * $pg) - $quantidade_pg;
+
                 //ORDENANDO TRANSAÇÕES PELA DATA DA MAIOR PARA O MENOR
-                $dados['transacoes_cliente'] = Transacao::findBy('id_usuario = '.UsuarioSession::get('id').' ORDER BY data_trans DESC');
+                $dados['transacoes_cliente'] = Transacao::findBy(
+                    "id_usuario = ".UsuarioSession::get('id')." ORDER BY data_trans DESC LIMIT {$inicio}, {$quantidade_pg} "
+                );
+
+                //dd($dados['transacoes_cliente']);
     
                 Transaction::close();
+
+                if($pg > $num_pag)
+                {
+                    header('location: '.HOME_URL.'/transacoes');
+                    exit;
+                }
     
             } catch (\Exception $e) {
                 Transaction::rollback();

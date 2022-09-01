@@ -37,6 +37,7 @@
 	$rota->add('/despesa/remover','despesa@remover');
 	$rota->add('/despesa/efetivar','despesa@efetivar');
 	$rota->add('/despesa/editarFP','despesa@editarFP');
+	$rota->add('/despesa/removerFP','despesa@removerFP');
 
 	// Area de categorias
 	$rota->add('/categorias','categoria@index');
