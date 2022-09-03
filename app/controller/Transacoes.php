@@ -6,7 +6,7 @@ use app\model\Transaction;
 use app\helpers\FlashMessage;
 use app\model\entity\Transacao;
 use app\session\Usuario as UsuarioSession;
-use app\model\entity\{ReceitaFixa, DespesaFixa}; 
+use app\model\entity\{Conta, ReceitaFixa, DespesaFixa}; 
 
 class Transacoes extends BaseController
 {
@@ -76,17 +76,31 @@ class Transacoes extends BaseController
 
                 //################ FILTRO ######################
 
+                $conta = Conta::loadAll(UsuarioSession::get('id'));
+                $idContas = [];
+
+                foreach($conta as $c)
+                {
+                    $idContas[] = $c->idConta;
+                }
+                
                 //status
                 $filtroStatus = htmlspecialchars(filter_input(INPUT_GET,'status'));
                 $filtroStatus = in_array($filtroStatus,['pendente','fechado']) ? $filtroStatus : '';
-                
+
                 //tipo
                 $tipoTrans    = htmlspecialchars(filter_input(INPUT_GET,'tipo'));
                 $tipoTrans    = in_array($tipoTrans,['despesa','receita','transferencia']) ? $tipoTrans : '';
 
+                //conta
+                $contaURL    = filter_input(INPUT_GET,'conta',FILTER_SANITIZE_NUMBER_INT);
+                $contaURL    = in_array($contaURL,$idContas) ? $contaURL : '';
+
+
                 $condicoes = [
                     strlen($filtroStatus) ? "status_trans = '{$filtroStatus}'" : null,
                     strlen($tipoTrans) ? "tipo = '{$tipoTrans}'" : null,
+                    $contaURL > 0 ? "id_conta = {$contaURL}": null
                 ];
 
                 $condicoes = array_filter($condicoes);
