@@ -173,8 +173,6 @@ class Transacoes extends BaseController
 
                 if($pg > $num_pag and $num_pag > 0)
                 {
-                    echo $pg;
-                    echo '<br>'.$num_pag;
                     echo 'Pagina não encontrada!';
                     echo "<br><a href='".HOME_URL."/transacoes'>Voltar</a>";
                     exit;

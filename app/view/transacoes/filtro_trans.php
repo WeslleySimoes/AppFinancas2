@@ -24,10 +24,25 @@
             <div>
                 <label for="categoria">Categoria:</label><br>
                     <select name="categoria" >  
-                    <option value="">Todas</option>
-                    <?php foreach($listaCategorias as $categoria): ?>
-                        <option value="<?= $categoria->idCategoria ?>"><?= $categoria->nome ?></option>
-                    <?php endforeach ?>
+
+                    <optgroup label="Todas">
+                        <option value="">Todas</option>
+                    </optgroup>
+
+                    <optgroup label="Receita">
+                        <?php foreach($listaCategorias as $categoria): ?> 
+                            <?php if($categoria->tipo == 'receita'): ?>
+                                <option value="<?= $categoria->idCategoria ?>"><?= $categoria->nome ?></option>     
+                            <?php endif; ?>
+                        <?php endforeach ?>
+                    </optgroup>
+                    <optgroup label="Despesa">
+                        <?php foreach($listaCategorias as $categoria): ?> 
+                            <?php if($categoria->tipo == 'despesa'): ?>
+                                <option value="<?= $categoria->idCategoria ?>"><?= $categoria->nome ?></option>     
+                            <?php endif; ?>
+                        <?php endforeach ?>
+                    </optgroup>
 
                 </select>
             </div><br>
