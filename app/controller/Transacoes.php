@@ -111,12 +111,22 @@ class Transacoes extends BaseController
                 $categoriaURL = filter_input(INPUT_GET,'categoria',FILTER_SANITIZE_NUMBER_INT);
                 $categoriaURL     = in_array($categoriaURL,$idCategorias) ? $categoriaURL : '';
 
+                //Data
+                $dataURL    = isset($_GET['data']) ? $_GET['data'] : '';
+
+                if (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/",$dataURL)) {
+                    $dataURL = $dataURL;
+                } else {
+                    $dataURL = '';
+                }
+
 
                 $condicoes = [
                     strlen($filtroStatus) ? "status_trans = '{$filtroStatus}'" : null,
                     strlen($tipoTrans) ? "tipo = '{$tipoTrans}'" : null,
                     $contaURL > 0 ? "id_conta = {$contaURL}": null,
-                    $categoriaURL > 0 ? "id_categoria = {$categoriaURL}": null
+                    $categoriaURL > 0 ? "id_categoria = {$categoriaURL}": null,
+                    strlen($dataURL) ? "data_trans = '{$dataURL}'" : null,
                 ];
 
                 $condicoes = array_filter($condicoes);
