@@ -41,12 +41,10 @@
 <body>
     <div class="form-planejamento">
         <h1>Planejamento mensal</h1>
-        <form action="form_plan.php" method="get">
+        <form action="form_plan.php" method="POST">
 
             <label for="">Renda (R$):</label><br>
             <input type="text" name="renda"  style="width: 100%;"><br><br>
-
-            <input type="date" name="teste" id="">
 
             <label for="">Meta de gasto (R$):</label>
             <input type="text" name="metaGasto"  style="border: none; color: red;" value="1200" disabled><br><br>

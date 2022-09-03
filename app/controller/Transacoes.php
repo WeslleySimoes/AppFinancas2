@@ -80,6 +80,8 @@ class Transacoes extends BaseController
                 $conta = Conta::loadAll(UsuarioSession::get('id'));
                 $idContas = [];
 
+                $dados['listaContas'] = $conta;
+
                 foreach($conta as $c)
                 {
                     $idContas[] = $c->idConta;
@@ -88,6 +90,8 @@ class Transacoes extends BaseController
                 //OBTENDO TODOS OS ID DAS CATEGORIAS DO USUÁRIO ATUAL
                 $categoria = Categoria::loadAll(UsuarioSession::get('id'));
                 $idCategorias = [];
+
+                $dados['listaCategorias'] = $categoria;
 
                 foreach($categoria as $c)
                 {
@@ -109,7 +113,7 @@ class Transacoes extends BaseController
 
                 //Categoria
                 $categoriaURL = filter_input(INPUT_GET,'categoria',FILTER_SANITIZE_NUMBER_INT);
-                $categoriaURL     = in_array($categoriaURL,$idCategorias) ? $categoriaURL : '';
+                $categoriaURL = in_array($categoriaURL,$idCategorias) ? $categoriaURL : '';
 
                 //Data
                 $dataURL    = isset($_GET['data']) ? $_GET['data'] : '';
@@ -119,7 +123,6 @@ class Transacoes extends BaseController
                 } else {
                     $dataURL = '';
                 }
-
 
                 $condicoes = [
                     strlen($filtroStatus) ? "status_trans = '{$filtroStatus}'" : null,

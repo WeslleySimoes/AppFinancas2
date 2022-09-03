@@ -1,5 +1,7 @@
-//POPUP-form-remove
-   
+//#############################################################################
+//############### POPUP PARA REMOVER DESPESA OU RECEITA FIXA ##################
+//#############################################################################
+
 const removeRFP = document.querySelectorAll('.remove-RFP');
 const fecharPopup = document.querySelectorAll('.fechar-popup');
 const fundoEscuroPopup = document.querySelector('#fundo-escuro-popup');
@@ -21,3 +23,21 @@ for (let index = 0; index < fecharPopup.length; index++) {
         fundoEscuroPopup.style.display = 'none';
     }
 }
+
+//#############################################################################
+//################# FILTRO PARA A PAGINA DE TRANSAÇÕES ########################
+//#############################################################################
+
+const btnFiltroTrans = document.querySelector("#btn-filtro-trans");
+const fundoFiltroTrans = document.querySelector("#fundoFiltroTrans");
+const btnFecharFiltroTrans = document.querySelector("#btn-fechar-filtro-trans");
+
+btnFiltroTrans.onclick = () =>{
+    fundoFiltroTrans.style.display = 'flex';
+    
+}
+
+btnFecharFiltroTrans.onclick = () => {
+    fundoFiltroTrans.style.display = 'none';
+}
+

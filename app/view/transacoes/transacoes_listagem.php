@@ -1,5 +1,6 @@
 <!-- POPUP FORM -->
 <?php require_once VIEW_DIR.'/templates/popup.php' ?>
+<?php require_once VIEW_DIR.'/transacoes/filtro_trans.php' ?>
 <!-- FIM POPUP FORM -->
 <style>
 .dropbtn {
@@ -107,6 +108,8 @@
     <a href="<?= HOME_URL ?>/transacoes?s=despesasFixas">Despesas fixas e/ou parceladas</a>
   </div>
   <!-- ############################################################################ -->
+
+  <button id="btn-filtro-trans" class="dropbtn">Filtro</button>
 
 </div>
 
@@ -468,10 +471,8 @@ tr td:last-child {
         <?php endif; ?>
       </tr>
       <?php endforeach ?>
-
-
-
   <?php endif ?>
+  
 </table>
 
 
