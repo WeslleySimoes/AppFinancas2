@@ -6,7 +6,7 @@ use app\model\Transaction;
 use app\helpers\FlashMessage;
 use app\model\entity\Transacao;
 use app\session\Usuario as UsuarioSession;
-use app\model\entity\{Conta, ReceitaFixa, DespesaFixa}; 
+use app\model\entity\{Categoria, Conta, ReceitaFixa, DespesaFixa}; 
 
 class Transacoes extends BaseController
 {
@@ -76,6 +76,7 @@ class Transacoes extends BaseController
 
                 //################ FILTRO ######################
 
+                //OBTENDO TODOS OS ID DA CONTA DO USUÁRIO ATUAL
                 $conta = Conta::loadAll(UsuarioSession::get('id'));
                 $idContas = [];
 
@@ -83,24 +84,39 @@ class Transacoes extends BaseController
                 {
                     $idContas[] = $c->idConta;
                 }
+
+                //OBTENDO TODOS OS ID DAS CATEGORIAS DO USUÁRIO ATUAL
+                $categoria = Categoria::loadAll(UsuarioSession::get('id'));
+                $idCategorias = [];
+
+                foreach($categoria as $c)
+                {
+                    $idCategorias[] = $c->idCategoria;
+                }
+                //####################################################
                 
-                //status
+                //Status
                 $filtroStatus = htmlspecialchars(filter_input(INPUT_GET,'status'));
                 $filtroStatus = in_array($filtroStatus,['pendente','fechado']) ? $filtroStatus : '';
 
-                //tipo
+                //Tipo
                 $tipoTrans    = htmlspecialchars(filter_input(INPUT_GET,'tipo'));
                 $tipoTrans    = in_array($tipoTrans,['despesa','receita','transferencia']) ? $tipoTrans : '';
 
-                //conta
+                //Conta
                 $contaURL    = filter_input(INPUT_GET,'conta',FILTER_SANITIZE_NUMBER_INT);
                 $contaURL    = in_array($contaURL,$idContas) ? $contaURL : '';
+
+                //Categoria
+                $categoriaURL = filter_input(INPUT_GET,'categoria',FILTER_SANITIZE_NUMBER_INT);
+                $categoriaURL     = in_array($categoriaURL,$idCategorias) ? $categoriaURL : '';
 
 
                 $condicoes = [
                     strlen($filtroStatus) ? "status_trans = '{$filtroStatus}'" : null,
                     strlen($tipoTrans) ? "tipo = '{$tipoTrans}'" : null,
-                    $contaURL > 0 ? "id_conta = {$contaURL}": null
+                    $contaURL > 0 ? "id_conta = {$contaURL}": null,
+                    $categoriaURL > 0 ? "id_categoria = {$categoriaURL}": null
                 ];
 
                 $condicoes = array_filter($condicoes);
