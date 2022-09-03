@@ -1,0 +1,14 @@
+********** PLANEJAMENTO ****************
+
+Passo 1
+
+Comece o formulário perguntando qual é a receita mensal, e peça ao usuário
+inserir o valor e clicar em continuar.
+
+Passo 2
+
+Defina o quanto em % e valor o usuário deseja poupar da receita mensal, lembrando que o máximo permitido é 80%. Essa méta é um valor total.
+
+Passo 3
+
+

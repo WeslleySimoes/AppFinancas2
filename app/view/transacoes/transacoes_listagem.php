@@ -481,26 +481,26 @@ tr td:last-child {
 <?php if(!isset($_GET['s'])): ?>
 
 <div class="pagination" style="margin-top: 20px;">         
-  <a href="<?= HOME_URL ?>/transacoes">&laquo; Inicio</a>
+  <a href="<?= HOME_URL ?>/transacoes<?= '?'.$query_get ?>">&laquo; Inicio</a>
   
   <!-- Páginas anteriores -->
   <?php for($pg_ant = $pg_atual - $max_links; $pg_ant <= $pg_atual-1; $pg_ant++): ?>   
   
     <?php if($pg_ant >= 1): ?>
-      <a href="<?= HOME_URL ?>/transacoes?pg=<?= $pg_ant ?>"><?= $pg_ant ?></a>
+      <a href="<?= HOME_URL ?>/transacoes?pg=<?= $pg_ant ?>&<?= $query_get ?>"><?= $pg_ant ?></a>
     <?php endif; ?>
 
   <?php endfor; ?>
   <!-- fim das páginas anteriores -->
     
   <!-- Página atual -->
-  <a href="<?= HOME_URL ?>/transacoes?pg=<?= $pg_atual ?>" class="active"><?= $pg_atual ?></a>
+  <a href="<?= HOME_URL ?>/transacoes?pg=<?= $pg_atual ?>&<?= $query_get ?>" class="active"><?= $pg_atual ?></a>
 
   <!-- Páginas posteriores -->
   <?php for($pg_dep = $pg_atual + 1; $pg_dep <= $pg_atual+$max_links; $pg_dep++): ?>   
   
     <?php if($pg_dep <= $num_pag): ?>
-      <a href="<?= HOME_URL ?>/transacoes?pg=<?= $pg_dep ?>"><?= $pg_dep ?></a>
+      <a href="<?= HOME_URL ?>/transacoes?pg=<?= $pg_dep ?>&<?= $query_get ?>"><?= $pg_dep ?></a>
     <?php endif; ?>
 
   <?php endfor; ?>
@@ -508,7 +508,7 @@ tr td:last-child {
 
 
 
-  <a href="<?= HOME_URL ?>/transacoes?pg=<?= $num_pag ?>">Fim &raquo;</a>
+  <a href="<?= HOME_URL ?>/transacoes?pg=<?= $num_pag ?>&<?=$query_get ?>">Fim &raquo;</a>
 </div>  
 
 <?php endif ?>

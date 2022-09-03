@@ -74,8 +74,34 @@ class Transacoes extends BaseController
                 $pg = isset($_GET['pg']) ? intval($_GET['pg']) : 1;
                 $dados['pg_atual'] = $pg;
 
+                //################ FILTRO ######################
+
+                //status
+                $filtroStatus = htmlspecialchars(filter_input(INPUT_GET,'status'));
+                $filtroStatus = in_array($filtroStatus,['pendente','fechado']) ? $filtroStatus : '';
+                
+                //tipo
+                $tipoTrans    = htmlspecialchars(filter_input(INPUT_GET,'tipo'));
+                $tipoTrans    = in_array($tipoTrans,['despesa','receita','transferencia']) ? $tipoTrans : '';
+
+                $condicoes = [
+                    strlen($filtroStatus) ? "status_trans = '{$filtroStatus}'" : null,
+                    strlen($tipoTrans) ? "tipo = '{$tipoTrans}'" : null,
+                ];
+
+                $condicoes = array_filter($condicoes);
+
+                $where = implode(" AND ",$condicoes);
+
+                unset($_GET['transacoes']);
+                unset($_GET['pg']);
+
+                $dados['query_get'] = http_build_query($_GET);
+
+                //############ FIM DO FILTRO ###################
+
                 //Obtendo total de transações
-                $totalT = Transacao::total(UsuarioSession::get('id'))['total'];
+                $totalT = Transacao::total(UsuarioSession::get('id'),$where)['total'];
 
                 //Quantidade de transações por página
                 $quantidade_pg = 15;
@@ -91,12 +117,13 @@ class Transacoes extends BaseController
                 //Calcular o inicio da visualização
                 $inicio = ($quantidade_pg * $pg) - $quantidade_pg;
 
+                //LIMPANDO A WHERE DO FILTRO, CASO ELA ESTEJA SETADO COLOCA O AND NA FRENTE
+                $where = strlen($where) ? " AND $where " : '';
+
                 //ORDENANDO TRANSAÇÕES PELA DATA DA MAIOR PARA O MENOR
                 $dados['transacoes_cliente'] = Transacao::findBy(
-                    "id_usuario = ".UsuarioSession::get('id')." ORDER BY data_trans DESC LIMIT {$inicio}, {$quantidade_pg} "
+                    "id_usuario = ".UsuarioSession::get('id')." {$where} ORDER BY data_trans DESC LIMIT {$inicio}, {$quantidade_pg} "
                 );
-
-                //dd($dados['transacoes_cliente']);
     
                 Transaction::close();
 

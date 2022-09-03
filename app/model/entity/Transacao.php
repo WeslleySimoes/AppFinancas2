@@ -94,11 +94,18 @@ class Transacao extends Record
         }
     }
 
-    public static function total(int $id_usuario)
+    public static function total(int $id_usuario,$where = null)
     {
         $classe = get_called_class();
 
-        $sql = "SELECT COUNT(*) AS total FROM ".constant("{$classe}::TABLENAME")." WHERE id_usuario =  {$id_usuario}";
+        $sql = "SELECT COUNT(*) AS total FROM ".constant("{$classe}::TABLENAME")." WHERE id_usuario =  {$id_usuario} ";
+
+        if($where)
+        {
+            $sql .= ' AND '.$where;
+        }
+
+        //dd($sql);
 
         if($conn = Transaction::get())
         {

@@ -7,9 +7,22 @@
 </h3>
 
 <div class="dadosFinanceiros">
-    <div class="dadoItem dadoItem-1"><i class="fa fa-area-chart" aria-hidden="true"></i>Receitas: <br/> R$ 1.500,00</div>
-    <div class="dadoItem dadoItem-2"><i class="fa fa-shopping-basket" aria-hidden="true"></i> Despesas:<br/> R$ 1.500,00</div>
-    <div class="dadoItem dadoItem-3"><i class="fa fa-university" aria-hidden="true"></i>Saldo em Contas:<br/> R$ 1.500,00</div>
+    <div class="dadoItem dadoItem-1">
+        <i class="fa fa-area-chart" aria-hidden="true"></i>
+        Receitas: <br/> R$ 1.500,00 
+        <a href="<?= HOME_URL ?>/transacoes?tipo=receita">ver mais</a></div>
+
+    <div class="dadoItem dadoItem-2">
+        <i class="fa fa-shopping-basket" aria-hidden="true"></i> 
+        Despesas:<br/> R$ 1.500,00
+        <a href="<?= HOME_URL ?>/transacoes?tipo=despesa">ver mais</a>
+    </div>
+
+    <div class="dadoItem dadoItem-3">
+        <i class="fa fa-university" aria-hidden="true"></i>
+        Saldo em Contas:<br/> R$ 1.500,00
+        <a href="<?= HOME_URL ?>/contas/listar">ver mais</a>
+    </div>
 </div>
 
 <!-- <div class="formularioUsuario">

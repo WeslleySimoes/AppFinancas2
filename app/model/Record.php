@@ -262,6 +262,8 @@ abstract class Record
 
         $sql = "SELECT * FROM ".constant("{$classeAtual}::TABLENAME")." WHERE {$culunaValor}";
 
+        //dd($sql);
+
         if($conn = Transaction::get())
         {
             if($result = $conn->query($sql))
