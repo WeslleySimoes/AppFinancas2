@@ -85,6 +85,24 @@
 
 </style>
 
+</style>
+  <h2 style="margin-bottom: 20px;">
+    <?php 
+    if(isset($_GET['s']) and $_GET['s'] == 'receitasFixas')
+    {
+      echo 'Receitas Fixas/Parceladas';
+    }
+    elseif(isset($_GET['s']) and $_GET['s'] == 'despesasFixas')
+    {
+      echo 'Despesas Fixas/Parceladas';
+    }
+    else{
+      echo 'Transações';
+    }
+    
+    ?>
+  </h2>
+
 
 <!-- <div class="container-form">
     <h3 class="title-form">Transações</h3>
