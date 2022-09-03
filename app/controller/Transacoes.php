@@ -62,9 +62,10 @@ class Transacoes extends BaseController
         
             if(isset($_GET['pg']) and $_GET['pg'] < 1)
             {
-                header('location: '.HOME_URL.'/transacoes');
+                echo 'Pagina não encontrada!';
+                echo "<br><a href='".HOME_URL."/transacoes'>Voltar</a>";
                 exit;
-            }
+             }
 
             try {
                 
@@ -170,9 +171,12 @@ class Transacoes extends BaseController
     
                 Transaction::close();
 
-                if($pg > $num_pag)
+                if($pg > $num_pag and $num_pag > 0)
                 {
-                    header('location: '.HOME_URL.'/transacoes');
+                    echo $pg;
+                    echo '<br>'.$num_pag;
+                    echo 'Pagina não encontrada!';
+                    echo "<br><a href='".HOME_URL."/transacoes'>Voltar</a>";
                     exit;
                 }
     

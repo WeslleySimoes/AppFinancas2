@@ -471,15 +471,16 @@ tr td:last-child {
         <?php endif; ?>
       </tr>
       <?php endforeach ?>
+  <?php else: ?>
+    <br><br>Nenhuma transação encontrada!<br><br>
   <?php endif ?>
   
 </table>
 
 
-
 <!-- PAGINAÇÃO -->
 
-<?php if(!isset($_GET['s'])): ?>
+<?php if(!isset($_GET['s']) and count($transacoes_cliente) > 0): ?>
 
 <div class="pagination" style="margin-top: 20px;">         
   <a href="<?= HOME_URL ?>/transacoes<?= '?'.$query_get ?>">&laquo; Inicio</a>
