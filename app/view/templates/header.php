@@ -69,7 +69,7 @@
                 </a>
             </li> 
             <li> 
-                <a href="#planejamento" class="link-menu-lateral">
+                <a href="<?= HOME_URL.'/planejamento' ?>" class="link-menu-lateral">
                     <i class="fa fa-pencil" aria-hidden="true"></i>
                     Planejamento
                 </a>

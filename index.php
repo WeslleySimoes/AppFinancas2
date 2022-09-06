@@ -49,6 +49,8 @@
 	$rota->add('/transferencia/remover','transferencia@remover');
 	$rota->add('/transferencia/efetivar','transferencia@efetivar');
 
+	// Planejamento
+	$rota->add('/planejamento','planejamento@index');
 	
 	// Deslogar
 	$rota->add('/deslogar','Home@deslogar');

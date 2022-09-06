@@ -84,9 +84,7 @@
 
 
 </style>
-
-</style>
-  <h2 style="margin-bottom: 20px;">
+  <h3 style="margin-bottom: 20px; color: #263D52;">
     <?php 
     if(isset($_GET['s']) and $_GET['s'] == 'receitasFixas')
     {
@@ -101,8 +99,7 @@
     }
     
     ?>
-  </h2>
-
+  </h3>
 
 <!-- <div class="container-form">
     <h3 class="title-form">Transações</h3>
