@@ -144,6 +144,11 @@ class Transacoes extends BaseController
 
                 //############ FIM DO FILTRO ###################
 
+                if(!isset($_GET['data']))
+                {
+                    $where .= " MONTH(data_trans) = MONTH(CURDATE()) AND YEAR(data_trans) = YEAR(CURDATE())";
+                }
+
                 //Obtendo total de transações
                 $totalT = Transacao::total(UsuarioSession::get('id'),$where)['total'];
 
@@ -164,9 +169,11 @@ class Transacoes extends BaseController
                 //LIMPANDO A WHERE DO FILTRO, CASO ELA ESTEJA SETADO COLOCA O AND NA FRENTE
                 $where = strlen($where) ? " AND $where " : '';
 
+                $porMesAtual = !isset($_GET['data']) ? " AND MONTH(data_trans) = MONTH(CURDATE()) AND YEAR(data_trans) = YEAR(CURDATE())" : '';
+
                 //ORDENANDO TRANSAÇÕES PELA DATA DA MAIOR PARA O MENOR
                 $dados['transacoes_cliente'] = Transacao::findBy(
-                    "id_usuario = ".UsuarioSession::get('id')." {$where} ORDER BY data_trans DESC LIMIT {$inicio}, {$quantidade_pg} "
+                    "id_usuario = ".UsuarioSession::get('id')." {$where} {$porMesAtual}  ORDER BY data_trans DESC LIMIT {$inicio}, {$quantidade_pg} "
                 );
     
                 Transaction::close();

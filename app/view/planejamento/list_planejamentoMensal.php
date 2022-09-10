@@ -10,7 +10,11 @@
 
 <!-- INÍCIO - LINKS DA PÁGINA -->
 <div class="dropdown">
-    <button onclick="myFunction()" class="dropbtn"> <span style='font-size:16px;'>&#9660;</span>Planejamento mensal</button>
+    <button onclick="myFunction()" class="dropbtn"> <span style='font-size:16px;'>&#9660;</span><?php if(isset($_GET['p']) == 'personalizado'): ?>
+        Planejamento Personalizado
+    <?php else:  ?>
+        Planejamento Mensal
+    <?php endif; ?></button>
     <div id="myDropdown" class="dropdown-content">
     <a href="<?= HOME_URL ?>/planejamento">Planejamento mensal</a>
     <a href="<?= HOME_URL ?>/planejamento?p=personalizado">Planejamento personalizado</a>
@@ -45,7 +49,7 @@
             <td>R$ <?= formatoMoeda($total_plan_mensal[0]->calcularMetaGasto()) ?></td>
             <td>R$ <?= formatoMoeda($total_plan_mensal[0]->getTotalGasto()) ?></td>
             <td>R$ <?= formatoMoeda($total_plan_mensal[0]->resultado()) ?></td>
-            <td><progress id="file" value="<?= $total_plan_mensal[0]->getPorcentagemGasto() ?>" max="100" style="accent-color:blue;">> 32% </progress> <?= $total_plan_mensal[0]->getPorcentagemGasto(false) ?>%</td>
+            <td><progress id="file" value="<?= $total_plan_mensal[0]->getPorcentagemGasto() ?>" max="100" style="accent-color:blue;"></progress> <?= $total_plan_mensal[0]->getPorcentagemGasto(false) ?>%</td>
 
             <td>
                 <div class="tooltip"> 
