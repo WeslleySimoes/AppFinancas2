@@ -47,24 +47,19 @@
     <div class="form-planejamento">
         <h1 style="text-align: center;">Planejamento mensal</h1>
         <form action="" method="POST">
-            <label for="descricao" > Descrição:</label><br>
-            <input type="text" name="descricao" id="" style="width: 100%;"><br><br>
-
-            <input type="checkbox" name="" id="">Mensal <br>
-            <input type="checkbox" name="" id="">Personalizado <br><br>
-
+            
             <label for="">Renda mensal (R$):</label><br>
             <input type="text" name="renda" id="valorRenda"  style="width: 100%;" class="money" value="0,00" ><br><br>
 
             <label for="">Meta de gasto (%):</label>
             <input type="number" name="porcentMeta" id="porcentMeta" min="10" max="80" step="1" value="10"/>
 
-            <input type="text" name="metaGasto"  id="metaGasto" style="border: none; color: red;" value="R$ 0,00" disabled > 
+            <input type="text" name="metaGasto"  id="metaGasto" style="border: none; color: red;" value="R$ 0,00" disabled > <br><br>
 
-            <label for="" style="display:inline-block; width: 100%; margin-top: 10px;">Data início:</label>
+            <!-- <label for="" style="display:inline-block; width: 100%; margin-top: 10px;">Data início:</label>
             <input type="date" name="dataInicio" id="" style="width: 100%; margin-bottom: 10px;">
             <label for="" style="width: 100%; margin-bottom: 10px;">Data final:</label>
-            <input type="date" name="dataFinal" id="" style="width: 100%; margin-bottom: 10px;">
+            <input type="date" name="dataFinal" id="" style="width: 100%; margin-bottom: 10px;"> -->
 
             <label for="">Insira uma meta para cada categoria:</label>
             <div id="check-categorias">

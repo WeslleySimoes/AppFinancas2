@@ -10,6 +10,30 @@ class Categoria extends Record
     const TABLENAME = 'categoria';
     const TABLE_PK  = 'idCategoria';
 
+    public function TotalGastoMesAtual()
+    {
+
+        try {
+            Transaction::open('db');
+            
+            $sql = "SELECT SUM(valor) as total FROM transacao WHERE id_categoria = {$this->data[self::TABLE_PK]} AND MONTH(data_trans) = MONTH(CURDATE()) AND YEAR(data_trans) = YEAR(CURDATE())";
+
+            $conn = Transaction::get();
+
+            $result = $conn->query($sql);
+
+            $r =  (float) $result->fetch()['total'];    
+
+            Transaction::close();
+        } catch (\Exception $e) {
+            Transaction::rollback();
+        }
+
+        $this->data['totalGastoMesAtual'] = $r;
+        return $r;
+
+    }
+
     // public static function findBy($culunaValor)
     // {
     //     $sql = "SELECT * FROM ".self::TABLENAME." WHERE {$culunaValor}";

@@ -47,48 +47,6 @@
 
 </div>
 
-<style>
-table {
-  font-family: arial, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-}
-
-td, th {
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-}
-
-tr:nth-child(even) {
-  background-color: #dddddd;
-}
-
-/*PAGINAÇÃO */
-.pagination {
-  display: inline-block;
-}
-
-.pagination a {
-  color: black;
-  float: left;
-  padding: 8px 16px;
-  text-decoration: none;
-}
-
-.pagination a.active {
-  background-color: #0476B9;
-  color: white;
-}
-
-.pagination a:hover:not(.active) {background-color: #ddd;}
-
-tr td:last-child {
-    width: 1%;
-    white-space: nowrap;
-}
-</style>
-
 <!-- LISTAGEM DE RECEITAS,DESPESAS,TRANSFERÊNCIAS -->
 <?php if(isset($transacoes_cliente) and count($transacoes_cliente) > 0): ?>
   <table style="margin-top: 20px; width: 100%;">

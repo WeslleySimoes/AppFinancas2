@@ -51,6 +51,7 @@
 
 	// Planejamento
 	$rota->add('/planejamento','planejamento@index');
+	$rota->add('/planejamento/cadastrar','planejamento@cadastrar');
 	
 	// Deslogar
 	$rota->add('/deslogar','Home@deslogar');

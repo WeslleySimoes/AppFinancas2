@@ -19,6 +19,9 @@
 
 <!-- INÍCIO - MOSTRA OS PLANEJAMENTOS PERSONALIZADOS -->
 <?php if(isset($_GET['p']) == 'personalizado'): ?>
+
+    <input id="bday-month" type="month" name="bday-month" value="<?= date('Y-m') ?>">
+    
     <p style="margin: 20px 0;"><b>Personalizado</b></p>
 
 <!-- FIM - MOSTRA OS PLANEJAMENTOS PERSONALIZADOS  -->
@@ -26,9 +29,59 @@
 <!-- INÍCIO - MOSTRA O PLANEJAMENTO DO MÊS ATUAL   -->
 <?php else:  ?>
 
+    <?php if(count($total_plan_mensal) > 0): ?>
 
-    <p style="margin: 20px 0;"><b>Mensal</b></p>
+    <table style="margin-top: 20px; width: 100%;">
+        <tr>
+            <th>Categoria</th>
+            <th>Meta</th>
+            <th>Valor Gasto</th>
+            <th>Resultado</th>
+            <th>Progresso</th>
+            <th>Ações</th>
+        </tr>
+        <tr>
+            <td><b>Total</b></td>
+            <td>R$ <?= formatoMoeda($total_plan_mensal[0]->calcularMetaGasto()) ?></td>
+            <td>R$ <?= formatoMoeda($total_plan_mensal[0]->getTotalGasto()) ?></td>
+            <td>R$ <?= formatoMoeda($total_plan_mensal[0]->resultado()) ?></td>
+            <td><progress id="file" value="<?= $total_plan_mensal[0]->getPorcentagemGasto() ?>" max="100" style="accent-color:blue;">> 32% </progress> <?= $total_plan_mensal[0]->getPorcentagemGasto(false) ?>%</td>
 
+            <td>
+                <div class="tooltip"> 
+                    <a href="#" style="color:blue;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> 
+                    <span class="tooltiptext">
+                        Editar
+                    </span>
+                </div>
+                |
+                <div class="tooltip"> 
+                    <a href="#" style="color:red;"><i class="fa fa-trash-o" aria-hidden="true" onclick="return confirm('Tem certeza que deseja Remover?');"></i></a>
+
+                    <span class="tooltiptext">
+                        Excluir
+                    </span>
+                </div>
+            </td>
+        </tr>
+        <?php foreach( $total_plan_mensal[0]->getPlanCategorias() as $planCate): ?>
+
+            <?php $planCate->getCategoria(); ?>
+
+            <tr>
+                <td> <span style='font-size:20px;'>&#10148;</span> <?= $planCate->categoria_obj->nome ?></td>
+                <td>R$ <?= formatoMoeda($planCate->valorMeta) ?></td>
+                <td>R$ <?= formatoMoeda($planCate->categoria_obj->TotalGastoMesAtual())?></td>
+                <td>R$ <?= formatoMoeda($planCate->resultado()) ?></td>
+
+                <td colspan="2"><progress id="file" value="<?=  $planCate->getPorcentagemGasto() ?? 100   ?>" max="100"></progress><?= $planCate->getPorcentagemGasto(false);?>%</td>
+                
+            </tr>
+            <?php endforeach; ?>
+    </table>
+    <?php else: ?>
+        <p>Nenhum planejamento encontrado!</p>
+    <?php endif; ?>
 
 <?php endif; ?>
 <!-- INÍCIO - MOSTRA O PLANEJAMENTO DO MÊS ATUAL  -->

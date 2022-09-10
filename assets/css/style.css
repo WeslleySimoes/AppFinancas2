@@ -345,5 +345,44 @@ input[type=text],input[type=email], select, textarea {
   /*END TOOLTIP */
   
   
+/* TABELAS */
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
   
+  td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #dddddd;
+  }
+  
+  /*PAGINAÇÃO */
+  .pagination {
+    display: inline-block;
+  }
+  
+  .pagination a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+  }
+  
+  .pagination a.active {
+    background-color: #0476B9;
+    color: white;
+  }
+  
+  .pagination a:hover:not(.active) {background-color: #ddd;}
+  
+  tr td:last-child {
+      width: 1%;
+      white-space: nowrap;
+  }
   
