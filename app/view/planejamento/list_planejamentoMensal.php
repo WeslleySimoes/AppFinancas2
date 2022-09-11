@@ -18,6 +18,7 @@
     <div id="myDropdown" class="dropdown-content">
     <a href="<?= HOME_URL ?>/planejamento">Planejamento mensal</a>
     <a href="<?= HOME_URL ?>/planejamento?p=personalizado">Planejamento personalizado</a>
+    </div>
 </div>
 <!-- FIM - LINKS DA PÁGINA -->
 
@@ -32,9 +33,8 @@
 <!-- --------------------------------------------- -->
 <!-- INÍCIO - MOSTRA O PLANEJAMENTO DO MÊS ATUAL   -->
 <?php else:  ?>
-
     <?php if(count($total_plan_mensal) > 0): ?>
-
+    
     <table style="margin-top: 20px; width: 100%;">
         <tr>
             <th>Categoria</th>
@@ -60,7 +60,7 @@
                 </div>
                 |
                 <div class="tooltip"> 
-                    <a href="#" style="color:red;"><i class="fa fa-trash-o" aria-hidden="true" onclick="return confirm('Tem certeza que deseja Remover?');"></i></a>
+                    <a href="<?= HOME_URL."/planejamento/removerPM?id={$total_plan_mensal[0]->idPlan}"?>" style="color:red;"><i class="fa fa-trash-o" aria-hidden="true" onclick="return confirm('Tem certeza que deseja Remover?');"></i></a>
 
                     <span class="tooltiptext">
                         Excluir
@@ -90,6 +90,7 @@
 <?php endif; ?>
 <!-- INÍCIO - MOSTRA O PLANEJAMENTO DO MÊS ATUAL  -->
 
+<?= $msg ?>
 
 <!-- INÍCIO - SCRIPT JAVASCRIPT -->
 <script>

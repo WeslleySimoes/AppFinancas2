@@ -137,6 +137,7 @@ input[type=text],input[type=email], select, textarea {
 
 /*ALERTAS*/
 .alert{
+    width: 100% !important;
     border: 1px solid black;
     padding: 10px;
     border-radius: 5px;

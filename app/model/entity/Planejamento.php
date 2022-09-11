@@ -4,6 +4,7 @@ namespace app\model\entity;
 
 use app\model\Record;
 use app\model\Transaction;
+use app\model\entity\PlanejamentoCate;
 
 class Planejamento extends Record
 {
@@ -78,5 +79,18 @@ class Planejamento extends Record
 
         return $porcentagem;
 
+    }
+
+    public function removerTudo()
+    {
+        $planCate = PlanejamentoCate::findBy('id_planejamento = '.$this->data[self::TABLE_PK]);
+
+        //ALTERANDO ID_RECEITAFIXAS PARA NULL, para não haver conflito
+        foreach($planCate as $pc)
+        {
+            $pc->delete();
+        }
+
+        return parent::delete();
     }
 }

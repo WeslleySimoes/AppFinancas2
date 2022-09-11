@@ -21,6 +21,15 @@ CREATE TABLE planCategoria
     FOREIGN KEY(id_planejamento) REFERENCES planejamento(idPlan)
 );
 
+
+-- INSERÇÃO DE PLANEJAMENTO
+INSERT INTO planejamento VALUES(1,3000.00,50,'2022-09-01','2022-09-30','mensal',1);
+INSERT INTO planCategoria VALUES(1,300.00,2,1);
+INSERT INTO planCategoria VALUES(2,500.00,3,1);
+INSERT INTO planCategoria VALUES(3,200.00,4,1);
+INSERT INTO planCategoria VALUES(4,500.00,1,1);
+
+
 -- MENSAL -- 
 -- 1 - 3000 - 50% - 01/09/22 - 30/09/22 - 'mensal' - 1    --1500
 --   1 - 300.00 - 5 - 1
@@ -35,6 +44,8 @@ CREATE TABLE planCategoria
 --   6 - 900.00  - 2 - 1
 --   7 - 2000.00 - 3 - 1
 --   8 - 1100.00 - 4 - 1
+
+
 
 
 -- Mostra o planejamento do mês atual caso ele exista, senão mostraremos a opção de cadastro
