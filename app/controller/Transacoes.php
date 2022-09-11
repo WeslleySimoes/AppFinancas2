@@ -146,8 +146,10 @@ class Transacoes extends BaseController
 
                 if(!isset($_GET['data']))
                 {
-                    $where .= " MONTH(data_trans) = MONTH(CURDATE()) AND YEAR(data_trans) = YEAR(CURDATE())";
+                    $where .= strlen($where) > 0 ? " AND MONTH(data_trans) = MONTH(CURDATE()) AND YEAR(data_trans) = YEAR(CURDATE())" :  " MONTH(data_trans) = MONTH(CURDATE()) AND YEAR(data_trans) = YEAR(CURDATE())";
                 }
+
+                //dd($where);
 
                 //Obtendo total de transações
                 $totalT = Transacao::total(UsuarioSession::get('id'),$where)['total'];

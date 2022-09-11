@@ -2,8 +2,10 @@
 
 namespace app\controller;
 
+use app\helpers\Validacao;
 use app\model\Transaction;
 use app\helpers\FlashMessage;
+use app\model\entity\Categoria;
 use app\session\Usuario as UsuarioSession;
 use app\model\entity\Planejamento as PlanejamentoModel;
 
@@ -44,7 +46,71 @@ class Planejamento extends BaseController
 
     public function cadastrarPM()
     {
-        echo 'Cadastrar';
+        UsuarioSession::deslogado();
+
+        //VERIFICANDO SE JÁ EXISTE PLANEJAMENTO PARA O MÊS ATUAL
+        try {
+            Transaction::open('db');
+
+            $planejamentoMensal = PlanejamentoModel::findBy("id_usuario = ".UsuarioSession::get('id')." AND tipo = 'mensal' AND MONTH(data_fim) = MONTH(CURDATE())");
+
+            Transaction::close();
+
+            if(count($planejamentoMensal) > 0)
+            {
+                header("location: ".HOME_URL."/planejamento");
+                exit;
+            }
+        } catch (\Exception $e) {
+            Transaction::rollback();
+        }
+
+        //PROCESSO DE INSERÇÃO
+        $dados = [
+            'usuario_logado' => UsuarioSession::get('nome'),
+            'msg' => FlashMessage::get()
+        ];
+
+        try {
+            Transaction::open('db');
+
+            $dados['categoriasDesp'] = Categoria::findBy(" tipo = 'despesa' AND id_usuario = ".UsuarioSession::get('id'));
+            
+            Transaction::close();
+
+
+        } catch (\Exception $e) {
+            Transaction::rollback();
+        }
+
+
+        if(!empty($_POST))
+        {
+            $arrCatDesp = [];
+
+            foreach($dados['categoriasDesp'] as $catDesp)
+            {
+                $arrCatDesp[] = $catDesp->idCategoria;
+            }
+
+            //VERIFICANDO SE EXISTE AS CATEGORIA SELECIONADAS NO BANCO DE DADOS
+            if(empty(array_diff($_POST['categoria'],$arrCatDesp)))
+            {
+               dd($_POST);
+            }
+            else{
+                FlashMessage::set('Ocorreu um erro ao cadastrar planejamento!','error');
+            }
+
+        }
+
+
+        $this->view([
+            'templates/header',
+            'planejamento/cadastrar_planMensal',
+            'templates/footer'
+        ],$dados);
+
     }
 
     //=========================================================================================

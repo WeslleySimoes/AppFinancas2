@@ -85,6 +85,7 @@
     </table>
     <?php else: ?>
         <p>Nenhum planejamento encontrado!</p>
+        <a href="<?= HOME_URL ?>/planejamento/cadastrarPM">Criar planejamento</a>
     <?php endif; ?>
 
 <?php endif; ?>
