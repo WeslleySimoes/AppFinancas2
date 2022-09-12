@@ -54,3 +54,12 @@ function formataDataBR($data)
     return $data->format('d/m/Y');
 }
 
+//Retorna a data final de mês atual
+function getDataFinalMesAtual()
+{
+    $mes = date('m');      // Mês desejado, pode ser por ser obtido por POST, GET, etc.
+    $ano = date("Y"); // Ano atual
+    $ultimo_dia = date("t", mktime(0,0,0,$mes,'01',$ano)); // Mágica, plim!
+
+    return date('Y-m')."-{$ultimo_dia}";
+}

@@ -25,6 +25,6 @@ class FormataMoeda
     /*Transforma formato moeda para float, ex: 1.500,30 para 1500.30 */
     public static function moedaParaFloat($valor)
     {
-        return strtr($valor,['.' => '',',' => '.']);
+        return (float) strtr($valor,['.' => '',',' => '.']);
     }
 }

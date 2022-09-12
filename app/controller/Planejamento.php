@@ -5,9 +5,11 @@ namespace app\controller;
 use app\helpers\Validacao;
 use app\model\Transaction;
 use app\helpers\FlashMessage;
+use app\helpers\FormataMoeda;
 use app\model\entity\Categoria;
 use app\session\Usuario as UsuarioSession;
 use app\model\entity\Planejamento as PlanejamentoModel;
+use app\model\entity\PlanejamentoCate;
 
 class Planejamento extends BaseController
 {
@@ -94,9 +96,64 @@ class Planejamento extends BaseController
             }
 
             //VERIFICANDO SE EXISTE AS CATEGORIA SELECIONADAS NO BANCO DE DADOS
-            if(empty(array_diff($_POST['categoria'],$arrCatDesp)))
+            if(empty(array_diff($_POST['categoria'],$arrCatDesp)) and !empty($_POST['item']))
             {
-               dd($_POST);
+                foreach($_POST['item'] as $valor)
+                {
+                    $v = FormataMoeda::moedaParaFloat($valor);
+                    
+                    if(!is_float($v))
+                    {
+                        FlashMessage::set('Ocorreu um erro ao cadastrar planejamento!','error');
+                        break;
+                    }              
+                }
+
+                //Continua para o cadastro
+                $v = new Validacao;
+
+                $v->setCampo('Renda mensal')
+                    ->moeda($_POST['renda']);
+                    
+                $v->setCampo('Meta de gasto:')
+                    ->campoNumInteiro($_POST['porcentMeta'])
+                    ->max_int_valor($_POST['porcentMeta'],90)
+                    ->min_int_valor($_POST['porcentMeta'],10);
+
+                if($v->validar())
+                {
+                    //dd($_POST);
+
+                    // REALIZANDO O CADASTRO DE PLENAJAMENTO MENSAL
+                    try {
+                        Transaction::open('db');
+
+                        $r              = new PlanejamentoModel();
+                        $r->valor       = FormataMoeda::moedaParaFloat($_POST['renda']);
+                        $r->porcentagem = (int) $_POST['porcentMeta'];
+                        $r->data_inicio = date('Y-m').'-01';
+                        $r->data_fim    = getDataFinalMesAtual();
+                        $r->tipo        = 'mensal';
+                        $r->id_usuario  = UsuarioSession::get('id');
+
+                        $pResultado = $r->cadastrar($_POST['categoria'],$_POST['item']);
+
+                        Transaction::close();
+
+                        if($pResultado)
+                        {
+                            FlashMessage::set('Planejamento criado com sucesso!','success');
+                        }
+                        else{
+                            FlashMessage::set('Erro ao criar planejamento ','error');
+                        }
+                    } catch (\Exception $e) {
+                        Transaction::rollback();
+                    }
+                }
+                else{
+                    FlashMessage::set($v->getMsgErros(),'error');
+                }
             }
             else{
                 FlashMessage::set('Ocorreu um erro ao cadastrar planejamento!','error');
@@ -172,4 +229,142 @@ class Planejamento extends BaseController
             Transaction::rollback();
         }
     }
+
+
+    //=========================================================================================
+    // EDITAR PLANEJAMENTO MENSAL
+    //=========================================================================================
+    public function editarPM()
+    {
+        UsuarioSession::deslogado();
+
+        // =======================================================================
+        // VALIDAÇÃO DO PARÂMETRO GET 'ID' E VERIFICANDO SE EXISTE O PLANEJAMENTO
+        // =======================================================================
+        $id = filter_input(INPUT_GET,'id',FILTER_VALIDATE_INT);
+
+        if(!isset($id) or !$id > 0)
+        {
+            header("location: ".HOME_URL."/planejamento");
+            exit;
+        }
+
+        try {
+            Transaction::open('db');
+
+            $planejamento = PlanejamentoModel::findBy('id_usuario = '.UsuarioSession::get('id')." AND tipo = 'mensal' AND idPlan = {$id}")[0];
+
+            Transaction::close();
+
+
+            //Se não achar o planejamento, o sistema volta a página de planejamento
+            if(empty($planejamento) or !isset($planejamento))
+            {
+                header("location: ".HOME_URL."/planejamento");
+                exit;
+            }
+
+        } catch (\Exception $e) {
+            Transaction::rollback();
+        }
+
+        // ==========================================
+        // PROCESSO DE EDIÇÃO
+        // ==========================================
+        $dados = [
+            'usuario_logado' => UsuarioSession::get('nome'),
+            'msg' => FlashMessage::get(),
+            'planejamento_atual' => $planejamento
+        ];
+
+        try {
+            Transaction::open('db');
+
+            $dados['categoriasDesp'] = Categoria::findBy(" tipo = 'despesa' AND id_usuario = ".UsuarioSession::get('id'));
+            
+            Transaction::close();
+
+
+        } catch (\Exception $e) {
+            Transaction::rollback();
+        }
+
+
+        if(!empty($_POST))
+        {
+
+            $arrIdCatPlanCat = [];
+            foreach($planejamento->getPlanCategorias() as $planCat)
+            {
+                $arrIdCatPlanCat[] = $planCat->id_categoria;
+            }
+
+
+            //NESTE CASO IREMOS ADICIONAR PLANCATEGORIA
+            if(count(array_diff($_POST['categoria'],$arrIdCatPlanCat)) > 0)
+            {
+               // dd(array_diff($_POST['categoria'],$arrIdCatPlanCat));
+                try {
+                    Transaction::open('db');
+                    
+                    foreach(array_diff($_POST['categoria'],$arrIdCatPlanCat) as $chave => $valor)
+                    {
+                        $addPlanCate = new PlanejamentoCate();
+                        $addPlanCate->valorMeta = FormataMoeda::moedaParaFloat($_POST['item'][$chave]);
+                        $addPlanCate->id_categoria = (int) $valor;
+                        $addPlanCate->id_planejamento = (int) $_GET['id'];
+                       
+                        $addPlanCate->store();
+                    }
+
+                    Transaction::close();
+                } catch (\Exception $e) {
+                    Transaction::rollback();
+                    FlashMessage::set('Erro ao tentar editar planejamento!','error',"planejamento");
+                }
+            }
+
+            //NESTE CASO IREMOS REMOVER PLANCATEGORIA
+            if(count(array_diff($arrIdCatPlanCat,$_POST['categoria'])) > 0)
+            {
+
+                try {
+                    Transaction::open('db');
+        
+                    foreach (array_diff($arrIdCatPlanCat,$_POST['categoria']) as $item) {
+                        $removeCategoria = PlanejamentoCate::findBy("id_categoria = {$item} AND id_planejamento = ".$_GET['id']);
+    
+                        $removeCategoria[0]->delete();
+                    }
+
+                    Transaction::close();
+                } catch (\Exception $e) {
+                    Transaction::rollback();
+                    FlashMessage::set('Erro ao tentar editar planejamento!','error',"planejamento");
+                }
+            }
+            dd($_POST);
+            //Fazendo alterações somente nos dados
+            try {
+                Transaction::open('db');
+    
+                $planejamentoEditar = new PlanejamentoModel($id);
+                $planejamentoEditar->valor = FormataMoeda::moedaParaFloat($_POST['renda']);
+
+                Transaction::close();
+
+                dd($planejamentoEditar);
+            } catch (\Exception $e) {
+                Transaction::rollback();
+                FlashMessage::set('Erro ao tentar editar planejamento!','error',"planejamento");
+            }
+        }
+
+        $this->view([
+            'templates/header',
+            'planejamento/editar_planMensal',
+            'templates/footer'
+        ],$dados);
+    }
 }
+ 

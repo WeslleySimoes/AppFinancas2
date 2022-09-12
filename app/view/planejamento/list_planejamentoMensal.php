@@ -53,7 +53,7 @@
 
             <td>
                 <div class="tooltip"> 
-                    <a href="#" style="color:blue;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> 
+                    <a href="<?= HOME_URL."/planejamento/editarPM?id={$total_plan_mensal[0]->idPlan}"?>" style="color:blue;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> 
                     <span class="tooltiptext">
                         Editar
                     </span>

@@ -4,6 +4,7 @@ namespace app\model\entity;
 
 use app\model\Record;
 use app\model\Transaction;
+use app\helpers\FormataMoeda;
 use app\model\entity\PlanejamentoCate;
 
 class Planejamento extends Record
@@ -92,5 +93,37 @@ class Planejamento extends Record
         }
 
         return parent::delete();
+    }
+
+
+    public function cadastrar(array $categorias, array $valores)
+    {
+        if(count($categorias) != count($valores))
+        {
+            return false;
+        }
+        
+        $resultado = $this->store();
+
+        if($resultado)
+        {
+            for ($i=0; $i < count($categorias) ; $i++) { 
+                
+                $pc                  = new PlanejamentoCate();
+                $pc->valorMeta       = FormataMoeda::moedaParaFloat($valores[$i]);
+                $pc->id_categoria    = (int) $categorias[$i];
+                $pc->id_planejamento = $this->getLast();
+    
+                if(!$pc->store())
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }else
+        {
+            return false;
+        }
     }
 }

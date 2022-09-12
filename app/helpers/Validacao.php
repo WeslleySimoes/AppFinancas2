@@ -23,6 +23,27 @@ class Validacao
 			$this->setMsgErro("O campo {$this->campoAtual} está incorreto!");
 		}
 	}
+
+	public function max_int_valor($valor,$max)
+	{
+		if((int) $valor > $max)
+		{
+			$this->setMsgErro("O campo {$this->campoAtual} não deve ser maior que {$max}!");
+		}
+
+		return $this;
+	}
+
+	public function min_int_valor($valor,$min)
+	{
+		if((int) $valor < $min)
+		{
+			$this->setMsgErro("O campo {$this->campoAtual} não deve ser menor que {$min}!");
+		}
+
+		return $this;
+	}
+
 	public function max_caracteres($string,$max=60)
 	{
 		if(mb_strlen($string) > $max)
@@ -170,6 +191,8 @@ class Validacao
 		{
 			$this->setMsgErro("O campo {$this->campoAtual} deve ser um número inteiro!");
 		}
+
+		return $this;
 	}
 
 	public function campoNumerico($num)
