@@ -27,7 +27,130 @@
 
     <input id="bday-month" type="month" name="bday-month" value="<?= date('Y-m') ?>">
     
-    <p style="margin: 20px 0;"><b>Personalizado</b></p>
+    <style>
+body {font-family: Arial;}
+
+/* Style the tab */
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #ccc;
+  
+}
+
+/* Style the tab content */
+.tabcontent {   
+  display: none;
+  padding: 10px 0px;
+  /*border: 1px solid #ccc;*/
+  border-top: none;
+}
+
+#inserir-plan-person{
+    min-width: 300px;
+    height: 200px;
+    border: 1px solid lightgrey;
+    border-radius: 25px;
+    display: flex;
+    justify-content: center;
+    align-items:center;
+    margin: 10px;
+    -webkit-box-shadow: -1px 10px 17px 0px rgba(59,59,59,0.38); 
+box-shadow: -1px 10px 17px 0px rgba(59,59,59,0.38);
+}
+
+#inserir-plan-person a{
+    text-decoration: none;
+    color: grey;
+    font-size: 1.3rem;
+}
+</style>
+
+<div class="tab" style="margin-top: 10px;">
+  <button class="tablinks" onclick="openCity(event, 'London')" id="defaultOpen">Ativos</button>
+  <button class="tablinks" onclick="openCity(event, 'Paris')">Expirados</button>
+</div>
+
+<div id="London" class="tabcontent">
+    <div id="inserir-plan-person">
+        <div>
+            <a href="<?= HOME_URL ?>/planejamento/cadastrarPP"> <span style="display: block; text-align: center; font-size: 30px;"><i class="fa fa-plus" aria-hidden="true"></i></span>Novo planejamento</a>
+        </div>
+            
+    </div>
+
+    <div id="inserir-plan-person">
+        dfsdf
+    </div>
+    <div id="inserir-plan-person">
+        dfsdf
+    </div>
+    <div id="inserir-plan-person">
+        dfsdf
+    </div>
+    <div id="inserir-plan-person">
+        dfsdf
+    </div>
+    <div id="inserir-plan-person">
+        dfsdf
+    </div>
+</div>
+
+<div id="Paris" class="tabcontent">
+    <div id="inserir-plan-person">
+        dfsdf
+    </div>
+    <div id="inserir-plan-person">
+        dfsdf
+    </div>
+    <div id="inserir-plan-person">
+        dfsdf
+    </div>
+
+</div>
+
+<script>
+function openCity(evt, cityName) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(cityName).style.display = "flex";
+  document.getElementById(cityName).style.flexWrap = "wrap";
+
+  evt.currentTarget.className += " active";
+}
+
+// Get the element with id="defaultOpen" and click on it
+document.getElementById("defaultOpen").click();
+</script>
 
 <!-- FIM - MOSTRA OS PLANEJAMENTOS PERSONALIZADOS  -->
 <!-- --------------------------------------------- -->

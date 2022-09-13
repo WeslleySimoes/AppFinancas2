@@ -292,66 +292,31 @@ class Planejamento extends BaseController
 
         if(!empty($_POST))
         {
-
             $arrIdCatPlanCat = [];
             foreach($planejamento->getPlanCategorias() as $planCat)
             {
                 $arrIdCatPlanCat[] = $planCat->id_categoria;
             }
 
-
-            //NESTE CASO IREMOS ADICIONAR PLANCATEGORIA
-            if(count(array_diff($_POST['categoria'],$arrIdCatPlanCat)) > 0)
-            {
-               // dd(array_diff($_POST['categoria'],$arrIdCatPlanCat));
-                try {
-                    Transaction::open('db');
-                    
-                    foreach(array_diff($_POST['categoria'],$arrIdCatPlanCat) as $chave => $valor)
-                    {
-                        $addPlanCate = new PlanejamentoCate();
-                        $addPlanCate->valorMeta = FormataMoeda::moedaParaFloat($_POST['item'][$chave]);
-                        $addPlanCate->id_categoria = (int) $valor;
-                        $addPlanCate->id_planejamento = (int) $_GET['id'];
-                       
-                        $addPlanCate->store();
-                    }
-
-                    Transaction::close();
-                } catch (\Exception $e) {
-                    Transaction::rollback();
-                    FlashMessage::set('Erro ao tentar editar planejamento!','error',"planejamento");
-                }
-            }
-
-            //NESTE CASO IREMOS REMOVER PLANCATEGORIA
-            if(count(array_diff($arrIdCatPlanCat,$_POST['categoria'])) > 0)
-            {
-
-                try {
-                    Transaction::open('db');
-        
-                    foreach (array_diff($arrIdCatPlanCat,$_POST['categoria']) as $item) {
-                        $removeCategoria = PlanejamentoCate::findBy("id_categoria = {$item} AND id_planejamento = ".$_GET['id']);
-    
-                        $removeCategoria[0]->delete();
-                    }
-
-                    Transaction::close();
-                } catch (\Exception $e) {
-                    Transaction::rollback();
-                    FlashMessage::set('Erro ao tentar editar planejamento!','error',"planejamento");
-                }
-            }
-            dd($_POST);
             //Fazendo alterações somente nos dados
             try {
                 Transaction::open('db');
     
                 $planejamentoEditar = new PlanejamentoModel($id);
                 $planejamentoEditar->valor = FormataMoeda::moedaParaFloat($_POST['renda']);
+                $planejamentoEditar->porcentagem = (int) $_POST["porcentMeta"];
+
+                $resultado = $planejamentoEditar->editarM($_POST['categoria'],$_POST['item'],$arrIdCatPlanCat);
 
                 Transaction::close();
+
+                if($resultado)
+                {
+                    FlashMessage::set('Planejamento alterado com sucesso!','success',"planejamento");
+                }
+                else{
+                    FlashMessage::set('Erro ao tentar efdditar planejamento!','error',"planejamento");
+                }
 
                 dd($planejamentoEditar);
             } catch (\Exception $e) {
@@ -363,6 +328,25 @@ class Planejamento extends BaseController
         $this->view([
             'templates/header',
             'planejamento/editar_planMensal',
+            'templates/footer'
+        ],$dados);
+    }
+
+    //=========================================================================================
+    // CADASTRAR PLANEJAMENTO PERSONALIZADO
+    //=========================================================================================
+
+    public function cadastrarPP()
+    {
+        UsuarioSession::deslogado();
+        $dados = [
+            'usuario_logado' => UsuarioSession::get('nome'),
+            'msg' => FlashMessage::get()
+        ];
+        
+        $this->view([
+            'templates/header',
+            'planejamento/cadastro_planPersonalizado',
             'templates/footer'
         ],$dados);
     }

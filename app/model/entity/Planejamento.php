@@ -126,4 +126,83 @@ class Planejamento extends Record
             return false;
         }
     }
+
+    public function editarM(array $categorias, array $valores,$arrCate)
+    {
+        if(count($categorias) != count($valores))
+        {
+            return false;
+        }
+
+        $categorias = array_values($categorias);
+        $valores = array_values($valores);
+
+        $conta = 0;
+        $contaADD = 0;
+        $contaRemove = 0;
+        
+        $resultado = $this->store();
+      
+        //NESTE CASO IREMOS ADICIONAR PLANCATEGORIA
+        if(count(array_diff($categorias,$arrCate)) > 0)
+        {
+            foreach(array_diff($categorias,$arrCate) as $chave => $valor)
+            {
+                $addPlanCate = new PlanejamentoCate();
+                $addPlanCate->valorMeta = FormataMoeda::moedaParaFloat($_POST['item'][$chave]);
+                $addPlanCate->id_categoria = (int) $valor;
+                $addPlanCate->id_planejamento = (int) $_GET['id'];
+                
+                if($addPlanCate->store())
+                {
+                    $contaADD++;
+                    unset($categorias[$chave]);
+                }
+            }
+
+        }
+
+        //NESTE CASO IREMOS REMOVER PLANCATEGORIA
+        if(count(array_diff($arrCate,$categorias)) > 0)
+        {
+            foreach (array_diff($arrCate,$categorias) as $item) {
+                $removeCategoria = PlanejamentoCate::findBy("id_categoria = {$item} AND id_planejamento = ".$_GET['id']);
+
+                if($removeCategoria[0]->delete())
+                {
+                    $contaRemove++;
+                    unset($categorias[$item]);
+                }
+            }
+        }
+
+        $categorias = array_values($categorias);
+        $valores = array_values($valores);
+
+        for ($i=0; $i < count($categorias) ; $i++) { 
+        
+            $pc                  = PlanejamentoCate::findBy("id_categoria = ".(int) $categorias[$i]." AND id_planejamento = ".$this->data[self::TABLE_PK])[0];
+
+            $pc->valorMeta       = FormataMoeda::moedaParaFloat($valores[$i]);
+            $pc->id_categoria    = (int) $categorias[$i];
+            $pc->id_planejamento = $this->data[self::TABLE_PK];
+
+            if($pc->store())
+            {
+                $conta++;
+            }
+        }
+
+
+
+        if($resultado or $conta > 0 or $contaADD > 0 or $contaRemove > 0)
+        {
+            return true;
+        }
+        else{
+            return false;
+        }
+
+    }
+
 }

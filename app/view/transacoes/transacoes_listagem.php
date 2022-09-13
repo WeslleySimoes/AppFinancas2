@@ -1,6 +1,15 @@
 <!-- POPUP FORM -->
 <?php require_once VIEW_DIR.'/templates/popup.php' ?>
-<?php require_once VIEW_DIR.'/transacoes/filtro_trans.php' ?>
+
+
+<?php 
+ if(!isset($_GET['s']))
+ {
+  require_once VIEW_DIR.'/transacoes/filtro_trans.php';
+ }
+?>
+
+
 <!-- FIM POPUP FORM -->
 
   <h3 style="margin-bottom: 20px; color: #263D52;">
@@ -43,7 +52,10 @@
   </div>
   <!-- ############################################################################ -->
 
-  <button id="btn-filtro-trans" class="dropbtn">Filtro</button>
+
+  <?php if(!isset($_GET['s'])): ?>
+    <button id="btn-filtro-trans" class="dropbtn">Filtro</button>
+  <?php endif; ?>
 
 </div>
 

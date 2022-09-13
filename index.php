@@ -54,6 +54,7 @@
 	$rota->add('/planejamento/cadastrarPM','planejamento@cadastrarPM');
 	$rota->add('/planejamento/removerPM','planejamento@removerPM');
 	$rota->add('/planejamento/editarPM','planejamento@editarPM');
+	$rota->add('/planejamento/cadastrarPP','planejamento@cadastrarPP');	
 	
 	// Deslogar
 	$rota->add('/deslogar','Home@deslogar');

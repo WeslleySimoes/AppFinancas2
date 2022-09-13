@@ -3,6 +3,7 @@ CREATE TABLE planejamento
 (
     idPlan         INT PRIMARY KEY NOT NULL,
     valor          DECIMAL(10,2) NOT NULL,           -- Valor ou Renda Mensal
+    descricao     VARCHAR(60) DEFAULT NULL,
     porcentagem    INT DEFAULT NULL,
     data_inicio    DATE NOT NULL,
     data_fim       DATE NOT NULL,
