@@ -2,6 +2,9 @@
 
 namespace app\helpers;
 
+use app\helpers\FormataMoeda;
+use app\utils\FormataMoeda as UtilsFormataMoeda;
+
 /*
  * Classe responsável por validar campos 
 */
@@ -21,6 +24,15 @@ class Validacao
 		if(!in_array($valor,$arr))
 		{
 			$this->setMsgErro("O campo {$this->campoAtual} está incorreto!");
+		}
+	}
+
+
+	public function arrayIguais(array $arr1, array $arr2)
+	{
+		if(count($arr1) != count($arr2))
+		{
+			$this->setMsgErro("Os campos {$this->campoAtual} devem ter a mesma quantidade!");
 		}
 	}
 
@@ -74,33 +86,6 @@ class Validacao
 			$this->setMsgErro("O campo {$this->campoAtual} não é válido!");
 
 		}
-	}
-
-	public function campoTexto($texto,$minCaracter = 3,$maxCaracter = 60,$espECaracter = false)
-	{
-		$texto = trim($texto);
-
-		if(empty($texto))
-		{
-			$this->setMsgErro('O campo não deve estar em branco');
-		}
-
-		if(!preg_match('/^[a-zA-Z0-9]+/',$texto))
-		{
-			$this->setMsgErro("O campo não deve conter caracteres especiais!");
-		}
-
-		if(!$espECaracter && strpos($texto,' ') != false)
-		{
-			$this->setMsgErro("Não deve haver espaços entre os caracteres!");
-		}
-
-		if(strlen($texto) < $minCaracter || strlen($texto) > $maxCaracter)
-		{
-			$this->setMsgErro("O campo deve haver de {$minCaracter} a {$maxCaracter} caracteres!");
-		}
-
-		return $texto;
 	}
 
 	/*
@@ -158,10 +143,53 @@ class Validacao
 			$this->setMsgErro("O campo {$this->campoAtual} está incorreto!");
 	 	}
 
-		 
-
         return $this;
-	}		
+	}
+
+
+
+	public function max_moeda($valor,$max = 99999999.99)
+	{
+		$valorFloat = FormataMoeda::moedaParaFloat($valor);
+
+		//dd($valorFloat);
+		
+		if($valorFloat <= 0)
+		{
+			$this->setMsgErro("O campo {$this->campoAtual} não dever ser igual ou menor que 0!");
+		}
+		else if($valorFloat > $max)
+		{
+			$m = FormataMoeda::formatar($max);
+			$this->setMsgErro("O campo {$this->campoAtual} não dever ser maior que R$ {$m}!");
+		}
+		
+	}
+
+	public function moedasIguais($moeda1,array|int $moeda2)
+	{
+		if(is_array($moeda1))
+		{
+			$moeda1 = FormataMoeda::somarMoedas($moeda1);
+		}
+		else{
+			$moeda1 = FormataMoeda::moedaParaFloat($moeda1);
+		}
+
+		if(is_array($moeda2))
+		{
+			$moeda2 = FormataMoeda::somarMoedas($moeda2);
+		}
+		else{
+			$moeda2 = FormataMoeda::moedaParaFloat($moeda2);
+		}
+
+		if($moeda1 < $moeda2 || $moeda1 > $moeda2)
+		{
+			$this->setMsgErro("O total dos campos {$this->campoAtual} devem ser iguais!");
+		}
+		
+	}
 
 	//Valida telefone fixo, ex: (11) 1111-1111
 	public function telefoneFixo($telefone)
@@ -210,6 +238,28 @@ class Validacao
 		{
 			$this->setMsgErro("Os campos {$this->campoAtual} não devem ser iguais!");
 		}
+	}
+
+	public function compararData(string $data1, string $data2,$regra = 'maior')
+	{	
+		$timeZone = new \DateTimeZone('UTC');
+
+		/** Assumido que $dataEntrada e $dataSaida estao em formato dia/mes/ano */
+		$data1 = \DateTime::createFromFormat ('Y-m-d', $data1, $timeZone);
+		$data2 = \DateTime::createFromFormat ('Y-m-d', $data2, $timeZone);
+
+		if($regra == 'maior')
+		{
+			if ($data1 == $data2) {
+				$campo = explode('e',$this->campoAtual);
+				$this->setMsgErro("Os campos {$campo[0]} e {$campo[1]} não devem ser iguais!");
+			}else if($data1 > $data2)
+			{
+				$campo = explode('e',$this->campoAtual);
+				$this->setMsgErro("O campo {$campo[0]} deve ser menor que o campo {$campo[1]}!");
+			}
+		}
+
 	}
 
 	private function setMsgErro($msg)

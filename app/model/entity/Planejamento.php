@@ -32,7 +32,7 @@ class Planejamento extends Record
         return $r;
     }
 
-    public function getTotalGasto()
+    public function getTotalGasto($data = null)
     {
         $idsCat = [];
 
@@ -46,7 +46,12 @@ class Planejamento extends Record
         try {
             Transaction::open('db');
             
-            $sql = "SELECT SUM(valor) as totalGasto FROM transacao WHERE id_categoria in ({$idsCat}) AND MONTH(data_trans) = MONTH(CURDATE()) AND YEAR(data_trans) = YEAR(CURDATE())";
+            if($data)
+            {
+                $sql = "SELECT SUM(valor) as totalGasto FROM transacao WHERE id_categoria in ({$idsCat}) AND DATE(data_trans) BETWEEN {$data}";
+            }else{
+                $sql = "SELECT SUM(valor) as totalGasto FROM transacao WHERE id_categoria in ({$idsCat}) AND MONTH(data_trans) = MONTH(CURDATE()) AND YEAR(data_trans) = YEAR(CURDATE())";
+            }
 
             $conn = Transaction::get();
 
@@ -64,14 +69,28 @@ class Planejamento extends Record
 
     }
 
-    public function resultado()
+    public function resultado($t = 'MENSAL')
     {
-        return $this->calcularMetaGasto() - $this->data['totalGastoPlan'];
+        if($t == 'MENSAL')
+        {
+            return $this->calcularMetaGasto() - $this->data['totalGastoPlan'];
+        }
+        else if($t == 'PESONALIZADO')
+        {
+            return $this->data['valor'] - $this->data['totalGastoPlan'];
+        }
     }
 
-    public function getPorcentagemGasto($troca = true)
+    public function getPorcentagemGasto($troca = true,$t = 'MENSAL')
     {
-        $porcentagem =  number_format($this->data['totalGastoPlan'] / $this->calcularMetaGasto() * 100,2);
+        if($t == 'MENSAL')
+        {
+            $porcentagem =  number_format($this->data['totalGastoPlan'] / $this->calcularMetaGasto() * 100,2);
+        }
+        else if($t == 'PERSONALIZADO')
+        {
+            $porcentagem =  number_format($this->data['totalGastoPlan'] / $this->data['valor'] * 100,2);
+        }
 
         if($troca)
         {
@@ -95,7 +114,7 @@ class Planejamento extends Record
         return parent::delete();
     }
 
-
+    //CADASTRA PLANEJAMENTO MENSAL
     public function cadastrar(array $categorias, array $valores)
     {
         if(count($categorias) != count($valores))

@@ -63,3 +63,13 @@ function getDataFinalMesAtual()
 
     return date('Y-m')."-{$ultimo_dia}";
 }
+
+function diffDataDias($data_fim)
+{
+    $data_inicio = new DateTime();
+    $data_fim = new DateTime($data_fim);
+
+    // Resgata diferença entre as datas
+    $dateInterval = $data_inicio->diff($data_fim);
+    return $dateInterval->days;
+}

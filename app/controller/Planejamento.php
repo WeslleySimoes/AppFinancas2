@@ -10,6 +10,7 @@ use app\model\entity\Categoria;
 use app\session\Usuario as UsuarioSession;
 use app\model\entity\Planejamento as PlanejamentoModel;
 use app\model\entity\PlanejamentoCate;
+use app\utils\FormataMoeda as UtilsFormataMoeda;
 
 class Planejamento extends BaseController
 {
@@ -29,7 +30,7 @@ class Planejamento extends BaseController
             Transaction::open('db');
 
             $dados['total_plan_mensal'] = PlanejamentoModel::findBy("id_usuario = ".UsuarioSession::get('id')." AND tipo = 'mensal' AND MONTH(data_fim) = MONTH(CURDATE())");
-
+            $dados['total_plan_semanal'] =  PlanejamentoModel::findBy("id_usuario = ".UsuarioSession::get('id')." AND tipo = 'personalizado'");
             Transaction::close();
         } catch (\Exception $e) {
             Transaction::rollback();
@@ -43,7 +44,7 @@ class Planejamento extends BaseController
     }
 
     //=========================================================================================
-    // CADASTRO DE PLANEJAMENTO MENSAL OU PERSONALIZADO
+    // CADASTRO DE PLANEJAMENTO MENSAL 
     //=========================================================================================
 
     public function cadastrarPM()
@@ -79,7 +80,6 @@ class Planejamento extends BaseController
             $dados['categoriasDesp'] = Categoria::findBy(" tipo = 'despesa' AND id_usuario = ".UsuarioSession::get('id'));
             
             Transaction::close();
-
 
         } catch (\Exception $e) {
             Transaction::rollback();
@@ -335,18 +335,282 @@ class Planejamento extends BaseController
     //=========================================================================================
     // CADASTRAR PLANEJAMENTO PERSONALIZADO
     //=========================================================================================
-
     public function cadastrarPP()
     {
         UsuarioSession::deslogado();
+
         $dados = [
             'usuario_logado' => UsuarioSession::get('nome'),
             'msg' => FlashMessage::get()
         ];
+
+        //##############################################
+        // OBTENDO TODAS AS CATEGORIAS DO TIPO DESPESA
+        //##############################################
+        try {
+            Transaction::open('db');
+
+            $dados['categoriasDesp'] = Categoria::findBy(" tipo = 'despesa' AND id_usuario = ".UsuarioSession::get('id'));
+            
+            Transaction::close();
+
+        } catch (\Exception $e) {
+            Transaction::rollback();
+        }
+
+        #INSERÇÃO DE DADOS
+        if(!empty($_POST))
+        {
+            $arrCatDesp = [];
+
+            foreach($dados['categoriasDesp'] as $catDesp)
+            {
+                $arrCatDesp[] = $catDesp->idCategoria;
+            }
+
+            //VERIFICANDO SE EXISTE AS CATEGORIA SELECIONADAS NO BANCO DE DADOS
+            if(empty(array_diff($_POST['categoria'],$arrCatDesp)) and !empty($_POST['item']))
+            {
+                foreach($_POST['item'] as $valor)
+                {
+                    $v = FormataMoeda::moedaParaFloat($valor);
+                    
+                    if(!is_float($v))
+                    {
+                        FlashMessage::set('Ocorreu um erro ao cadastrar planejamento!','error');
+                        break;
+                    }              
+                }
+
+                //Continua para o cadastro
+                $v = new Validacao;
+
+                FormataMoeda::somarMoedas($_POST['item']);
+    
+                $v->setCampo('Renda mensal')
+                    ->moeda($_POST['renda'])
+                    ->max_moeda($_POST['renda']);
+                    
+                $v->setCampo('Descrição')
+                    ->min_caracteres($_POST['descricao'])
+                    ->max_caracteres($_POST['descricao']);
+                
+                $v->setCampo('Data início')
+                    ->data($_POST['dataInicio'],'Y-m-d');
+
+                $v->setCampo('Data final')
+                    ->data($_POST['dataFinal'],'Y-m-d');
+
+                $v->setCampo('Data início e Data final')
+                    ->compararData($_POST['dataInicio'],$_POST['dataFinal'],'maior');
+
+                $v->setCampo('Valor (R$) e Insira uma meta para cada categoria')
+                  ->moedasIguais($_POST['renda'],$_POST['item']);
+
+                $v->setCampo('Categoria e valor de categoria')
+                  ->arrayIguais($_POST['categoria'],$_POST['item']);
+
+                if($v->validar())
+                {
+                    //CADASTRO DE PLANEJAMENTO PERSONALIZADO
+                    try {
+                        Transaction::open('db');
+
+                        $planS = new PlanejamentoModel();
+                        $planS->valor = FormataMoeda::moedaParaFloat($_POST['renda']);
+                        $planS->descricao = $_POST['descricao'];
+                        $planS->data_inicio = $_POST['dataInicio'];
+                        $planS->data_fim = $_POST['dataFinal'];
+                        $planS->tipo = 'personalizado';
+                        $planS->id_usuario = UsuarioSession::get('id');
+
+                        $pResultado = $planS->cadastrar($_POST['categoria'],$_POST['item']);
+
+                        Transaction::close();
+
+                        if($pResultado)
+                        {
+                            FlashMessage::set('Planejamento personalizado criado com sucesso!','success');
+                        }
+                        else{
+                            FlashMessage::set('Erro ao criar planejamento personalizado ','error');
+                        }
+                    } catch (\Exception $e) {
+                        Transaction::rollback();
+                        FlashMessage::set('Erro ao tentar cadastrar planejamento personalizado!','error');
+                    }
+                }
+                else{
+                    FlashMessage::set($v->getMsgErros(),'error');
+                }
+            }
+
+
+        }   
         
         $this->view([
             'templates/header',
             'planejamento/cadastro_planPersonalizado',
+            'templates/footer'
+        ],$dados);
+    }
+
+        //=========================================================================================
+    // REMOVER PLANEJAMENTO PESONALIZADO
+    //=========================================================================================
+    public function removerPP()
+    {
+        UsuarioSession::deslogado();
+
+        // =======================================================================
+        // VALIDAÇÃO DO PARÂMETRO GET 'ID' E VERIFICANDO SE EXISTE O PLANEJAMENTO
+        // =======================================================================
+        $id = filter_input(INPUT_GET,'id',FILTER_VALIDATE_INT);
+
+        if(!isset($id) or !$id > 0)
+        {
+            header("location: ".HOME_URL."/planejamento?p=personalizado");
+            exit;
+        }
+
+        try {
+            Transaction::open('db');
+
+            $planejamento = PlanejamentoModel::findBy('id_usuario = '.UsuarioSession::get('id')." AND tipo = 'personalizado' AND idPlan = {$id}")[0];
+
+            Transaction::close();
+
+            //Se não achar o planejamento, o sistema volta a página de planejamento
+            if(empty($planejamento) or !isset($planejamento))
+            {
+                header("location: ".HOME_URL."/planejamento?p=personalizado");
+                exit;
+            }
+
+        } catch (\Exception $e) {
+            Transaction::rollback();
+        }
+        
+        // ==========================================
+        // PROCESSO DE REMOÇÃO
+        // ==========================================
+        try {
+            Transaction::open('db');
+
+            $resultado = $planejamento->removerTudo();
+
+            Transaction::close();
+
+            if($resultado)
+            {
+                FlashMessage::set('Planejamento Removido com sucesso!','success',"planejamento?p=personalizado");
+            }
+            else{
+                FlashMessage::set('Erro ao tentar remover planejamento!','error',"planejamento?p=personalizado");
+            }
+
+        } catch (\Exception $e) {
+            Transaction::rollback();
+        }
+    }
+
+    //=========================================================================================
+    // EDITAR PLANEJAMENTO PESONALIZADO
+    //=========================================================================================
+    public function editarPP()
+    {
+        UsuarioSession::deslogado();
+
+        // =======================================================================
+        // VALIDAÇÃO DO PARÂMETRO GET 'ID' E VERIFICANDO SE EXISTE O PLANEJAMENTO
+        // =======================================================================
+        $id = filter_input(INPUT_GET,'id',FILTER_VALIDATE_INT);
+
+        if(!isset($id) or !$id > 0)
+        {
+            header("location: ".HOME_URL."/planejamento?p=personalizado");
+            exit;
+        }
+
+        try {
+            Transaction::open('db');
+
+            $planejamento = PlanejamentoModel::findBy('id_usuario = '.UsuarioSession::get('id')." AND tipo = 'personalizado' AND idPlan = {$id}")[0];
+
+            Transaction::close();
+
+            //Se não achar o planejamento, o sistema volta a página de planejamento
+            if(empty($planejamento) or !isset($planejamento))
+            {
+                header("location: ".HOME_URL."/planejamento?p=personalizado");
+                exit;
+            }
+
+        } catch (\Exception $e) {
+            Transaction::rollback();
+        }
+
+        // ==========================================
+        // PROCESSO DE EDIÇÃO
+        // ==========================================
+        $dados = [
+            'usuario_logado' => UsuarioSession::get('nome'),
+            'msg' => FlashMessage::get(),
+            'planejamento_atual' => $planejamento
+        ];
+
+        try {
+            Transaction::open('db');
+
+            $dados['categoriasDesp'] = Categoria::findBy(" tipo = 'despesa' AND id_usuario = ".UsuarioSession::get('id'));
+            
+            Transaction::close();
+
+        } catch (\Exception $e) {
+            Transaction::rollback();
+        }
+
+
+        if(!empty($_POST))
+        {
+            $arrIdCatPlanCat = [];
+            foreach($planejamento->getPlanCategorias() as $planCat)
+            {
+                $arrIdCatPlanCat[] = $planCat->id_categoria;
+            }
+
+            //Fazendo alterações somente nos dados
+            try {
+                Transaction::open('db');
+    
+                $planS = new PlanejamentoModel($id);
+                $planS->valor = FormataMoeda::moedaParaFloat($_POST['renda']);
+                $planS->descricao = $_POST['descricao'];
+                $planS->data_inicio = $_POST['dataInicio'];
+                $planS->data_fim = $_POST['dataFinal'];
+                $planS->tipo = 'personalizado';
+                $planS->id_usuario = UsuarioSession::get('id');
+
+                $resultado = $planS->editarM($_POST['categoria'],$_POST['item'],$arrIdCatPlanCat);
+
+                Transaction::close();
+
+                if($resultado)
+                {
+                    FlashMessage::set('Planejamento personalizado alterado com sucesso!','success',"planejamento?p=personalizado");
+                }
+                else{
+                    FlashMessage::set('Erro ao tentar editar planejamento personalizado!','error',"planejamento?p=personalizado");
+                }
+            } catch (\Exception $e) {
+                Transaction::rollback();
+                FlashMessage::set('Erro ao tentar editar planejamento personalizado!','error',"planejamento?p=personalizado");
+            }
+        }
+
+        $this->view([
+            'templates/header',
+            'planejamento/editar_planPersonalizado',
             'templates/footer'
         ],$dados);
     }

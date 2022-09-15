@@ -17,7 +17,6 @@
 
             <div id="check-categorias">
 
-                
                 <div style="padding: 10px 0;">
                     
                     <?php $i = 0; foreach($categoriasDesp as $cd): ?>

@@ -1,37 +1,57 @@
 <div class="container-form">
-    <h3 class="title-form">Cadastro de planejamento Personalizado</h3>
+    <h3 class="title-form">Editar planejamento Personalizado</h3>
     <hr style="margin-bottom: 20px; border: 0.5px solid #cecdcd;">
     <div>
-    <form action="<?= HOME_URL ?>/planejamento/cadastrarPP" method="POST">
-        
+    <form action="<?= HOME_URL ?>/planejamento/editarPP?id=<?= $_GET['id'] ?>" method="POST">     
+
         <label for="">Valor (R$):</label>
-        <input type="text" name="renda" id="valorRenda"  style="width: 100%;" class="money" value="0,00" required >
+        <input type="text" name="renda" id="valorRenda"  style="width: 100%;" class="money" value="<?= formatoMoeda($planejamento_atual->valor) ?>" required >
 
         <label for="descricao" style="display:inline-block;margin-top: 10px;">Descrição:</label>
-        <input type="text" name="descricao" id="valorRenda" style="width: 100%;" required>
+        <input type="text" name="descricao" id="valorRenda" style="width: 100%;" required value="<?= $planejamento_atual->descricao ?>">
 
         <label for="" style="display:inline-block;margin-bottom: 10px;">Data início:</label>
-        <input type="date" name="dataInicio" required style="display:inline-block;margin-bottom: 10px; border: 1px solid #ccc;">
+        <input type="date" name="dataInicio" required style="display:inline-block;margin-bottom: 10px; border: 1px solid #ccc;" value="<?= $planejamento_atual->data_inicio ?>">
         <label for="" style="display:inline-block;margin-bottom: 10px;">Data final:</label>
-        <input type="date" name="dataFinal" required style="display:inline-block;margin-bottom: 10px; border: 1px solid #ccc;">
+        <input type="date" name="dataFinal" required style="display:inline-block;margin-bottom: 10px; border: 1px solid #ccc;" value="<?= $planejamento_atual->data_fim ?>">
 
         <label for="" margin-bottom: 10px;>Insira uma meta para cada categoria:</label>
         <div id="check-categorias">
-        <?php $i = 0; foreach($categoriasDesp as $cd): ?>
 
             <div style="padding: 10px 0;">
 
-                <input type="checkbox" name="categoria[<?= $i?>]"  value="<?= $cd->idCategoria ?>" onclick="if (this.checked){ document.getElementById('campoCate<?= $i ?>').removeAttribute('disabled'); somaTotalCategoria();}else{document.getElementById('campoCate<?= $i ?>').setAttribute('disabled', 'disabled'); somaTotalCategoria();}">
+            <?php $i = 0; foreach($categoriasDesp as $cd): ?>
 
-                <label for=""> <?= $cd->nome ?>: R$ </label>
+<?php $verifica = false ?>
 
-                <input type="text" id="campoCate<?= $i ?>" name="item[<?= $i ?>]"  style="min-width: 72%;" value="0.00" class="formValorCate money" disabled required >
+<?php foreach($planejamento_atual->getPlanCategorias() as $planCat): ?>
+    <?php $planCat->getCategoria() ?>
+    <?php if($planCat->categoria_obj->idCategoria === $cd->idCategoria): ?>
+
+        <input type="checkbox" name="categoria[<?= $i ?>]"  value="<?= $cd->idCategoria ?>" onclick="if (this.checked){ document.getElementById('campoCate<?= $i ?>').removeAttribute('disabled'); somaTotalCategoria();}else{document.getElementById('campoCate<?= $i ?>').setAttribute('disabled', 'disabled'); somaTotalCategoria();}" checked>
+
+        <label for=""> <?= $cd->nome ?>: R$ </label>
+
+        <input type="text" id="campoCate<?= $i ?>" name="item[<?= $i ?>]"  style="min-width: 72%;" value="<?= formatoMoeda($planCat->valorMeta) ?>" class="formValorCate money" required >
+
+
+    <?php $i++; $verifica = true; break; endif; ?>
+<?php endforeach; ?>
+
+<?php if(!$verifica): ?>
+    <input type="checkbox" name="categoria[<?= $i?>]"  value="<?= $cd->idCategoria ?>" onclick="if (this.checked){ document.getElementById('campoCate<?= $i ?>').removeAttribute('disabled'); somaTotalCategoria();}else{document.getElementById('campoCate<?= $i ?>').setAttribute('disabled', 'disabled'); somaTotalCategoria();}">
+
+    <label for=""> <?= $cd->nome ?>: R$ </label>
+
+    <input type="text" id="campoCate<?= $i ?>" name="item[<?= $i ?>]"  style="min-width: 72%;" value="0.00" class="formValorCate money" disabled required >
+<?php $i++; endif;  ?>
+
+<?php endforeach ?>
             </div>
 
-        <?php $i++; endforeach; ?>
         </div>
-        <div style="margin-bottom: 10px;" id="totalCategorias"><b style="color:red;">Valor restante: R$ 0,00</b></div>
-        <button type="submit" id="btnCadastrarPlan" disabled>Cadastrar</button>
+        <div style="margin-bottom: 10px;" id="totalCategorias"><b style="color:green;">Valor restante: R$ 0,00</b></div>
+        <button type="submit" id="btnCadastrarPlan">Editar</button>
     </form>
     </div>
     <?= $msg ?>

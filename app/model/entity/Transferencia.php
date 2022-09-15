@@ -10,7 +10,7 @@ class Transferencia extends Record
     const TABLENAME = 'transferencia';
     const TABLE_PK  = 'idTransferencia';
 
-
+    //Obtem a descrição da conta, do tipo origem ou destino
     public function getNomeConta($conta)
     {
         try {   

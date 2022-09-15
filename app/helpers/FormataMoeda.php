@@ -27,4 +27,16 @@ class FormataMoeda
     {
         return (float) strtr($valor,['.' => '',',' => '.']);
     }
+
+    //Somar Moedas
+    public static function somarMoedas(array $moedas)
+    {
+        $soma = 0;
+        foreach($moedas as $moeda)
+        {
+            $soma += self::moedaParaFloat($moeda);
+        } 
+
+        return $soma;
+    }
 }

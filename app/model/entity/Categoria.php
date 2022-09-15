@@ -12,7 +12,6 @@ class Categoria extends Record
 
     public function TotalGastoMesAtual()
     {
-
         try {
             Transaction::open('db');
             
