@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 12-Ago-2022 às 22:08
+-- Tempo de geração: 11-Set-2022 às 21:59
 -- Versão do servidor: 10.4.22-MariaDB
 -- versão do PHP: 8.1.2
 
@@ -45,7 +45,9 @@ INSERT INTO `categoria` (`idCategoria`, `nome`, `tipo`, `id_usuario`) VALUES
 (4, 'Celular', 'despesa', 1),
 (5, 'Salário', 'receita', 1),
 (6, 'Aluguel', 'receita', 1),
-(7, 'Dividendos', 'receita', 1);
+(7, 'Dividendos', 'receita', 1),
+(8, 'Natação', 'despesa', 1),
+(9, 'Exemplo', 'despesa', 1);
 
 -- --------------------------------------------------------
 
@@ -70,7 +72,8 @@ INSERT INTO `conta` (`idConta`, `descricao`, `montante`, `instituicao_fin`, `tip
 (1, 'Teste 1', '851.00', 'Bradesco', 'Poupança', 1),
 (2, 'Teste 2', '120.00', 'Bradesco', 'Corrente', 1),
 (3, 'Teste 3', '120.00', 'Bradesco', 'Corrente', 1),
-(4, 'Dividendos', '950.00', 'Santander', 'Corrente', 1);
+(4, 'Dividendos', '950.00', 'Santander', 'Corrente', 1),
+(5, 'Teste', '900.00', 'Bradesco', 'Poupança', 1);
 
 -- --------------------------------------------------------
 
@@ -95,10 +98,55 @@ CREATE TABLE `despesa_fixa` (
 --
 
 INSERT INTO `despesa_fixa` (`idDesp`, `valor`, `descricao`, `id_categoria`, `data_inicio`, `data_fim`, `status_desp`, `id_usuario`, `id_conta`) VALUES
-(1, '200.00', 'Roupas', 1, '2022-05-23', '2022-08-23', 'aberto', 1, 1),
+(1, '50.00', 'Roupas', 2, '2022-05-23', '2022-08-23', 'aberto', 1, 1),
 (2, '20.00', 'Netflix', 3, '2022-05-23', '0000-00-00', 'aberto', 1, 2),
-(3, '200.00', 'Armário', 1, '2022-05-23', '2022-10-23', 'aberto', 1, 1),
-(4, '59.00', 'Celular internet 12gb - Claro', 1, '2022-05-13', '0000-00-00', 'aberto', 1, 1);
+(3, '107.00', 'Academia', 2, '2022-08-30', '0000-00-00', 'aberto', 1, 4);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `plancategoria`
+--
+
+CREATE TABLE `plancategoria` (
+  `idPCat` int(11) NOT NULL,
+  `valorMeta` decimal(10,2) NOT NULL,
+  `id_categoria` int(11) NOT NULL,
+  `id_planejamento` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Extraindo dados da tabela `plancategoria`
+--
+
+INSERT INTO `plancategoria` (`idPCat`, `valorMeta`, `id_categoria`, `id_planejamento`) VALUES
+(5, '1000.00', 1, 2),
+(6, '900.00', 4, 2),
+(7, '2000.00', 3, 2),
+(8, '1100.00', 2, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `planejamento`
+--
+
+CREATE TABLE `planejamento` (
+  `idPlan` int(11) NOT NULL,
+  `valor` decimal(10,2) NOT NULL,
+  `porcentagem` int(11) DEFAULT NULL,
+  `data_inicio` date NOT NULL,
+  `data_fim` date NOT NULL,
+  `tipo` enum('mensal','personalizado') DEFAULT NULL,
+  `id_usuario` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Extraindo dados da tabela `planejamento`
+--
+
+INSERT INTO `planejamento` (`idPlan`, `valor`, `porcentagem`, `data_inicio`, `data_fim`, `tipo`, `id_usuario`) VALUES
+(2, '5000.00', NULL, '2022-09-01', '2022-09-06', 'personalizado', 1);
 
 -- --------------------------------------------------------
 
@@ -123,8 +171,7 @@ CREATE TABLE `receita_fixa` (
 --
 
 INSERT INTO `receita_fixa` (`idRec`, `valor`, `descricao`, `id_categoria`, `data_inicio`, `data_fim`, `status_rec`, `id_usuario`, `id_conta`) VALUES
-(1, '1.50', 'Empresa Teste SA.', 5, '2022-06-27', '0000-00-00', 'aberto', 1, 1),
-(2, '2000.00', 'TEste Teste SA.', 5, '2022-06-27', '2022-11-27', 'aberto', 1, 1);
+(1, '156.00', 'Dividêndo PETR4', 5, '2022-08-25', '0000-00-00', 'aberto', 1, 2);
 
 -- --------------------------------------------------------
 
@@ -153,18 +200,45 @@ CREATE TABLE `transacao` (
 --
 
 INSERT INTO `transacao` (`idTransacao`, `data_trans`, `valor`, `descricao`, `id_categoria`, `tipo`, `fixo`, `status_trans`, `id_despesaFixa`, `id_receitaFixa`, `id_transferencia`, `id_usuario`, `id_conta`) VALUES
-(2, '2022-08-09', '800.00', 'Compra de equipamento de estudo 2', 2, 'despesa', 0, 'pendente', NULL, NULL, NULL, 1, 2),
-(3, '2022-08-09', '50.00', 'Compra de caderno escolar.', 1, 'despesa', 0, 'pendente', NULL, NULL, NULL, 1, 2),
-(4, '2022-08-08', '2623.01', 'asdasdsad', 3, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
-(7, '2022-08-09', '2500.03', 'Compra de equipamento de estudo', 6, 'receita', 0, 'fechado', NULL, NULL, NULL, 1, 1),
-(8, '2022-08-09', '5.77', 'sfsdfsdf', 5, 'receita', 0, 'fechado', NULL, NULL, NULL, 1, 1),
-(9, '2022-08-09', '8787.87', 'grgrgdgr', 1, 'despesa', 0, 'pendente', NULL, NULL, NULL, 1, 1),
+(9, '2022-08-09', '8787.87', 'grgrgdgr', 1, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
 (10, '2022-08-09', '12123.11', 'effwfwefef', 3, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
-(12, '2022-08-12', '500.00', 'sfddsfsdf', 5, 'receita', 0, 'pendente', NULL, NULL, NULL, 1, 4),
-(13, '2022-08-12', '120.00', 'Tua conta', NULL, 'transferencia', 0, 'pendente', NULL, NULL, 1, 1, 1),
+(12, '2022-08-12', '500.00', 'sfddsfsdf', 5, 'receita', 0, 'fechado', NULL, NULL, NULL, 1, 4),
+(13, '2022-08-12', '120.00', 'Tua conta', NULL, 'transferencia', 0, 'fechado', NULL, NULL, 1, 1, 1),
 (14, '2022-08-13', '100.00', 'Lorem impsun 2', NULL, 'transferencia', 0, 'fechado', NULL, NULL, 2, 1, 4),
-(15, '2022-08-12', '100.00', 'fcsdf', NULL, 'transferencia', 0, 'fechado', NULL, NULL, 3, 1, 3),
-(16, '2022-08-05', '3212.35', '55454545454', NULL, 'transferencia', 0, 'fechado', NULL, NULL, 4, 1, 2);
+(16, '2022-08-05', '3212.35', '55454545454', NULL, 'transferencia', 0, 'fechado', NULL, NULL, 4, 1, 2),
+(17, '2022-08-26', '60.00', 'asdasd', 1, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 3),
+(18, '2022-08-26', '90.00', 'asdasd', 5, 'receita', 0, 'fechado', NULL, NULL, NULL, 1, 1),
+(19, '2022-08-26', '35.00', 'asdasd', 5, 'receita', 0, 'fechado', NULL, NULL, NULL, 1, 2),
+(20, '2022-08-26', '875.00', 'asdasd', 1, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
+(21, '2022-08-26', '6.58', 'wdawwd', 1, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
+(22, '2022-08-25', '178.00', 'Whey protein Max Titanium', 1, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 2),
+(23, '2022-08-25', '49.99', 'Termogênico Integral Médica', 1, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 2),
+(24, '2022-08-31', '600.00', 'Recebido via PIX do Fulano de tal.', 6, 'receita', 0, 'fechado', NULL, NULL, NULL, 1, 3),
+(25, '2022-08-31', '90.00', 'Para alguma ação', NULL, 'transferencia', 0, 'fechado', NULL, NULL, 5, 1, 1),
+(26, '2022-09-01', '90.00', 'Fundo imobiliário MXFR11', 7, 'receita', 0, 'fechado', NULL, NULL, NULL, 1, 2),
+(27, '2022-09-01', '12.00', 'Compra de pães e mortadela e mussarela.', 1, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
+(28, '2022-09-03', '90.00', 'EDQWD', 1, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
+(29, '2022-09-03', '90.00', 'DQWQWDQWDWQD', 1, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
+(31, '2022-09-03', '90.00', 'QWDQWDQWDQWDQWD', 1, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
+(32, '2022-09-03', '21.23', 'AWDWDWD', 1, 'despesa', 0, 'pendente', NULL, NULL, NULL, 1, 1),
+(33, '2022-09-03', '90.00', 'DQWDQWDQWD', 1, 'despesa', 0, 'pendente', NULL, NULL, NULL, 1, 1),
+(34, '2022-09-03', '3212.35', 'QDQWDQWDWD', 1, 'despesa', 0, 'pendente', NULL, NULL, NULL, 1, 1),
+(35, '2022-09-03', '90.00', 'DWQDQWDWQD', 1, 'despesa', 0, 'pendente', NULL, NULL, NULL, 1, 1),
+(36, '2022-09-03', '21.23', 'ADAWDAWD', 5, 'receita', 0, 'pendente', NULL, NULL, NULL, 1, 1),
+(37, '2022-09-03', '3212.35', 'QWEQWEQWE', 5, 'receita', 0, 'pendente', NULL, NULL, NULL, 1, 1),
+(38, '2022-09-03', '90.00', 'QWEQWEQWE', 5, 'receita', 0, 'fechado', NULL, NULL, NULL, 1, 1),
+(39, '2022-09-03', '3212.35', 'QWQWEQWEQWE', 5, 'receita', 0, 'pendente', NULL, NULL, NULL, 1, 1),
+(40, '2022-09-03', '21.23', 'QWEQWEQWE', 5, 'receita', 0, 'pendente', NULL, NULL, NULL, 1, 1),
+(41, '2022-09-03', '21.23', 'QWEQWEQD', 5, 'receita', 0, 'pendente', NULL, NULL, NULL, 1, 1),
+(42, '2022-09-03', '90.00', 'EQWEQWEQWE', 5, 'receita', 0, 'pendente', NULL, NULL, NULL, 1, 1),
+(43, '2022-09-03', '21.23', 'WQEQWEQWEWE', 5, 'receita', 0, 'pendente', NULL, NULL, NULL, 1, 1),
+(44, '2022-09-03', '3212.35', 'WQEQWEQWEQWE', 5, 'receita', 0, 'pendente', NULL, NULL, NULL, 1, 1),
+(45, '2022-09-03', '21.23', 'QWEQWEQWEQWE', 5, 'receita', 0, 'pendente', NULL, NULL, NULL, 1, 1),
+(46, '2022-09-03', '90.00', 'QWEQWEQWE', 5, 'receita', 0, 'pendente', NULL, NULL, NULL, 1, 1),
+(47, '2022-09-10', '200.00', 'dawdadw', 4, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
+(48, '2022-09-10', '40.00', '4 Pasteis', 3, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 2),
+(49, '2022-09-10', '150.00', 'Cinema e etc.', 2, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
+(50, '2022-09-10', '80.00', 'Frutas', 3, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 3);
 
 -- --------------------------------------------------------
 
@@ -188,10 +262,10 @@ CREATE TABLE `transferencia` (
 --
 
 INSERT INTO `transferencia` (`idTransferencia`, `valor`, `descricao`, `id_conta_origem`, `id_conta_destino`, `id_usuario`, `status_transf`, `data_transf`) VALUES
-(1, '120.00', 'Tua conta', 1, 3, 1, 'aberto', '2022-08-12'),
+(1, '120.00', 'Tua conta', 1, 3, 1, 'fechado', '2022-08-12'),
 (2, '100.00', 'Lorem impsun 2', 4, 1, 1, 'fechado', '2022-08-13'),
-(3, '100.00', 'fcsdf', 3, 4, 1, 'fechado', '2022-08-12'),
-(4, '3212.35', '55454545454', 2, 1, 1, 'fechado', '2022-08-05');
+(4, '3212.35', '55454545454', 2, 1, 1, 'fechado', '2022-08-05'),
+(5, '90.00', 'Para alguma ação', 1, 3, 1, 'fechado', '2022-08-31');
 
 -- --------------------------------------------------------
 
@@ -241,6 +315,21 @@ ALTER TABLE `despesa_fixa`
   ADD KEY `id_usuario` (`id_usuario`),
   ADD KEY `id_conta` (`id_conta`),
   ADD KEY `id_categoria` (`id_categoria`);
+
+--
+-- Índices para tabela `plancategoria`
+--
+ALTER TABLE `plancategoria`
+  ADD PRIMARY KEY (`idPCat`),
+  ADD KEY `id_categoria` (`id_categoria`),
+  ADD KEY `id_planejamento` (`id_planejamento`);
+
+--
+-- Índices para tabela `planejamento`
+--
+ALTER TABLE `planejamento`
+  ADD PRIMARY KEY (`idPlan`),
+  ADD KEY `id_usuario` (`id_usuario`);
 
 --
 -- Índices para tabela `receita_fixa`
@@ -301,6 +390,19 @@ ALTER TABLE `despesa_fixa`
   ADD CONSTRAINT `despesa_fixa_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`idUsuario`),
   ADD CONSTRAINT `despesa_fixa_ibfk_2` FOREIGN KEY (`id_conta`) REFERENCES `conta` (`idConta`),
   ADD CONSTRAINT `despesa_fixa_ibfk_3` FOREIGN KEY (`id_categoria`) REFERENCES `categoria` (`idCategoria`);
+
+--
+-- Limitadores para a tabela `plancategoria`
+--
+ALTER TABLE `plancategoria`
+  ADD CONSTRAINT `plancategoria_ibfk_1` FOREIGN KEY (`id_categoria`) REFERENCES `categoria` (`idCategoria`),
+  ADD CONSTRAINT `plancategoria_ibfk_2` FOREIGN KEY (`id_planejamento`) REFERENCES `planejamento` (`idPlan`);
+
+--
+-- Limitadores para a tabela `planejamento`
+--
+ALTER TABLE `planejamento`
+  ADD CONSTRAINT `planejamento_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`idUsuario`);
 
 --
 -- Limitadores para a tabela `receita_fixa`

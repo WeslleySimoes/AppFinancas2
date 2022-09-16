@@ -614,5 +614,55 @@ class Planejamento extends BaseController
             'templates/footer'
         ],$dados);
     }
+
+    //=========================================================================================
+    // DETALHE DE PLANEJAMENTO PESONALIZADO
+    //=========================================================================================
+    public function detalhePP()
+    {
+        UsuarioSession::deslogado();
+
+        // =======================================================================
+        // VALIDAÇÃO DO PARÂMETRO GET 'ID' E VERIFICANDO SE EXISTE O PLANEJAMENTO
+        // =======================================================================
+        $id = filter_input(INPUT_GET,'id',FILTER_VALIDATE_INT);
+
+        if(!isset($id) or !$id > 0)
+        {
+            header("location: ".HOME_URL."/planejamento?p=personalizado");
+            exit;
+        }
+
+        try {
+            Transaction::open('db');
+
+            $planejamento = PlanejamentoModel::findBy('id_usuario = '.UsuarioSession::get('id')." AND tipo = 'personalizado' AND idPlan = {$id}")[0];
+
+            Transaction::close();
+
+            //Se não achar o planejamento, o sistema volta a página de planejamento
+            if(empty($planejamento) or !isset($planejamento))
+            {
+                header("location: ".HOME_URL."/planejamento?p=personalizado");
+                exit;
+            }
+
+        } catch (\Exception $e) {
+            Transaction::rollback();
+        }
+
+        $dados = [
+            'usuario_logado' => UsuarioSession::get('nome'),
+            'msg' => FlashMessage::get(),
+            'detalhePP' => $planejamento
+
+        ];
+
+        $this->view([
+            'templates/header',
+            'planejamento/detalhe_planPerso',
+            'templates/footer'
+        ],$dados);
+    }
 }
  

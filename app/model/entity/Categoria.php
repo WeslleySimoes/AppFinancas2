@@ -30,8 +30,30 @@ class Categoria extends Record
 
         $this->data['totalGastoMesAtual'] = $r;
         return $r;
-
     }
+
+    public function TotalGastoPeriodo($perido)
+    {
+        try {
+            Transaction::open('db');
+            
+            $sql = "SELECT SUM(valor) as total FROM transacao WHERE id_categoria = {$this->data[self::TABLE_PK]} AND DATE(data_trans) BETWEEN {$perido} ";
+
+            $conn = Transaction::get();
+
+            $result = $conn->query($sql);
+
+            $r =  (float) $result->fetch()['total'];    
+
+            Transaction::close();
+        } catch (\Exception $e) {
+            Transaction::rollback();
+        }
+
+        $this->data['totalGastoMesAtual'] = $r;
+        return $r;
+    }
+
 
     // public static function findBy($culunaValor)
     // {

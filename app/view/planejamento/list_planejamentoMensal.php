@@ -123,9 +123,26 @@ body {font-family: Arial;}
             <div class="plan-perso-header">
                 <p style="font-size: 1.2em;"><b><?= $planS->descricao ?></b></p>
                 <div>
-                    <a href="<?= HOME_URL ?>/planejamento/editarPP?id=<?= $planS->idPlan ?>" style="display:inline-block; margin-right: 5px;font-size:1.15em;"><i class="fa fa-pencil" aria-hidden="true" ></i></a>
-                    <a href="<?= HOME_URL ?>/planejamento/removerPP?id=<?= $planS->idPlan ?>" style="display:inline-block; margin-right: 5px;font-size:1.15em;"><i class="fa fa-trash" aria-hidden="true"></i></a>
-                    <a href="#detalhes"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                <div class="tooltip"> 
+                        <a href="<?= HOME_URL ?>/planejamento/editarPP?id=<?= $planS->idPlan ?>" style="display:inline-block; margin-right: 5px;font-size:1.15em; color:blue;"><i class="fa fa-pencil" aria-hidden="true" ></i></a>
+                    <span class="tooltiptext">
+                    Editar
+                    </span>
+                </div>
+                <div class="tooltip"> 
+                        <a href="<?= HOME_URL ?>/planejamento/removerPP?id=<?= $planS->idPlan ?>" style="display:inline-block; margin-right: 5px;font-size:1.15em; color:red;" onclick="return confirm('Tem certeza que deseja remover o planejamento?');"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                    <span class="tooltiptext">
+                    Remover
+                    </span>
+                </div>
+                <div class="tooltip"> 
+                    <a href="<?= HOME_URL ?>/planejamento/detalhePP?id=<?= $planS->idPlan ?>" style="color: grey;"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                    
+                <span class="tooltiptext">
+                    Detalhes
+                </span>
+                </div>
+
                 </div>
             </div>
             <p style="font-size: 0.85em;color:grey;font-weight:bold;margin-top:10px;"><?= formataDataBR($planS->data_inicio) ?> até <?= formataDataBR($planS->data_fim) ?></p>
