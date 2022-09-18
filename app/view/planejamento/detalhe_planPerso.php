@@ -22,7 +22,7 @@
             <td><b>Total</b></td>
             <td>R$ <?= formatoMoeda($detalhePP->valor) ?></td>
             <td>R$ <?= formatoMoeda($detalhePP->getTotalGasto(" DATE('{$detalhePP->data_inicio}') AND DATE('{$detalhePP->data_fim}')")) ?></td>
-            <td>R$<?= formatoMoeda($detalhePP->resultado('PESONALIZADO')) ?></td>
+            <td>R$ <?= formatoMoeda($detalhePP->resultado('PESONALIZADO')) ?></td>
             <td ><progress id="file" value="<?= $detalhePP->getPorcentagemGasto(true,'PERSONALIZADO') ?>" max="100" style="width: 250px;"></progress><?= $detalhePP->getPorcentagemGasto(false,'PERSONALIZADO') ?>%</td>
             <td>
                 <div class="tooltip"> 

@@ -26,11 +26,36 @@ class Planejamento extends BaseController
             'msg' => FlashMessage::get()
         ];
 
+        $dataFiltro = null;
+
+        if(isset($_GET['data']))
+        {
+            $filtroData = \DateTime::createFromFormat('Y-m', $_GET['data']);
+        
+            if(!$filtroData || $filtroData->format('Y-m') != $_GET['data']){
+                header('location: '.HOME_URL.'/planejamento');
+                exit;
+            }
+            
+            $dataFiltro = $_GET['data'];
+        }
+
+
         try {
             Transaction::open('db');
 
-            $dados['total_plan_mensal'] = PlanejamentoModel::findBy("id_usuario = ".UsuarioSession::get('id')." AND tipo = 'mensal' AND MONTH(data_fim) = MONTH(CURDATE())");
+            if($dataFiltro)
+            {
+                $df = explode('-',$dataFiltro);
+                $dados['total_plan_mensal'] = PlanejamentoModel::findBy("id_usuario = ".UsuarioSession::get('id')." AND tipo = 'mensal' AND MONTH(data_fim) = '{$df[1]}' AND YEAR(data_fim) = '{$df[0]}'");
+            }
+            else{
+                $dados['total_plan_mensal'] = PlanejamentoModel::findBy("id_usuario = ".UsuarioSession::get('id')." AND tipo = 'mensal' AND MONTH(data_fim) = MONTH(CURDATE()) AND YEAR(data_fim) = YEAR(CURDATE())");
+            }
+
             $dados['total_plan_semanal'] =  PlanejamentoModel::findBy("id_usuario = ".UsuarioSession::get('id')." AND tipo = 'personalizado'");
+
+
             Transaction::close();
         } catch (\Exception $e) {
             Transaction::rollback();
@@ -51,11 +76,33 @@ class Planejamento extends BaseController
     {
         UsuarioSession::deslogado();
 
+        $dataFiltro = null;
+
+        if(isset($_GET['data']))
+        {
+            $filtroData = \DateTime::createFromFormat('Y-m', $_GET['data']);
+        
+            if(!$filtroData || $filtroData->format('Y-m') != $_GET['data']){
+                header('location: '.HOME_URL.'/planejamento');
+                exit;
+            }
+            
+            $dataFiltro = $_GET['data'];
+        }
+
+
         //VERIFICANDO SE JÁ EXISTE PLANEJAMENTO PARA O MÊS ATUAL
         try {
             Transaction::open('db');
 
-            $planejamentoMensal = PlanejamentoModel::findBy("id_usuario = ".UsuarioSession::get('id')." AND tipo = 'mensal' AND MONTH(data_fim) = MONTH(CURDATE())");
+            if($dataFiltro)
+            {
+                $df = explode('-',$dataFiltro);
+                $planejamentoMensal = PlanejamentoModel::findBy("id_usuario = ".UsuarioSession::get('id')." AND tipo = 'mensal' AND MONTH(data_fim) = '{$df[1]}' AND YEAR(data_fim) = '{$df[0]}'");
+            }
+            else{
+                $planejamentoMensal = PlanejamentoModel::findBy("id_usuario = ".UsuarioSession::get('id')." AND tipo = 'mensal' AND MONTH(data_fim) = MONTH(CURDATE())");
+            }
 
             Transaction::close();
 
@@ -104,7 +151,13 @@ class Planejamento extends BaseController
                     
                     if(!is_float($v))
                     {
-                        FlashMessage::set('Ocorreu um erro ao cadastrar planejamento!','error');
+                        if($dataFiltro)
+                        {
+                            FlashMessage::set('Ocorreu um erro ao cadastrar planejamento!','error','planejamento?data='.$dataFiltro);
+                        }
+                        else{
+                            FlashMessage::set('Ocorreu um erro ao cadastrar planejamento!','error');
+                        }
                         break;
                     }              
                 }
@@ -131,8 +184,17 @@ class Planejamento extends BaseController
                         $r              = new PlanejamentoModel();
                         $r->valor       = FormataMoeda::moedaParaFloat($_POST['renda']);
                         $r->porcentagem = (int) $_POST['porcentMeta'];
-                        $r->data_inicio = date('Y-m').'-01';
-                        $r->data_fim    = getDataFinalMesAtual();
+
+                        if($dataFiltro)
+                        {
+                            $r->data_inicio = $dataFiltro.'-01';
+                            $r->data_fim    = $dataFiltro.'-'.getDataFinalMesAtual($dataFiltro);
+                        }
+                        else{
+                            $r->data_inicio = date('Y-m').'-01';
+                            $r->data_fim    = getDataFinalMesAtual();
+                        }
+
                         $r->tipo        = 'mensal';
                         $r->id_usuario  = UsuarioSession::get('id');
 
@@ -142,10 +204,23 @@ class Planejamento extends BaseController
 
                         if($pResultado)
                         {
-                            FlashMessage::set('Planejamento criado com sucesso!','success');
+                            if($dataFiltro)
+                            {
+                                FlashMessage::set('Planejamento criado com sucesso!','success','planejamento?data='.$dataFiltro);
+                            }
+                            else{
+                                FlashMessage::set('Planejamento criado com sucesso!','success');
+                            }
                         }
                         else{
-                            FlashMessage::set('Erro ao criar planejamento ','error');
+                            if($dataFiltro)
+                            {
+                                FlashMessage::set('Erro ao criar planejamento ','error','planejamento?data='.$dataFiltro);
+                            }
+                            else{
+
+                                FlashMessage::set('Erro ao criar planejamento ','error');
+                            }
                         }
                     } catch (\Exception $e) {
                         Transaction::rollback();
@@ -156,7 +231,13 @@ class Planejamento extends BaseController
                 }
             }
             else{
-                FlashMessage::set('Ocorreu um erro ao cadastrar planejamento!','error');
+                if($dataFiltro)
+                {
+                    FlashMessage::set('Ocorreu um erro ao cadastrar planejamento!','error','planejamento?data='.$dataFiltro);
+                }
+                else{
+                    FlashMessage::set('Ocorreu um erro ao cadastrar planejamento!','error');
+                }
             }
 
         }

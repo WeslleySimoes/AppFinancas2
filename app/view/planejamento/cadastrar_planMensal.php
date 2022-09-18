@@ -3,7 +3,7 @@
     <hr style="margin-bottom: 20px; border: 0.5px solid #cecdcd;">
     <div>
 
-    <form action="<?= HOME_URL ?>/planejamento/cadastrarPM" method="POST">
+    <form action="<?= HOME_URL ?>/planejamento/cadastrarPM<?= isset($_GET['data']) ? '? data='.$_GET['data'] : '' ?>" method="POST">
             
             <label for="">Renda mensal (R$):</label>
             <input type="text" name="renda" id="valorRenda"  style="width: 100%;" class="money" value="0,00" >

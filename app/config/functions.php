@@ -7,10 +7,7 @@ function dd($var,$config = true)
     var_dump($var);
     echo '</pre>';
 
-    if($config)
-    {
-        exit();
-    }
+    if($config) exit();
 }
 
 /*Formata o float para moeda */
@@ -55,12 +52,24 @@ function formataDataBR($data)
 }
 
 //Retorna a data final de mês atual
-function getDataFinalMesAtual()
+function getDataFinalMesAtual($data = null)
 {
-    $mes = date('m');      // Mês desejado, pode ser por ser obtido por POST, GET, etc.
-    $ano = date("Y"); // Ano atual
+    if($data)
+    {
+        $d = explode('-',$data);
+        $mes = date($d[1]); // Mês desejado, pode ser por ser obtido por POST, GET, etc.
+        $ano = date($d[0]); // Ano atual
+    }
+    else{
+        $mes = date('m'); // Mês desejado, pode ser por ser obtido por POST, GET, etc.
+        $ano = date("Y"); // Ano atual
+    }
     $ultimo_dia = date("t", mktime(0,0,0,$mes,'01',$ano)); // Mágica, plim!
 
+    if($data)
+    {
+        return $ultimo_dia;    
+    }
     return date('Y-m')."-{$ultimo_dia}";
 }
 

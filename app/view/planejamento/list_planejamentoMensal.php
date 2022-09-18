@@ -24,8 +24,6 @@
 
 <!-- INÍCIO - MOSTRA OS PLANEJAMENTOS PERSONALIZADOS -->
 <?php if(isset($_GET['p']) == 'personalizado'): ?>
-
-    <input id="bday-month" type="month" name="bday-month" value="<?= date('Y-m') ?>">
     
     <style>
 body {font-family: Arial;}
@@ -157,7 +155,7 @@ body {font-family: Arial;}
                 <progress id="file" value="<?= $planS->getPorcentagemGasto(true,'PERSONALIZADO') ?>" max="100" style="width: 100%;"></progress>
                 <div style="text-align: right;"><?= $planS->getPorcentagemGasto(false,'PERSONALIZADO') ?>%</div>
             </div>
-            <p style="margin-top: 5px;">Expira em: <?= diffDataDias($planS->data_fim) ?> dias</p>
+            <p style="margin-top: 5px;"><b>Expira em:</b> <?= diffDataDias($planS->data_fim) ?> dias</p>
         </div>
         <?php endforeach; ?>
     <?php endif; ?>
@@ -188,8 +186,20 @@ document.getElementById("defaultOpen").click();
 <!-- --------------------------------------------- -->
 <!-- INÍCIO - MOSTRA O PLANEJAMENTO DO MÊS ATUAL   -->
 <?php else:  ?>
+    <div style="display: flex;justify-content: center;align-items: center; padding: 10px;">
+        <form action="<?= HOME_URL ?>/planejamento" method="GET" id="form_data">
+            <label for="" style="display:inline-block;margin-right: 10px;font-weight: bold;">Mês: </label>
+            <input id="bday-month" name="data" type="month" name="bday-month" value="<?= $_GET['data'] ?? date('Y-m') ?>" onchange="handler();">
+        </form>
+    </div>
     <?php if(count($total_plan_mensal) > 0): ?>
-    
+
+
+    <div style="border: 1px solid lightgrey; padding: 10px;">
+        <b style="font-size: 1.1em;">Renda mensal:</b> R$ <?= formatoMoeda($total_plan_mensal[0]->valor)  ?><br>
+        <b style="font-size: 1.1em;">Porcentagem da meta de gasto:</b> <?= $total_plan_mensal[0]->porcentagem ?>% <br>
+    </div> 
+
     <table style="margin-top: 20px; width: 100%;">
         <tr>
             <th>Categoria</th>
@@ -240,7 +250,12 @@ document.getElementById("defaultOpen").click();
     </table>
     <?php else: ?>
         <p>Nenhum planejamento encontrado!</p>
-        <a href="<?= HOME_URL ?>/planejamento/cadastrarPM">Criar planejamento</a>
+        
+        <?php if(isset($_GET['data'])): ?>
+            <a href="<?= HOME_URL ?>/planejamento/cadastrarPM?data=<?= $_GET['data'] ?>">Criar planejamento</a>
+        <?php else: ?>
+            <a href="<?= HOME_URL ?>/planejamento/cadastrarPM">Criar planejamento</a>
+        <?php endif; ?>
     <?php endif; ?>
 
 <?php endif; ?>
@@ -252,6 +267,13 @@ document.getElementById("defaultOpen").click();
 <script>
     function myFunction() {
         document.getElementById("myDropdown").classList.toggle("show");
+    }
+
+    const formData = document.querySelector('#form_data');
+
+    function handler()
+    {
+        formData.submit();
     }
 </script>
 <!-- FIM - SCRIPT JAVASCRIPT -->
