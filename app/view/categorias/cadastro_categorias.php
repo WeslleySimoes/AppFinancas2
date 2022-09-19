@@ -11,6 +11,11 @@
           <option value="despesa" selected>Despesa</option>
           <option value="receita">Receita</option>
         </select>        
+        <div style="margin: 5px 0 10px 0;">
+            <label for="body" style="display:block; margin: 5px 0;">Cor da categoria: </label>
+            <input type="color" name="corCate" value="#f6b73c" style="display: block; width: 50px; height: 50px; border:none;">
+        </div>
+
         <button class="btn-success">Cadastrar</button>
     </form>
     <?= $msg ?>

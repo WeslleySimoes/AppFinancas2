@@ -210,7 +210,7 @@ document.getElementById("defaultOpen").click();
             <th>Ações</th>
         </tr>
         <tr>
-            <td><b>Total</b></td>
+            <td><span style="width: 15px; height: 15px;display:inline-block;border-radius: 50%; margin-right: 5px; background-color:grey;"></span><b>Total</b></td>
             <td>R$ <?= formatoMoeda($total_plan_mensal[0]->calcularMetaGasto()) ?></td>
             <td>R$ <?= formatoMoeda($total_plan_mensal[0]->getTotalGasto()) ?></td>
             <td>R$ <?= formatoMoeda($total_plan_mensal[0]->resultado()) ?></td>
@@ -238,7 +238,9 @@ document.getElementById("defaultOpen").click();
             <?php $planCate->getCategoria(); ?>
 
             <tr>
-                <td> <span style='font-size:20px;'>&#10148;</span> <?= $planCate->categoria_obj->nome ?></td>
+                <td> <!--<span style='font-size:20px;'>&#10148;</span>  -->
+                <span style="width: 15px; height: 15px;display:inline-block;border-radius: 50%; margin-right: 5px; background-color:coral;"></span>
+                <?= $planCate->categoria_obj->nome ?></td> 
                 <td>R$ <?= formatoMoeda($planCate->valorMeta) ?></td>
                 <td>R$ <?= formatoMoeda($planCate->categoria_obj->TotalGastoMesAtual())?></td>
                 <td>R$ <?= formatoMoeda($planCate->resultado()) ?></td>

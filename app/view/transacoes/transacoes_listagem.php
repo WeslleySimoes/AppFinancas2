@@ -54,7 +54,7 @@
 
 
   <?php if(!isset($_GET['s'])): ?>
-    <button id="btn-filtro-trans" class="dropbtn">Filtro</button>
+    <button id="btn-filtro-trans" class="dropbtn"><i class="fa fa-filter" aria-hidden="true"></i></button>
   <?php endif; ?>
 
 </div>
@@ -64,7 +64,7 @@
   <table style="margin-top: 20px; width: 100%;">
     <tr>
       <th>Data</th>
-      <th>Status</th>
+      <th >Status</th>
       <th>Valor</th>
       <th>Descrição</th>
       <th>Categoria</th>
@@ -77,7 +77,27 @@
     <?php foreach($transacoes_cliente as $tc):  ?>
       <tr>
         <td><?= formataDataBR($tc->data_trans) ?></td>
-        <td><?= ucfirst($tc->status_trans) ?></td>
+        <td style="display: flex; justify-content:center;">
+          <?php if($tc->status_trans == 'fechado'): ?>
+             <!-- INÍCIO DO TOOLTIP -->
+             <div class="tooltip"> 
+               <i class="fa fa-check-circle" aria-hidden="true" style="font-size: 25px; color:#5cb353;"></i>     
+                <span class="tooltiptext">
+                  Efetuada
+                </span>
+              </div>
+              <!-- FINAL DO TOOLTIP  -->
+          <?php else: ?>
+             <!-- INÍCIO DO TOOLTIP -->
+             <div class="tooltip"> 
+               <i class="fa fa-exclamation-circle" aria-hidden="true" style="font-size: 25px; color: #f70039;"></i>
+                <span class="tooltiptext">
+                  Pendente
+                </span>
+              </div>
+              <!-- FINAL DO TOOLTIP  -->
+          <?php endif; ?>
+        </td>
 
         <?php if($tc->tipo == 'receita'): ?>
           <td style="color: green; white-space: nowrap;">R$ <?= formatoMoeda($tc->valor) ?></td>
@@ -91,9 +111,9 @@
 
   
         <?php if($tc->tipo == 'transferencia'): ?>
-          <td> #</td>
+          <td> <span style="width: 15px; height: 15px;display:inline-block;border-radius: 50%; margin-right: 5px; background-color:grey;"></span>transferência</td>
         <?php else: ?>
-          <td><?= $tc->getNomeCategoria() ?></td>
+          <td><span style="width: 15px; height: 15px;display:inline-block;border-radius: 50%; margin-right: 5px; background-color:coral;"></span><?= $tc->getNomeCategoria() ?></td>
         <?php endif ?>
 
         

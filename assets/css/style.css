@@ -360,7 +360,8 @@ table {
   }
   
   tr:nth-child(even) {
-    background-color: #dddddd;
+    background-color: #e4e4e4;
+    /*background-color: #dddddd;*/
   }
   
   /*PAGINAÇÃO */
@@ -381,6 +382,7 @@ table {
   }
   
   .pagination a:hover:not(.active) {background-color: #ddd;}
+
   
   tr td:last-child {
       width: 1%;

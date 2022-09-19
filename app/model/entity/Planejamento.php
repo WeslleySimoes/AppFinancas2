@@ -121,6 +121,9 @@ class Planejamento extends Record
         {
             return false;
         }
+
+        $categorias = array_values($categorias);
+        $valores    = array_values($valores);
         
         $resultado = $this->store();
 

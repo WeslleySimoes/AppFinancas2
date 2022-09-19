@@ -442,6 +442,8 @@ class Planejamento extends BaseController
         #INSERÇÃO DE DADOS
         if(!empty($_POST))
         {
+
+            //dd($_POST);
             $arrCatDesp = [];
 
             foreach($dados['categoriasDesp'] as $catDesp)

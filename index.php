@@ -58,6 +58,10 @@
 	$rota->Add('/planejamento/removerPP','planejamento@removerPP');
 	$rota->Add('/planejamento/editarPP','planejamento@editarPP');
 	$rota->Add('/planejamento/detalhePP','planejamento@detalhePP');
+
+	// Relatórios
+	$rota->add('/relatorios','relatorios@index');
+
 	
 	// Deslogar
 	$rota->add('/deslogar','Home@deslogar');

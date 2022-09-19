@@ -63,7 +63,7 @@
                 </a>
             </li> 
             <li> 
-                <a href="#relatorios" class="link-menu-lateral">
+                <a href="<?= HOME_URL.'/relatorios' ?>" class="link-menu-lateral">
                     <i class="fa fa-bar-chart" aria-hidden="true"></i> 
                     Relatórios
                 </a>
