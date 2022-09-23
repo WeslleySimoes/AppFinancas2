@@ -11,13 +11,13 @@
 <!-- INÍCIO - LINKS DA PÁGINA -->
 <div class="dropdown">
     <button onclick="myFunction()" class="dropbtn"> <span style='font-size:16px;'>&#9660;</span><?php if(isset($_GET['p']) == 'personalizado'): ?>
-        Planejamento Personalizado
+        Personalizado
     <?php else:  ?>
-        Planejamento Mensal
+        Mensal
     <?php endif; ?></button>
     <div id="myDropdown" class="dropdown-content">
-    <a href="<?= HOME_URL ?>/planejamento">Planejamento mensal</a>
-    <a href="<?= HOME_URL ?>/planejamento?p=personalizado">Planejamento personalizado</a>
+    <a href="<?= HOME_URL ?>/planejamento">Mensal</a>
+    <a href="<?= HOME_URL ?>/planejamento?p=personalizado">Personalizado</a>
     </div>
 </div>
 <!-- FIM - LINKS DA PÁGINA -->

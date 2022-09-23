@@ -9,7 +9,7 @@ use app\session\Usuario as UsuarioSession;
 class Relatorios extends BaseController
 {
     //=========================================================================================
-    //Mostra o planejamento feito no mês ou planejamento personalizado
+    //Mostra Relatórios no gráfico de pizza
     //=========================================================================================
     public function index()
     {
@@ -19,10 +19,12 @@ class Relatorios extends BaseController
             'usuario_logado' => UsuarioSession::get('nome'),
             'msg' => FlashMessage::get()
         ];
+        
+
 
         $this->view([
             'templates/header',
-            'relatorios/gerar_relatorios',
+            'relatorios/relatorio_pizza',
             'templates/footer'
         ],$dados);
     }
