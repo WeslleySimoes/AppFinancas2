@@ -5,7 +5,6 @@ namespace app\controller;
 use app\helpers\FlashMessage;
 use app\session\Usuario as UsuarioSession;
 
-
 class Relatorios extends BaseController
 {
     //=========================================================================================

@@ -144,7 +144,7 @@ class Transacoes extends BaseController
 
                 //############ FIM DO FILTRO ###################
 
-                if(!isset($_GET['data']))
+                if(strlen($dataURL) < 1)
                 {
                     $where .= strlen($where) > 0 ? " AND MONTH(data_trans) = MONTH(CURDATE()) AND YEAR(data_trans) = YEAR(CURDATE())" :  " MONTH(data_trans) = MONTH(CURDATE()) AND YEAR(data_trans) = YEAR(CURDATE())";
                 }
@@ -171,7 +171,7 @@ class Transacoes extends BaseController
                 //LIMPANDO A WHERE DO FILTRO, CASO ELA ESTEJA SETADO COLOCA O AND NA FRENTE
                 $where = strlen($where) ? " AND $where " : '';
 
-                $porMesAtual = !isset($_GET['data']) ? " AND MONTH(data_trans) = MONTH(CURDATE()) AND YEAR(data_trans) = YEAR(CURDATE())" : '';
+                $porMesAtual = strlen($dataURL) < 1 ? " AND MONTH(data_trans) = MONTH(CURDATE()) AND YEAR(data_trans) = YEAR(CURDATE())" : '';
 
                 //ORDENANDO TRANSAÇÕES PELA DATA DA MAIOR PARA O MENOR
                 $dados['transacoes_cliente'] = Transacao::findBy(
