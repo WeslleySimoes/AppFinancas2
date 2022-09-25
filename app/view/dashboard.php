@@ -56,13 +56,13 @@
 </div>
 
 <!-- SCRIPT CHART.JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+
 <script>
     const ctx = document.getElementById('myChart');
     const myChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            labels: ['Fevereiro', 'Março', 'Abril', 'Green', 'Purple', 'Orange'],
             datasets: [{
                 label: 'Despesas',
                 data: [12, 19, 3, 5, 2, 3],

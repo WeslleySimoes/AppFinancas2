@@ -129,7 +129,6 @@ class Receita extends BaseController
                     //DESPESA NORMAL (NÃO FIXA OU PARCELADA)
                     else{
                         $t = new TransacaoModel;
-
                         $t->data_trans          = $_POST['dataReceita'];
                         $t->valor               = FormataMoeda::moedaParaFloat($_POST['valor']);
                         $t->descricao           = $_POST['descricao'];

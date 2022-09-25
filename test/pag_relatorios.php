@@ -1,4 +1,13 @@
+<?php 
 
+if(!empty($_GET))
+{
+    echo '<pre>';
+    var_dump($_GET);
+    echo '</pre>';
+}
+
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -95,6 +104,7 @@
             border-radius: 50%;
             background-color: tomato;
         }
+
     </style>
 </head>
 <body>
@@ -228,17 +238,66 @@
         </div>
     </div>
 
-    <div id="background-popUp-pizza" style="position: fixed; top:0; left: 0; width: 100%; min-height: 100vh;background-color: rgba(1,1,1,0.6); display:none;">
+    <div id="background-popUp-pizza" style="position: fixed; top:0; left: 0; width: 100%; min-height: 100vh;background-color: rgba(1,1,1,0.6); display:none; ">
         <div style="width: 600px; height: 500px; background-color: white; padding: 10px;">
-            <button id="fechar-popUp-pizza">X</button>
+
+            <div style="margin-bottom: 20px;">
+                <button id="fechar-popUp-pizza" style="float: right; border: none; font-size: 23px;">X</button>
+            </div>
 
             <form action="pag_relatorios.php" method="GET" style="padding: 10px;">
-                <label for="mesAno">Mês:</label>
-                <input type="month" name="mesAno" value="<?= date("Y-m") ?>"><br>
+
+                <div>
+                    <input type="radio" id="dataMesAno" name="dataRadio" value="dataMesAno" checked>
+                    <label for="mesAno" style="font-weight: bold;">Mês:</label><br>
+                    <input type="month" name="mesAno" value="<?= date("Y-m") ?>" style="width: 100%;  padding: 10px 5px;" id="mesAno"><br>
+                </div>
+
+                <div style="margin: 10px 0;">
+                    <input type="radio" id="dataPeriodo" name="dataRadio" value="dataPeriodo">
+                    <label for="Periodo" style="font-weight: bold;">Periodo:</label>
+                    <div style="display: flex; margin: 5px 0;">
+                        <label for="dataIncio" style="display: flex; align-items: center;">De:</label>
+                        <input type="date" name="dataInicio" value="<?= date("Y-m-d") ?>" style="width: 50%;margin: 0 10px 0 5px;" id="dataPeriodoInicio" disabled>
+                        <label for="dataFim" style="display: flex; align-items: center;">Até:</label>
+                        <input type="date" name="dataFim" value="<?= date("Y-m-d") ?>" style="width: 50%; margin-left: 5px; padding: 10px 5px;"  id="dataPeriodoFim" disabled>
+                    </div>
+                </div>
+                <hr>
+                <div style="margin: 10px 0;">
+                    <label for="" style="font-weight: bold;">Selecione:</label>
+                    <select name="select" style="width: 100%;padding: 10px 5px;">
+                        <option value="1">Despesa por categoria</option>
+                        <option value="2" >Despesa por conta</option>
+                        <option value="3">Receita por categoria</option>
+                        <option value="4">Receita por conta</option>
+                        <option value="5">Saldo por conta</option>
+                    </select>
+                </div>
+                <div style="margin: 10px 0;">
+                    <label for="" style="font-weight: bold;">Situação:</label>
+                    <select name="situacao" style="width: 100%;padding: 10px 5px;">
+                        <option value="todas">Todas</option>
+                        <option value="efetuadas">Efetuadas</option>
+                        <option value="pendentes">Pendentes</option>
+                    </select>
+                </div>
+
+                <div style="margin: 10px 0;">
+                    <label for="" style="font-weight: bold;">Conta:</label>
+                    <select name="conta" style="width: 100%;padding: 10px 5px;">
+                        <option value="0">Todas</option>
+                        <option value="1">Conta1</option>
+                        <option value="2">Conta2</option>
+                        <option value="3">Conta3</option>
+                    </select>
+                </div>
+
                 <button type="submit">Filtrar</button>
             </form>
         </div>
     </div>
+
 
     <script>
         const fechar_popUp_pizza = document.querySelector("#fechar-popUp-pizza");
@@ -257,6 +316,40 @@
             background_popUp_pizza.style.alignItems  = 'center';
         }
 
+        /* DATA */
+        const dataMesAno  = document.querySelector("#dataMesAno");
+        const dataPeriodo = document.querySelector("#dataPeriodo");
+
+        //inputs
+        const mesAno = document.querySelector("#mesAno");
+        const dataPeriodoInicio = document.querySelector("#dataPeriodoInicio");
+        const dataPeriodoFim    = document.querySelector("#dataPeriodoFim");
+
+
+        dataPeriodo.onclick = () => 
+        {
+            if(dataPeriodo.checked)
+            {
+                mesAno.disabled = true;
+                dataPeriodoInicio.disabled = false;
+                dataPeriodoFim.disabled = false;
+            }
+        }
+
+        dataMesAno.onclick = () => 
+        {
+            if(dataMesAno.checked)
+            {
+                mesAno.disabled = false;
+                dataPeriodoInicio.disabled = true;
+                dataPeriodoFim.disabled = true;
+            }
+        }
+
+        
+
+
+
         
     </script>
 
@@ -264,19 +357,20 @@
     <script>
         const data = {
             labels: [
-                'Red',
-                'Blue',
-                'Yellow'
+                'Categoria1 (R$) ',
+                'Categoria2',
+                'Categoria3'
             ],
             datasets: [{
                 label: 'My First Dataset',
-                data: [300, 50, 100],
+                data: [300.21, 50, 100],
                 backgroundColor: [
                 'rgb(255, 99, 132)',
                 'rgb(54, 162, 235)',
                 'rgb(255, 205, 86)'
                 ],
-                hoverOffset: 4
+                hoverOffset: 4,
+                borderWidth: 4
             }]
             };
 
@@ -289,7 +383,9 @@
                         legend: {
                             display: false
                         }
-                    }
+                    },
+                    locale: 'pt-BR',
+                    cutoutPercentage: 65
                 }
             };
             const myChart = new Chart(

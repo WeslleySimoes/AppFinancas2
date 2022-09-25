@@ -123,6 +123,7 @@ class Despesa extends BaseController
                     
                     //DESPESA NORMAL (NÃO FIXA OU PARCELADA)
                     else{
+
                         $t = new TransacaoModel;
 
                         $t->data_trans          = $_POST['dataDespesa'];
@@ -130,7 +131,7 @@ class Despesa extends BaseController
                         $t->descricao           = $_POST['descricao'];
                         $t->id_categoria        = $_POST['categoriaDespesa'];
                         $t->tipo                = 'despesa';
-                        $t->fixo                = 0;
+                        // $t->fixo                = 0;
                         /*
                         $t->id_despesaFixa       = 'NULL';
                         $t->id_receitaFixa       = 'NULL';
