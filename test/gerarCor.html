@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .item-cor{
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <span class="item-cor"></span>
+        <span class="item-cor"></span>
+        <span class="item-cor"></span>
+        <span class="item-cor"></span>
+        <span class="item-cor"></span>
+        <span class="item-cor"></span>
+    </div>
+    <script>
+        let arrCor = [];
+        const itemCor = document.querySelectorAll('.item-cor');
+        
+        function generateColor() {
+
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+
+            for (let i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+            }
+
+            return color;
+        }
+
+        for (let index = 0; index < itemCor.length; index++) {
+            let corGerada = generateColor();
+            itemCor[index].style.backgroundColor = corGerada;
+            arrCor.push(corGerada);
+        }
+        
+        console.log(generateColor()) // #8432EA
+    </script>
+</body>
+</html>

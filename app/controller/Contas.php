@@ -27,7 +27,7 @@ class Contas extends BaseController
         } catch (\Exception $e) {
             Transaction::rollback();
         }
-        Transaction::open('db');
+        //Transaction::open('db');
 
         $this->view([
             'templates/header',

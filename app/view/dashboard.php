@@ -77,6 +77,13 @@
             }]
         },
         options: {
+            tooltips: {
+                callbacks: {
+                    label: function(tooltipItem, data) {
+                        return tooltipItem.xLabel.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                    }
+                }
+            },
             scales: {
                 y: {
                     beginAtZero: true

@@ -259,6 +259,17 @@ class Validacao
 				$this->setMsgErro("O campo {$campo[0]} deve ser menor que o campo {$campo[1]}!");
 			}
 		}
+		if($regra == 'menor')
+		{
+			if ($data1 == $data2) {
+				$campo = explode('e',$this->campoAtual);
+				$this->setMsgErro("Os campos {$campo[0]} e {$campo[1]} não devem ser iguais!");
+			}else if($data1 < $data2)
+			{
+				$campo = explode('e',$this->campoAtual);
+				$this->setMsgErro("O campo {$campo[0]} deve ser maior que o campo {$campo[1]}!");
+			}
+		}
 
 	}
 

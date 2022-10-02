@@ -1,4 +1,5 @@
-<h1 style="font-size: 1.5rem!important;">Listagem contas</h1>
+<!-- <h1 style="font-size: 1.5rem!important;">Listagem contas</h1> -->
+<h3 style="margin-bottom: 20px; color: #263D52;">Contas</h3>
 
 <a href="<?= HOME_URL?>/contas/cadastrar" class="btn btn-primary" >Nova Conta</a>
 

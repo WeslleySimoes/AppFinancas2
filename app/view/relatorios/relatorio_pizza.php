@@ -1,3 +1,4 @@
+
 <style>
     *{
         padding: 0;
@@ -81,30 +82,124 @@
     }
 
 </style>
+    <?= $msg.'</br>' ?>
+   
     <div class="titulo_rela">
-        <h1 style="color: #263D52;">Relatórios</h1>
+    <h3 style="margin-bottom: 20px; color: #263D52;">Relatórios</h3>
 
         <div id="links-grafico-relatorios">
-            <a href="#pizza"><i class="fa fa-pie-chart" aria-hidden="true"></i></a>
+            <a href="<?= HOME_URL ?>/relatorios"><i class="fa fa-pie-chart" aria-hidden="true"></i></a>
             <a href="#linha"><i class="fa fa-line-chart" aria-hidden="true"></i></a>
             <a href="#barra"><i class="fa fa-bar-chart" aria-hidden="true"></i></a>
         </div>
     </div>
     <div style="padding: 10px; margin-top: 10px;border: 1px solid lightgray; display: flex; justify-content:space-between; align-items: center;">
-        <h3>Despesas por categorias</h3>
-        <h3>14/09/22 - 22/09/22</h3>
+        <h3>
+            <?php if(isset($despesa_por_categoria)): ?>
+                Despesas por categoria
+            <?php elseif(isset($despesa_por_conta)): ?>
+                Despesas por conta
+            <?php elseif(isset($receita_por_categoria)): ?>
+                Receitas por categoria
+            <?php elseif(isset($receita_por_conta)): ?>
+                Receitas por conta
+            <?php else: ?>
+                Despesas por categoria
+            <?php endif; ?>
+
+            
+        </h3>
+        <h3>
+            <?php if(isset($_POST['dataRadio'])): ?>
+                <?php if($_POST['dataRadio'] == 'dataMesAno'): ?>
+                    <?= $_POST['mesAno'] ?>
+                <?php elseif($_POST['dataRadio'] == 'dataPeriodo'): ?>
+                    De <?= formataDataBR($_POST['dataInicio']) ?> Até <?= formataDataBR($_POST['dataFim']) ?>
+                <?php endif; ?>
+            <?php else: ?>
+                    2022-09
+            <?php endif; ?>
+        </h3>
         <button style="font-size: 25px;" id="filtro-pizza"> <i class="fa fa-filter" aria-hidden="true"></i></button>
     </div>
 
     <div class="conteudo2">
-        <div class="grafico" style="display: flex; align-items: center; justify-content:center;">
-            <div style="position: absolute; font-size: 1.2rem;">Total: R$ 0,00</div>
 
-            <canvas id="graficoPizza" width="479" height="479" style="display: block; box-sizing: border-box; height: 479px; width: 479px;"></canvas>
+        <div class="grafico" style="display: flex; align-items: center; justify-content:center;">
+            <div style="position: absolute; font-size: 1.2rem;">Total: R$ <?= formatoMoeda(array_sum(explode(',',$arr_total))) ?></div>
+
+            <canvas id="graficoPizza" width="300px" height="479" style="display: block; box-sizing: border-box; height: 479px; width: 479px;"></canvas>
         </div>
 
         <div class="content-grafico">
-            <div class="item-content-grafico">
+            <?php if(isset($despesa_por_categoria)): ?>
+                <?php foreach($despesa_por_categoria as $dpc ): ?>
+                    <div class="item-content-grafico">
+                        <span class="item-cor"></span>
+                        <div style="width: calc(100% - 50px); ">
+                            <div style="display: flex; justify-content:space-between; ">
+                                <div><?= $dpc['nome'] ?></div>
+                                <div>R$ <?= formatoMoeda($dpc['total']) ?></div>
+                            </div>
+                            <div style="display: flex; justify-content:space-between; ">
+                                <div style="font-size: 0.99rem;">Porcentagem</div>
+                                <div style="font-size: 0.99rem;"><?= number_format($dpc['total']/array_sum(explode(',',$arr_total))*100,2) ?>%</div>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+
+            <?php elseif(isset($despesa_por_conta)): ?>
+                <?php foreach($despesa_por_conta as $dpc ): ?>
+                    <div class="item-content-grafico">
+                        <span class="item-cor"></span>
+                        <div style="width: calc(100% - 50px); ">
+                            <div style="display: flex; justify-content:space-between; ">
+                                <div><?= $dpc['descricao'] ?></div>
+                                <div>R$ <?= formatoMoeda($dpc['total']) ?></div>
+                            </div>
+                            <div style="display: flex; justify-content:space-between; ">
+                                <div style="font-size: 0.99rem;">Porcentagem</div>
+                                <div style="font-size: 0.99rem;"><?= number_format($dpc['total']/array_sum(explode(',',$arr_total))*100,2) ?>%</div>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php elseif(isset($receita_por_categoria)): ?>
+                <?php foreach($receita_por_categoria as $dpc ): ?>
+                    <div class="item-content-grafico">
+                        <span class="item-cor"></span>
+                        <div style="width: calc(100% - 50px); ">
+                            <div style="display: flex; justify-content:space-between; ">
+                                <div><?= $dpc['nome'] ?></div>
+                                <div>R$ <?= formatoMoeda($dpc['total']) ?></div>
+                            </div>
+                            <div style="display: flex; justify-content:space-between; ">
+                                <div style="font-size: 0.99rem;">Porcentagem</div>
+                                <div style="font-size: 0.99rem;"><?= number_format($dpc['total']/array_sum(explode(',',$arr_total))*100,2) ?>%</div>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php elseif(isset($receita_por_conta)): ?>
+                <?php foreach($receita_por_conta as $dpc ): ?>
+                    <div class="item-content-grafico">
+                        <span class="item-cor"></span>
+                        <div style="width: calc(100% - 50px); ">
+                            <div style="display: flex; justify-content:space-between; ">
+                                <div><?= $dpc['descricao'] ?></div>
+                                <div>R$ <?= formatoMoeda($dpc['total']) ?></div>
+                            </div>
+                            <div style="display: flex; justify-content:space-between; ">
+                                <div style="font-size: 0.99rem;">Porcentagem</div>
+                                <div style="font-size: 0.99rem;"><?= number_format($dpc['total']/array_sum(explode(',',$arr_total))*100,2) ?>%</div>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>            
+            <?php endif; ?>
+
+            <!-- <div class="item-content-grafico">
                 <span style="background-color: #FF6384;"></span>
                 <div style="width: calc(100% - 50px); ">
                     <div style="display: flex; justify-content:space-between; ">
@@ -116,98 +211,7 @@
                         <div style="font-size: 0.99rem;">0%</div>
                     </div>
                 </div>
-            </div>
-            <div class="item-content-grafico">
-                <span style="background-color: #FFC234;"></span>
-                <div style="width: calc(100% - 50px);">
-                    <div style="display: flex; justify-content:space-between; ">
-                        <div>Categoria</div>
-                        <div>R$ 0,00</div>
-                    </div>
-                    <div style="display: flex; justify-content:space-between; ">
-                        <div style="font-size: 0.99rem;">Porcentagem</div>
-                        <div style="font-size: 0.99rem;">0%</div>
-                    </div>
-                </div>
-            </div>
-            <div class="item-content-grafico">
-                <span style="background-color: #36A2EB;"></span>
-                <div style="width: calc(100% - 50px);">
-                    <div style="display: flex; justify-content:space-between; margin-bottom: 5px; ">
-                        <div>Categoria</div>
-                        <div>R$ 0,00</div>
-                    </div>
-                    <div style="display: flex; justify-content:space-between; ">
-                        <div style="font-size: 0.99rem;">Porcentagem</div>
-                        <div style="font-size: 0.99rem;">0%</div>
-                    </div>
-                </div>
-            </div>
-            <div class="item-content-grafico">
-                <span style="background-color: #36A2EB;"></span>
-                <div style="width: calc(100% - 50px);">
-                    <div style="display: flex; justify-content:space-between; margin-bottom: 5px; ">
-                        <div>Categoria</div>
-                        <div>R$ 0,00</div>
-                    </div>
-                    <div style="display: flex; justify-content:space-between; ">
-                        <div style="font-size: 0.99rem;">Porcentagem</div>
-                        <div style="font-size: 0.99rem;">0%</div>
-                    </div>
-                </div>
-            </div>
-            <div class="item-content-grafico">
-                <span style="background-color: #36A2EB;"></span>
-                <div style="width: calc(100% - 50px);">
-                    <div style="display: flex; justify-content:space-between; margin-bottom: 5px; ">
-                        <div>Categoria</div>
-                        <div>R$ 0,00</div>
-                    </div>
-                    <div style="display: flex; justify-content:space-between; ">
-                        <div style="font-size: 0.99rem;">Porcentagem</div>
-                        <div style="font-size: 0.99rem;">0%</div>
-                    </div>
-                </div>
-            </div>
-            <div class="item-content-grafico">
-                <span style="background-color: #36A2EB;"></span>
-                <div style="width: calc(100% - 50px);">
-                    <div style="display: flex; justify-content:space-between; margin-bottom: 5px; ">
-                        <div>Categoria</div>
-                        <div>R$ 0,00</div>
-                    </div>
-                    <div style="display: flex; justify-content:space-between; ">
-                        <div style="font-size: 0.99rem;">Porcentagem</div>
-                        <div style="font-size: 0.99rem;">0%</div>
-                    </div>
-                </div>
-            </div>
-            <div class="item-content-grafico">
-                <span style="background-color: #36A2EB;"></span>
-                <div style="width: calc(100% - 50px);">
-                    <div style="display: flex; justify-content:space-between; margin-bottom: 5px; ">
-                        <div>Categoria</div>
-                        <div>R$ 0,00</div>
-                    </div>
-                    <div style="display: flex; justify-content:space-between; ">
-                        <div style="font-size: 0.99rem;">Porcentagem</div>
-                        <div style="font-size: 0.99rem;">0%</div>
-                    </div>
-                </div>
-            </div>
-            <div class="item-content-grafico">
-                <span style="background-color: #36A2EB;"></span>
-                <div style="width: calc(100% - 50px);">
-                    <div style="display: flex; justify-content:space-between; margin-bottom: 5px; ">
-                        <div>Categoria</div>
-                        <div>R$ 0,00</div>
-                    </div>
-                    <div style="display: flex; justify-content:space-between; ">
-                        <div style="font-size: 0.99rem;">Porcentagem</div>
-                        <div style="font-size: 0.99rem;">0%</div>
-                    </div>
-                </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>
@@ -219,7 +223,7 @@
             <button id="fechar-popUp-pizza" style="float: right; border: none; font-size: 23px;">X</button>
         </div>
 
-        <form action="<?= HOME_URL ?>/relatorios" method="GET" style="padding: 10px;">
+        <form action="<?= HOME_URL ?>/relatorios" method="POST" style="padding: 10px;">
 
             <div>
                 <input type="radio" id="dataMesAno" name="dataRadio" value="dataMesAno" checked>
@@ -240,12 +244,12 @@
             <hr>
             <div style="margin: 10px 0;">
                 <label for="" style="font-weight: bold;">Selecione:</label>
-                <select name="select" style="width: 100%;padding: 10px 5px;">
+                <select name="filtrarPor" style="width: 100%;padding: 10px 5px;">
                     <option value="1">Despesa por categoria</option>
                     <option value="2" >Despesa por conta</option>
                     <option value="3">Receita por categoria</option>
                     <option value="4">Receita por conta</option>
-                    <option value="5">Saldo por conta</option>
+                    <!-- <option value="5">Saldo por conta</option> -->
                 </select>
             </div>
             <hr>
@@ -262,17 +266,15 @@
                 <label for="" style="font-weight: bold;">Conta:</label>
                 <select name="conta" style="width: 100%;padding: 10px 5px;">
                     <option value="0">Todas</option>
-                    <option value="1">Conta1</option>
-                    <option value="2">Conta2</option>
-                    <option value="3">Conta3</option>
+                    <?php foreach($contas_usuario as $contaU): ?>
+                        <option value="<?= $contaU->idConta ?>"><?= $contaU->descricao ?></option>
+                    <?php endforeach ?>
                 </select>
             </div>
 
             <button type="submit">Filtrar</button>
         </form>
     </div>
-
-
 
 
 <script>
@@ -324,20 +326,37 @@
 </script>
 
 <script>
+    let arrCor = [];
+    const itemCor = document.querySelectorAll('.item-cor');
+    
+    function generateColor() {
+
+        const letters = '0123456789ABCDEF';
+        let color = '#';
+
+        for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+        }
+
+        return color;
+    }
+
+    for (let index = 0; index < itemCor.length; index++) {
+        let corGerada = generateColor();
+        itemCor[index].style.backgroundColor = corGerada;
+        arrCor.push(corGerada);
+    }
+
     const data = {
-        labels: [
-            'Categoria1',
-            'Categoria2',
-            'Categoria3'
-        ],
+        labels: [<?= $arr_nomeCate ?>],
         datasets: [{
             label: 'My First Dataset',
-            data: [300.21, 50, 100],
-            backgroundColor: [
-            'rgb(255, 99, 132)',
-            'rgb(54, 162, 235)',
-            'rgb(255, 205, 86)'
-            ],
+            data: [<?= $arr_total ?>],
+            backgroundColor: arrCor
+            // ['rgb(255, 99, 132)',
+            // 'rgb(54, 162, 235)',
+            // 'rgb(255, 205, 86)']
+            ,
             hoverOffset: 4
         }]
     };
@@ -351,7 +370,15 @@
                 legend: {
                     display: false
                 }
-            }
+            },
+            tooltips: {
+                callbacks: {
+                    label: function(tooltipItem, data) {
+                        return tooltipItem.data.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                    }
+                }
+            } 
+            //,cutout: 160 //esperssura do gráfico
         }
     };
     const myChart = new Chart(
