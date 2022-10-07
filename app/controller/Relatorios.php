@@ -5,12 +5,150 @@ namespace app\controller;
 use app\helpers\Validacao;
 use app\model\Transaction;
 use app\helpers\FlashMessage;
+use app\model\entity\Categoria;
 use app\session\Usuario as UsuarioSession;
 use app\model\entity\Conta as ContaModel;
 use app\model\entity\Transacao;
+use app\model\entity\Usuario;
 
 class Relatorios extends BaseController
 {
+    private function getDatasDoMes()
+    {
+        $inicio = date('Y-m').'-01';
+        $final  = getDataFinalMesAtual();
+        $finalCerto = new \DateTime($final);
+        $finalCerto->modify('+1 day');
+
+    
+        $periodo = new \DatePeriod(
+            new \DateTime($inicio),
+            new \DateInterval('P1D'),
+            new \DateTime($finalCerto->format('Y-m-d')),
+        );
+        
+        $arrDate = [];
+        
+        foreach ($periodo as $key => $value) {
+            $arrDate[] = $value->format('Y-m-d');
+        }
+
+        $arrFlip = array_flip($arrDate);
+        $arrFlip = array_map(function(){return '0.00';},$arrFlip);
+
+        return $arrFlip;
+    }
+    //=========================================================================================
+    //Mostra Relatórios no gráfico de linha
+    //=========================================================================================
+    public function linha()
+    {
+        UsuarioSession::deslogado();
+        
+        $dados = [
+            'usuario_logado' => UsuarioSession::get('nome'),
+            'msg' => FlashMessage::get()
+        ];
+        
+        
+        //RETORNA TODAS AS CONTAS/CATEGORIAS DO USUÁRIO
+        try {
+            Transaction::open('db');
+
+            $dados['contas_usuario'] = ContaModel::loadAll(UsuarioSession::get('id'));
+            $dados['categorias_usuario'] = Categoria::loadAll(UsuarioSession::get('id'));
+
+            Transaction::close();
+        } catch (\Exception $e) {
+            Transaction::rollback();
+        }
+
+        //LISTANDO DESPESAS POR CATEGORIAS
+        if(empty($_POST))
+        {
+            try {
+                Transaction::open('db');
+
+                $sql = "SELECT data_trans,SUM(valor) AS total FROM transacao WHERE tipo = 'despesa' AND id_usuario = ".UsuarioSession::get('id')." AND MONTH(data_trans) = MONTH(CURDATE()) AND YEAR(data_trans) = YEAR(CURDATE()) GROUP BY DATE_FORMAT(data_trans, '%Y%m%d')";
+
+                $conn = Transaction::get();
+
+                $resultado = $conn->query($sql);
+
+                $resultado = $resultado->fetchAll(\PDO::FETCH_ASSOC);
+
+                Transaction::close();
+
+                $arrCombine = array_combine(array_column($resultado,'data_trans'),array_column($resultado,'total'));
+
+                $arrDataTotal= array_merge($this->getDatasDoMes(),$arrCombine);
+
+                $arrKeys = array_map(function($a){return formataDataBR($a);},array_keys($arrDataTotal));
+
+                $arrDataTotal = array_combine($arrKeys,$arrDataTotal);
+
+                
+                $dados['despesa_por_categoria'] = $resultado;
+                $dados['arr_dados'] = $arrDataTotal;
+               
+                
+            } catch (\Exception $e) {
+                Transaction::rollback();
+            }
+        }
+        
+        //Caso O usuário utilize o filtro
+        if(!empty($_POST))
+        {
+            $sql = '';
+            
+            //FILTRAR PELA DATA
+            $filtroData = '';
+            switch($_POST['dataRadio'])
+            {
+                case 'dataMesAno':
+                    $filtroData = "MONTH(t.data_trans) = MONTH('{$_POST['mesAno']}-01') AND YEAR(t.data_trans) = YEAR('{$_POST['mesAno']}-01') ";
+                    break;
+                case 'dataPeriodo':
+                    $filtroData = "DATE(t.data_trans) BETWEEN DATE('{$_POST['dataInicio']}') AND DATE('{$_POST['dataFim']}')";
+                    break;
+                case 'dataAno':
+                    $filtroData = "YEAR(data_trans) = YEAR('{$_POST['ano']}')";
+                    break;
+            }
+
+            //SITUAÇÃO EFETUADAS E PENDENTES
+            $situacao = '';
+            switch($_POST['situacao'])
+            {
+                case 'todas':
+                    $situacao = '';
+                    break;
+                case 'efetuadas':
+                    $situacao = " AND t.status_trans = 'fechado' ";
+                    break;
+                case 'pendentes':
+                    $situacao = " AND t.status_trans = 'pendente' ";
+                    break;
+            }
+
+            //CONTA
+            $conta = $_POST['conta'] == 0 ? '' : " AND id_conta = {$_POST['conta']}";
+
+            //CATEGORIA
+            $categoria = $_POST['categoria'] == 0 ? '' : " AND id_conta = {$_POST['conta']}";
+
+
+    }
+
+        $this->view([
+            'templates/header',
+            'relatorios/relatorio_linha',
+            'templates/footer'
+        ],$dados);
+    }
+
+
     //=========================================================================================
     //Mostra Relatórios no gráfico de pizza
     //=========================================================================================
@@ -40,7 +178,7 @@ class Relatorios extends BaseController
             try {
                 Transaction::open('db');
 
-                $sql = "SELECT t.id_categoria,c.nome,SUM(t.valor) as total FROM transacao as t INNER JOIN categoria as c ON t.id_categoria = c.idCategoria WHERE t.tipo = 'despesa' AND t.id_usuario = 1 AND MONTH(t.data_trans) = MONTH(CURDATE()) AND YEAR(t.data_trans) = YEAR(CURDATE()) GROUP BY t.id_categoria";
+                $sql = "SELECT t.id_categoria,c.nome,SUM(t.valor) as total FROM transacao as t INNER JOIN categoria as c ON t.id_categoria = c.idCategoria WHERE t.tipo = 'despesa' AND t.id_usuario = ".UsuarioSession::get("id")." AND MONTH(t.data_trans) = MONTH(CURDATE()) AND YEAR(t.data_trans) = YEAR(CURDATE()) GROUP BY t.id_categoria";
 
                 $conn = Transaction::get();
 

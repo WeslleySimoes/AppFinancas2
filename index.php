@@ -61,6 +61,7 @@
 
 	// Relatórios
 	$rota->add('/relatorios','relatorios@index');
+	$rota->add('/relatorios/linha','relatorios@linha');
 
 	
 	// Deslogar

@@ -1,14 +1,5 @@
 <?php 
 
-if(!empty($_GET))
-{
-    echo '<pre>';
-    var_dump($_GET);
-    echo '</pre>';
-}
-
-
-
 $period = new DatePeriod(
     new DateTime('2022-09-29'),
     new DateInterval('P1D'),
@@ -353,10 +344,10 @@ console.log(getWeekFromStartDay(-7));
             
            
             const data = {
-                labels: [<?= $arrFinal ?>],
+                labels:  [<?= "'".implode("','",$arr_data)."'" ?>],
                 datasets: [{
                     //label: 'My First Dataset',
-                    data: [65.25, 59.5, 80.58, 81.35, 56.15, 55.25, 40.8],
+                    data: [<?= "'".implode("','",$arr_total)."'" ?>],
                     fill: false,
                     borderColor: 'rgb(255,0,0)',
                     tension: 0.1

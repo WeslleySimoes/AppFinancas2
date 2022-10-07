@@ -45,14 +45,14 @@ function getSDMA()
 
 
 /*FORMATA DATA PARA MODELO BRASILEIRO*/
-function formataDataBR($data)
+function formataDataBR($data,$formato = 'd/m/Y')
 {
     $data = new \DateTime($data);
-    return $data->format('d/m/Y');
+    return $data->format($formato);
 }
 
 //Retorna a data final de mês atual
-function getDataFinalMesAtual($data = null)
+function getDataFinalMesAtual($data = null,$soma = 0)
 {
     if($data)
     {
@@ -65,11 +65,13 @@ function getDataFinalMesAtual($data = null)
         $ano = date("Y"); // Ano atual
     }
     $ultimo_dia = date("t", mktime(0,0,0,$mes,'01',$ano)); // Mágica, plim!
+    $ultimo_dia+= $soma;
 
     if($data)
     {
         return $ultimo_dia;    
     }
+
     return date('Y-m')."-{$ultimo_dia}";
 }
 
@@ -82,3 +84,23 @@ function diffDataDias($data_fim)
     $dateInterval = $data_inicio->diff($data_fim);
     return $dateInterval->days;
 }
+
+// function getDatasDoMes()
+// {
+//     $inicio = date('Y-m').'-01';
+//     $final  = getDataFinalMesAtual();
+
+//     $period = new \DatePeriod(
+//         new \DateTime('2022-10-31'),
+//         new \DateInterval('P1D'),
+//         new \DateTime('2022-10-01'),
+//     );
+    
+//     $arrDate = [];
+    
+//     foreach ($period as $key => $value) {
+//         $arrDate[] =  $value->format('Y-m-d');
+//     }
+
+//     return $arrDate;
+// }

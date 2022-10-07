@@ -1,4 +1,6 @@
-
+<?php 
+//dd($_POST);
+?>
 <style>
     *{
         padding: 0;
@@ -89,7 +91,7 @@
 
         <div id="links-grafico-relatorios">
             <a href="<?= HOME_URL ?>/relatorios"><i class="fa fa-pie-chart" aria-hidden="true"></i></a>
-            <a href="#linha"><i class="fa fa-line-chart" aria-hidden="true"></i></a>
+            <a href="<?= HOME_URL ?>/relatorios/linha"><i class="fa fa-line-chart" aria-hidden="true"></i></a>
             <a href="#barra"><i class="fa fa-bar-chart" aria-hidden="true"></i></a>
         </div>
     </div>
@@ -106,18 +108,16 @@
             <?php else: ?>
                 Despesas por categoria
             <?php endif; ?>
-
-            
         </h3>
         <h3>
             <?php if(isset($_POST['dataRadio'])): ?>
                 <?php if($_POST['dataRadio'] == 'dataMesAno'): ?>
-                    <?= $_POST['mesAno'] ?>
+                    <?= formataDataBR($_POST['mesAno'],'m/Y') ?>
                 <?php elseif($_POST['dataRadio'] == 'dataPeriodo'): ?>
                     De <?= formataDataBR($_POST['dataInicio']) ?> Até <?= formataDataBR($_POST['dataFim']) ?>
                 <?php endif; ?>
             <?php else: ?>
-                    2022-09
+                    <?= date('m/Y') ?>
             <?php endif; ?>
         </h3>
         <button style="font-size: 25px;" id="filtro-pizza"> <i class="fa fa-filter" aria-hidden="true"></i></button>
@@ -199,19 +199,6 @@
                 <?php endforeach; ?>            
             <?php endif; ?>
 
-            <!-- <div class="item-content-grafico">
-                <span style="background-color: #FF6384;"></span>
-                <div style="width: calc(100% - 50px); ">
-                    <div style="display: flex; justify-content:space-between; ">
-                        <div>Categoria</div>
-                        <div>R$ 0,00</div>
-                    </div>
-                    <div style="display: flex; justify-content:space-between; ">
-                        <div style="font-size: 0.99rem;">Porcentagem</div>
-                        <div style="font-size: 0.99rem;">0%</div>
-                    </div>
-                </div>
-            </div> -->
         </div>
     </div>
 </div>
