@@ -13,17 +13,28 @@ use app\model\entity\Usuario;
 
 class Relatorios extends BaseController
 {
-    private function getDatasDoMes()
+    private function getDatasDoMes($inicioData = null,$finalDAta = null,$periodoData = 'P1D')
     {
-        $inicio = date('Y-m').'-01';
-        $final  = getDataFinalMesAtual();
-        $finalCerto = new \DateTime($final);
-        $finalCerto->modify('+1 day');
+        if(isset($inicioData) and isset($finalDAta))
+        {
+            $inicio = $inicioData;
+            $final  = $finalDAta;
+            
+            $finalCerto = new \DateTime($final);
+            $finalCerto->modify('+1 day');
+        }
+        else{
+            $inicio = date('Y-m').'-01';
+            $final  = getDataFinalMesAtual();
+
+            $finalCerto = new \DateTime($final);
+            $finalCerto->modify('+1 day');
+        }
 
     
         $periodo = new \DatePeriod(
             new \DateTime($inicio),
-            new \DateInterval('P1D'),
+            new \DateInterval($periodoData),
             new \DateTime($finalCerto->format('Y-m-d')),
         );
         
@@ -61,6 +72,7 @@ class Relatorios extends BaseController
             Transaction::close();
         } catch (\Exception $e) {
             Transaction::rollback();
+            FlashMessage::set('Ocorreu um erro!','error','relatorios/linha');
         }
 
         //LISTANDO DESPESAS POR CATEGORIAS
@@ -94,52 +106,237 @@ class Relatorios extends BaseController
                 
             } catch (\Exception $e) {
                 Transaction::rollback();
+                FlashMessage::set('Ocorreu um erro!','error','relatorios/linha');
             }
         }
-        
+
         //Caso O usuário utilize o filtro
         if(!empty($_POST))
         {
-            $sql = '';
+
+            //Obtendo a lista de ids de contas do usuário
+            $arrIdContas = [0];
+
+            foreach ($dados['contas_usuario'] as $cu) {
+                $arrIdContas[] = $cu->idConta;
+            }
+
+            //Obtendo a lista de ids de categorias do usuário
+            $arrIdCategorias = ['todas'];
+
+            foreach ($dados['categorias_usuario'] as $cu) {
+                $arrIdCategorias[] = $cu->idCategoria;
+            }
+
+            $v = new Validacao;
+
+            if(isset($_POST['dataRadio']))
+            {
+                if($_POST['dataRadio'] == 'dataMesAno')
+                {
+                    if(isset($_POST['mesAno']))
+                    {
+                        $v->setCampo('Data mês')
+                            ->data($_POST['mesAno'],'Y-m');
+                    }
+                    else{
+                        FlashMessage::set('Data não especificada!','error','relatorios/linha');
+                    }
+                }
+                else if($_POST['dataRadio'] == 'dataPeriodo')
+                {
+                    if(isset($_POST['dataInicio']) and isset($_POST['dataFim']) )
+                    {
+                        $v->setCampo('dataInicio')
+                            ->data($_POST['dataInicio'],'Y-m-d');
+
+                        $v->setCampo('dataFim')
+                            ->data($_POST['dataFim'],'Y-m-d');
+                        
+                        $v->setCampo('Data inicio e data Fim')
+                            ->compararData($_POST['dataInicio'],$_POST['dataFim'],'maior');
+                        
+                        $v->setCampo('Periodo')
+                            ->diffMesesDatas($_POST['dataInicio'],$_POST['dataFim'],2);
+                    }
+                    else{
+                        FlashMessage::set('Data não especificada!','error','relatorios/linha');
+                    }
+                }
+                else if($_POST['dataRadio'] == 'dataAno')
+                {   
+                    $v->setCampo('Ano')
+                        ->data($_POST['ano'],'Y');
+                }
+                else{
+                    FlashMessage::set('Data não especificada!','error','relatorios/linha');
+                }
+            }   
+            else{
+                FlashMessage::set('Data não especificada!','error','relatorios/linha');
+            }
+
+            $v->setCampo('Selecione')
+                ->select($_POST['selecione'],['despesas','receitas']);
+
+            $v->setCampo('Situação')
+                ->select($_POST['situacao'],['todas','efetuadas','pendentes']);
             
-            //FILTRAR PELA DATA
-            $filtroData = '';
-            switch($_POST['dataRadio'])
+            $v->setCampo('Conta')
+                ->select($_POST['conta'],$arrIdContas);
+            
+            $v->setCampo('categoria')
+                ->select($_POST['categoria'],$arrIdCategorias);
+            
+            if($v->validar())
             {
-                case 'dataMesAno':
-                    $filtroData = "MONTH(t.data_trans) = MONTH('{$_POST['mesAno']}-01') AND YEAR(t.data_trans) = YEAR('{$_POST['mesAno']}-01') ";
-                    break;
-                case 'dataPeriodo':
-                    $filtroData = "DATE(t.data_trans) BETWEEN DATE('{$_POST['dataInicio']}') AND DATE('{$_POST['dataFim']}')";
-                    break;
-                case 'dataAno':
-                    $filtroData = "YEAR(data_trans) = YEAR('{$_POST['ano']}')";
-                    break;
-            }
-
-            //SITUAÇÃO EFETUADAS E PENDENTES
-            $situacao = '';
-            switch($_POST['situacao'])
-            {
-                case 'todas':
-                    $situacao = '';
-                    break;
-                case 'efetuadas':
-                    $situacao = " AND t.status_trans = 'fechado' ";
-                    break;
-                case 'pendentes':
-                    $situacao = " AND t.status_trans = 'pendente' ";
-                    break;
-            }
-
-            //CONTA
-            $conta = $_POST['conta'] == 0 ? '' : " AND id_conta = {$_POST['conta']}";
-
-            //CATEGORIA
-            $categoria = $_POST['categoria'] == 0 ? '' : " AND id_conta = {$_POST['conta']}";
-
-
-    }
+                $sql = '';
+                
+                //FILTRAR PELA DATA
+                $filtroData = '';
+                switch($_POST['dataRadio'])
+                {
+                    case 'dataMesAno':
+                        $filtroData = "MONTH(data_trans) = MONTH('{$_POST['mesAno']}-01') AND YEAR(data_trans) = YEAR('{$_POST['mesAno']}-01') ";
+                        break;
+                    case 'dataPeriodo':
+                        $filtroData = "DATE(data_trans) BETWEEN DATE('{$_POST['dataInicio']}') AND DATE('{$_POST['dataFim']}')";
+                        break;
+                    case 'dataAno':
+                        $filtroData = "YEAR(data_trans) = YEAR('{$_POST['ano']}-01-01')";
+                        break;
+                }
+    
+                //SITUAÇÃO EFETUADAS E PENDENTES
+                $situacao = '';
+                switch($_POST['situacao'])
+                {
+                    case 'todas':
+                        $situacao = '';
+                        break;
+                    case 'efetuadas':
+                        $situacao = " AND status_trans = 'fechado' ";
+                        break;
+                    case 'pendentes':
+                        $situacao = " AND status_trans = 'pendente' ";
+                        break;
+                }
+             
+                //SELECIONE
+                $selecione = $_POST['selecione'] == 'despesas' ? " AND tipo = 'despesa'" : " AND tipo = 'receita'";
+                
+                //CONTA
+                $contaSQL = $_POST['conta'] == "0" ? "" : " AND id_conta = {$_POST['conta']}";
+    
+                //CATEGORIA
+                $categoria = $_POST['categoria'] == "todas" ? "" : " AND id_categoria = {$_POST['categoria']}";
+    
+            
+                switch($_POST['dataRadio'])
+                {
+                    case 'dataMesAno':
+                        $sql = "SELECT data_trans,SUM(valor) AS total FROM transacao WHERE id_usuario = ".UsuarioSession::get('id')."{$situacao} {$selecione} {$contaSQL} {$categoria} AND {$filtroData} GROUP BY DATE_FORMAT(data_trans, '%Y%m%d')";
+                        break;
+                    case 'dataPeriodo':
+                        $sql = "SELECT data_trans,SUM(valor) AS total FROM transacao WHERE id_usuario = ".UsuarioSession::get('id')."{$situacao} {$selecione} {$contaSQL} {$categoria} AND {$filtroData} GROUP BY DATE_FORMAT(data_trans, '%Y%m%d')";
+                        break;
+                    case 'dataAno':
+                        $sql = "SELECT data_trans,SUM(valor) AS total FROM transacao WHERE id_usuario = ".UsuarioSession::get('id')."{$situacao} {$selecione} {$contaSQL} {$categoria} AND {$filtroData} GROUP BY DATE_FORMAT(data_trans, '%Y%m')";
+                        break;
+                }   
+    
+                try {
+                    Transaction::open('db');
+    
+                    $conn = Transaction::get();
+    
+                    $resultado = $conn->query($sql);
+    
+                    $resultado = $resultado->fetchAll(\PDO::FETCH_ASSOC);
+    
+                    Transaction::close();               
+                    
+                } catch (\Exception $e) {
+                    Transaction::rollback();
+                    FlashMessage::set('Ocorreu um erro!','error','relatorios/linha');
+                }
+    
+                if(isset($_POST['dataRadio']) and $_POST['dataRadio'] == 'dataAno')
+                {
+                    //dd($resultado);
+                    $meses = $this->getDatasDoMes($_POST['ano'].'-01-01',$_POST['ano'].'-12-01','P1M');
+    
+                    $arrCombine = array_combine(array_column($resultado,'data_trans'),array_column($resultado,'total'));
+    
+                    $arrFinal = [];
+    
+    
+                    foreach ($meses as $mes => $valor) {
+                        $bandeira = true;
+                        foreach ($arrCombine as $data => $value) {
+                            $data1 = explode('-',$data);
+                            $mes1 = explode('-',$mes);
+    
+                            if($data1[0] == $mes1[0] AND $data1[1] == $mes1[1])
+                            {
+                                unset($meses[$mes]);
+                                $meses[$data] = $value;
+                                $bandeira = false;
+    
+                                $monthName = strftime("%B", strtotime($data));
+    
+                                $arrFinal[$monthName] = $value;
+    
+                                break;
+                            }
+                        }      
+                        
+                        if($bandeira)
+                        {
+                         
+                            $monthName = utf8_encode(strftime("%B", strtotime($mes)));
+    
+                            $arrFinal[$monthName] = $valor;
+                        }
+                    }
+    
+                    $dados['arr_dados'] = empty($resultado) ? $meses  : $arrFinal;
+                }
+                else{
+                    if(isset($_POST['dataRadio']) and $_POST['dataRadio'] == 'dataPeriodo')
+                    {
+                        $arrCombine = array_combine(array_column($resultado,'data_trans'),array_column($resultado,'total'));
+                        
+                        $arrDataTotal= array_merge($this->getDatasDoMes($_POST['dataInicio'],$_POST['dataFim']),$arrCombine);
+                        
+                        $arrKeys = array_map(function($a){return formataDataBR($a);},array_keys($arrDataTotal));
+                        
+                        $arrDataTotal = array_combine($arrKeys,$arrDataTotal);
+                        
+                        $dados['arr_dados'] = empty($resultado) ? $this->getDatasDoMes($_POST['dataInicio'],$_POST['dataFim']) : $arrDataTotal;
+                    }
+                    else{ 
+    
+    
+                        $arrCombine = array_combine(array_column($resultado,'data_trans'),array_column($resultado,'total'));
+        
+                        $inicio = $_POST['mesAno'].'-01';
+                        $fim    = $_POST['mesAno'].'-'.getDataFinalMesAtual($_POST['mesAno'].'-01');
+    
+                        $arrDataTotal= array_merge($this->getDatasDoMes($inicio,$fim),$arrCombine);
+    
+                        
+                        $arrKeys = array_map(function($a){return formataDataBR($a);},array_keys($arrDataTotal));
+        
+                        $arrDataTotal = array_combine($arrKeys,$arrDataTotal);
+    
+                        $dados['arr_dados'] = empty($resultado) ? $this->getDatasDoMes($inicio,$fim) : $arrDataTotal;
+                    }
+                }
+            } else{
+                FlashMessage::set($v->getMsgErros(),'error',"relatorios/linha");
+            } 
+        }
 
         $this->view([
             'templates/header',
@@ -268,7 +465,7 @@ class Relatorios extends BaseController
                 switch($_POST['dataRadio'])
                 {
                     case 'dataMesAno':
-                        $filtroData = "MONTH(t.data_trans) = MONTH('{$_POST['mesAno']}-01') AND YEAR(t.data_trans) = YEAR('{$_POST['mesAno']}-01') ";
+                        $filtroData = " MONTH(t.data_trans) = MONTH('{$_POST['mesAno']}-01') AND YEAR(t.data_trans) = YEAR('{$_POST['mesAno']}-01') ";
                         break;
                     case 'dataPeriodo':
                         $filtroData = "DATE(t.data_trans) BETWEEN DATE('{$_POST['dataInicio']}') AND DATE('{$_POST['dataFim']}')";

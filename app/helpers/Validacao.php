@@ -27,6 +27,25 @@ class Validacao
 		}
 	}
 
+	public function diffMesesDatas($dataInicio,$dataFim,$max = 2)
+	{
+		$data1text = $dataInicio;
+		$data2text = $dataFim;
+
+		$date1 = new \DateTime($data1text);
+		$date2 = new \DateTime($data2text);
+		//Repare que inverto a ordem, assim terei a subtração da ultima data pela primeira.
+		//Calculando a diferença entre os meses
+		$meses = ((int)$date2->format('m') - (int)$date1->format('m'))
+		//    e somando com a diferença de anos multiplacado por 12
+			+ (((int)$date2->format('y') - (int)$date1->format('y')) * 12);
+
+		if($meses > $max)
+		{
+			$this->setMsgErro("O campo {$this->campoAtual} deve ter uma diferença entre as datas de no máximo {$max} mes(es)!");
+		}
+	}
+
 
 	public function arrayIguais(array $arr1, array $arr2)
 	{

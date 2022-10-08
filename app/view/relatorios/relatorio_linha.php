@@ -92,7 +92,7 @@ if(isset($_POST['selecione']))
 }
 
 </style>
-
+<?= $msg.'</br>' ?>
 <div class="titulo_rela">
 <h3 style="margin-bottom: 20px; color: #263D52;">Relatórios</h3>
 
@@ -129,11 +129,9 @@ if(isset($_POST['selecione']))
 <div class="conteudo3">
     <canvas id="myChart"></canvas>
     <div style="margin: 20px 0px;">
+
         <table style="width: 100%;">
-            <!-- <tr style="text-align: left;">
-                <th>Data</th>
-                <th>Valor</th>
-            </tr> -->
+
             <?php foreach($arr_dados as $data => $valor): ?>
                 <tr>
                     <td><?= $data ?></td>
@@ -145,6 +143,7 @@ if(isset($_POST['selecione']))
                 <th>R$ <?= formatoMoeda(array_sum(array_values($arr_dados))) ?></th>
             </tr>
         </table>
+
     </div>
 </div>
 
