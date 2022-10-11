@@ -99,7 +99,7 @@ if(isset($_POST['selecione']))
     <div id="links-grafico-relatorios">
         <a href="<?= HOME_URL ?>/relatorios"><i class="fa fa-pie-chart" aria-hidden="true"></i></a>
         <a href="<?= HOME_URL ?>/relatorios/linha"><i class="fa fa-line-chart" aria-hidden="true"></i></a>
-        <a href="#barra"><i class="fa fa-bar-chart" aria-hidden="true"></i></a>
+        <a href="<?= HOME_URL ?>/relatorios/barra"><i class="fa fa-bar-chart" aria-hidden="true"></i></a>
     </div>
 </div>
 <div style="padding: 10px; margin-top: 10px;border: 1px solid lightgray; display: flex; justify-content:space-between; align-items: center;">

@@ -565,4 +565,142 @@ class Relatorios extends BaseController
             'templates/footer'
         ],$dados);
     }
+
+
+
+    //=========================================================================================
+    //Mostra Relatórios no gráfico de linha
+    //=========================================================================================
+    public function barra()
+    {
+        UsuarioSession::deslogado();
+
+        $dados = [
+            'usuario_logado' => UsuarioSession::get('nome'),
+            'msg' => FlashMessage::get()
+        ];
+        
+        $dataAno = date('Y-m-d');
+        $anoAtual = date('Y');
+
+        //LISTANDO DESPESAS POR CATEGORIAS
+        if(isset($_GET['ano']))
+        {
+            $dataAno = $_GET['ano'].'-01-01';
+            $anoAtual = $_GET['ano'];
+        }
+
+        try {
+            Transaction::open('db');
+
+            $sqlDespesas = "SELECT data_trans,SUM(valor) as total FROM transacao WHERE id_usuario =".UsuarioSession::get('id')." AND tipo = 'despesa' AND YEAR(data_trans) = YEAR('{$dataAno}') GROUP BY DATE_FORMAT(data_trans, '%Y%m')";
+
+            $sqlReceitas = "SELECT data_trans,SUM(valor) as total FROM transacao WHERE id_usuario =".UsuarioSession::get('id')." AND tipo = 'receita' AND YEAR(data_trans) = YEAR('{$dataAno}') GROUP BY DATE_FORMAT(data_trans, '%Y%m')";
+
+            $conn = Transaction::get();
+
+            $resultadoDespesas = $conn->query($sqlDespesas);
+            $resultadoDespesas = $resultadoDespesas->fetchAll(\PDO::FETCH_ASSOC);
+            
+            $resultadoReceitas = $conn->query($sqlReceitas);
+            $resultadoReceitas = $resultadoReceitas->fetchAll(\PDO::FETCH_ASSOC);
+            Transaction::close();
+
+
+            //Definindo as 'data_trans' como chaves e 'total' como valor das chaves
+            $arrCombineDespesas = array_combine(array_column($resultadoDespesas,'data_trans'),array_column($resultadoDespesas,'total'));
+
+            $arrCombineReceitas = array_combine(array_column($resultadoReceitas,'data_trans'),array_column($resultadoReceitas,'total'));
+
+            $meses = $this->getDatasDoMes($anoAtual.'-01-01',$anoAtual.'-12-01','P1M');
+            $meses2 = $this->getDatasDoMes($anoAtual.'-01-01',$anoAtual.'-12-01','P1M');
+
+            // ARRAY FINAL DE DESPESAS
+            $arrFinalDespesas = [];
+            foreach ($meses as $mes => $valor) {
+                $bandeira = true;
+                foreach ($arrCombineDespesas as $data => $value) {
+                    $data1 = explode('-',$data);
+                    $mes1 = explode('-',$mes);
+
+                    if($data1[0] == $mes1[0] AND $data1[1] == $mes1[1])
+                    {
+                        unset($meses[$mes]);
+                        $meses[$data] = $value;
+                        $bandeira = false;
+
+                        $monthName = strftime("%B", strtotime($data));
+
+                        $arrFinalDespesas[$monthName] = $value;
+
+                        break;
+                    }
+                }      
+                
+                if($bandeira)
+                {
+                    
+                    $monthName = utf8_encode(strftime("%B", strtotime($mes)));
+
+                    $arrFinalDespesas[$monthName] = $valor;
+                }
+            }
+
+            // ARRAY FINAL DE RECEITAS
+
+            $arrFinalReceitas = [];
+            foreach ($meses2 as $mes => $valor) {
+                $bandeira = true;
+                foreach ($arrCombineReceitas as $data => $value) {
+                    $data1 = explode('-',$data);
+                    $mes1 = explode('-',$mes);
+
+                    if($data1[0] == $mes1[0] AND $data1[1] == $mes1[1])
+                    {
+                        unset($meses2[$mes]);
+                        $meses2[$data] = $value;
+                        $bandeira = false;
+
+                        $monthName = strftime("%B", strtotime($data));
+
+                        $arrFinalReceitas[$monthName] = $value;
+
+                        break;
+                    }
+                }      
+                
+                if($bandeira)
+                {
+                    
+                    $monthName = utf8_encode(strftime("%B", strtotime($mes)));
+                    $arrFinalReceitas[$monthName] = $valor;
+                }
+            }
+
+
+            //ARRAY FINAL DE BALANÇO MENSAL
+
+            $arrFinalBalancoMensal = [];
+
+            foreach ($arrFinalDespesas as $mes => $valor) {
+                $arrFinalBalancoMensal[$mes] = floatval(number_format($arrFinalReceitas[$mes] - $valor,2,'.',''));
+            }
+            $dados['arr_despesas'] = $arrFinalDespesas;
+            $dados['arr_receitas'] = $arrFinalReceitas;
+            $dados['arr_balancoMensal'] = $arrFinalBalancoMensal;
+
+        
+        } catch (\Exception $e) {
+            Transaction::rollback();
+            FlashMessage::set('Ocorreu um erro!','error','relatorios/linha');
+        }
+        
+        
+
+        $this->view([
+            'templates/header',
+            'relatorios/relatorio_barra',
+            'templates/footer'
+        ],$dados);
+    }
 }
