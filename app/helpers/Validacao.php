@@ -19,11 +19,21 @@ class Validacao
         return $this;
     }
 
-	public function select(string $valor,array $arr)
+
+	public function select(string $valor,array $arr,$df = true)
 	{
-		if(!in_array($valor,$arr))
+		if($df)
 		{
-			$this->setMsgErro("O campo {$this->campoAtual} está incorreto!");
+			if(!in_array($valor,$arr))
+			{
+				$this->setMsgErro("O campo {$this->campoAtual} está incorreto!");
+			}
+		}
+		else{
+			if(in_array($valor,$arr))
+			{
+				$this->setMsgErro("O campo {$this->campoAtual} está incorreto, poís já existe um mesmo nome cadastrado!");
+			}
 		}
 	}
 
@@ -289,8 +299,22 @@ class Validacao
 				$this->setMsgErro("O campo {$campo[0]} deve ser maior que o campo {$campo[1]}!");
 			}
 		}
-
 	}
+
+	public function is_hex($hex_code) 
+	{
+		if(str_contains($hex_code,'#'))
+		{
+			$hex_code = explode('#',$hex_code)[1];
+		}
+		
+		$resultado = @preg_match("/^[a-f0-9]{2,}$/i", $hex_code) && !(strlen($hex_code) & 1);
+
+		if(!$resultado){
+			$this->setMsgErro("O campo {$this->campoAtual} deve está incorreto!");
+		}
+	}
+
 
 	private function setMsgErro($msg)
 	{

@@ -53,7 +53,7 @@ class FlashMessage
             return $msgFinal;
         }
         
-        return isset($msg) ? "<div class='alert {$msg[0]}-alert'><div>{$msg[1]}</div><Button class='btn-alert-close'>X</Button></div>" : null;  
+        return isset($msg) ? "<div class='alert {$msg[0]}-alert'><div>{$msg[1]}</div><Button class='btn-alert-close'>X</Button></div><br>" : null;  
         
 
         

@@ -41,6 +41,22 @@ class DespesaFixa extends Record
         }
     }
 
+    public function getCorCategoria()
+    {
+        try {   
+            Transaction::open('db');
+
+            $c = Categoria::find($this->data['id_categoria']);
+            return $c->cor_cate;
+
+            Transaction::close();
+
+        } catch (\Exception $e) {
+            Transaction::rollback();
+            echo $e->getMessage();
+        }
+    }
+
     //REMOVER DESPESAS FIXAS/FUTURAS FUTURAS
     public function removeFuturas()
     {

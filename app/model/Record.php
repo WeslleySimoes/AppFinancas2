@@ -255,7 +255,7 @@ abstract class Record
         }
     }
 
-    public static function findBy($culunaValor)
+    public static function findBy($culunaValor,$classe = true)
     {
 
         $classeAtual = get_called_class();
@@ -269,7 +269,13 @@ abstract class Record
             if($result = $conn->query($sql))
             {
                 //retorna os dados em forma de objeto
-                $object = $result->fetchAll(\PDO::FETCH_CLASS,get_called_class());
+                if($classe)
+                {
+                    $object = $result->fetchAll(\PDO::FETCH_CLASS,get_called_class());
+                }
+                else{
+                    $object = $result->fetchAll(\PDO::FETCH_ASSOC);
+                }
             }
 
             return $object ?? NULL;

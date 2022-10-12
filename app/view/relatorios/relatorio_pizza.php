@@ -124,82 +124,90 @@
     </div>
 
     <div class="conteudo2">
+        <?php if(!empty($resultado_valida)): ?>
+            <div class="grafico" style="display: flex; align-items: center; justify-content:center;">
+                <div style="position: absolute; font-size: 1.2rem;">Total: R$ <?= formatoMoeda(array_sum(explode(',',$arr_total))) ?></div>
 
-        <div class="grafico" style="display: flex; align-items: center; justify-content:center;">
-            <div style="position: absolute; font-size: 1.2rem;">Total: R$ <?= formatoMoeda(array_sum(explode(',',$arr_total))) ?></div>
+                <canvas id="graficoPizza" width="300px" height="479" style="display: block; box-sizing: border-box; height: 479px; width: 479px;"></canvas>
+            </div>
 
-            <canvas id="graficoPizza" width="300px" height="479" style="display: block; box-sizing: border-box; height: 479px; width: 479px;"></canvas>
-        </div>
-
-        <div class="content-grafico">
-            <?php if(isset($despesa_por_categoria)): ?>
-                <?php foreach($despesa_por_categoria as $dpc ): ?>
-                    <div class="item-content-grafico">
-                        <span class="item-cor"></span>
-                        <div style="width: calc(100% - 50px); ">
-                            <div style="display: flex; justify-content:space-between; ">
-                                <div><?= $dpc['nome'] ?></div>
-                                <div>R$ <?= formatoMoeda($dpc['total']) ?></div>
-                            </div>
-                            <div style="display: flex; justify-content:space-between; ">
-                                <div style="font-size: 0.99rem;">Porcentagem</div>
-                                <div style="font-size: 0.99rem;"><?= number_format($dpc['total']/array_sum(explode(',',$arr_total))*100,2) ?>%</div>
+            <div class="content-grafico">
+                <?php if(!empty($despesa_por_categoria)): ?>
+                    <?php foreach($despesa_por_categoria as $dpc ): ?>
+                        <div class="item-content-grafico">
+                            <span style="background-color: <?= $dpc['cor_cate']?>"></span>
+                            <div style="width: calc(100% - 50px); ">
+                                <div style="display: flex; justify-content:space-between; ">
+                                    <div><?= $dpc['nome'] ?></div>
+                                    <div>R$ <?= formatoMoeda($dpc['total']) ?></div>
+                                </div>
+                                <div style="display: flex; justify-content:space-between; ">
+                                    <div style="font-size: 0.99rem;">Porcentagem</div>
+                                    <div style="font-size: 0.99rem;"><?= number_format($dpc['total']/array_sum(explode(',',$arr_total))*100,2) ?>%</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                <?php endforeach; ?>
-
-            <?php elseif(isset($despesa_por_conta)): ?>
-                <?php foreach($despesa_por_conta as $dpc ): ?>
-                    <div class="item-content-grafico">
-                        <span class="item-cor"></span>
-                        <div style="width: calc(100% - 50px); ">
-                            <div style="display: flex; justify-content:space-between; ">
-                                <div><?= $dpc['descricao'] ?></div>
-                                <div>R$ <?= formatoMoeda($dpc['total']) ?></div>
-                            </div>
-                            <div style="display: flex; justify-content:space-between; ">
-                                <div style="font-size: 0.99rem;">Porcentagem</div>
-                                <div style="font-size: 0.99rem;"><?= number_format($dpc['total']/array_sum(explode(',',$arr_total))*100,2) ?>%</div>
-                            </div>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-            <?php elseif(isset($receita_por_categoria)): ?>
-                <?php foreach($receita_por_categoria as $dpc ): ?>
-                    <div class="item-content-grafico">
-                        <span class="item-cor"></span>
-                        <div style="width: calc(100% - 50px); ">
-                            <div style="display: flex; justify-content:space-between; ">
-                                <div><?= $dpc['nome'] ?></div>
-                                <div>R$ <?= formatoMoeda($dpc['total']) ?></div>
-                            </div>
-                            <div style="display: flex; justify-content:space-between; ">
-                                <div style="font-size: 0.99rem;">Porcentagem</div>
-                                <div style="font-size: 0.99rem;"><?= number_format($dpc['total']/array_sum(explode(',',$arr_total))*100,2) ?>%</div>
+                    <?php endforeach; ?>
+                <?php elseif(isset($despesa_por_conta)): ?>
+                    <?php foreach($despesa_por_conta as $dpc ): ?>
+                        <div class="item-content-grafico">
+                            <span class="item-cor"></span>
+                            <div style="width: calc(100% - 50px); ">
+                                <div style="display: flex; justify-content:space-between; ">
+                                    <div><?= $dpc['descricao'] ?></div>
+                                    <div>R$ <?= formatoMoeda($dpc['total']) ?></div>
+                                </div>
+                                <div style="display: flex; justify-content:space-between; ">
+                                    <div style="font-size: 0.99rem;">Porcentagem</div>
+                                    <div style="font-size: 0.99rem;"><?= number_format($dpc['total']/array_sum(explode(',',$arr_total))*100,2) ?>%</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                <?php endforeach; ?>
-            <?php elseif(isset($receita_por_conta)): ?>
-                <?php foreach($receita_por_conta as $dpc ): ?>
-                    <div class="item-content-grafico">
-                        <span class="item-cor"></span>
-                        <div style="width: calc(100% - 50px); ">
-                            <div style="display: flex; justify-content:space-between; ">
-                                <div><?= $dpc['descricao'] ?></div>
-                                <div>R$ <?= formatoMoeda($dpc['total']) ?></div>
-                            </div>
-                            <div style="display: flex; justify-content:space-between; ">
-                                <div style="font-size: 0.99rem;">Porcentagem</div>
-                                <div style="font-size: 0.99rem;"><?= number_format($dpc['total']/array_sum(explode(',',$arr_total))*100,2) ?>%</div>
+                    <?php endforeach; ?>
+                <?php elseif(isset($receita_por_categoria)): ?>
+                    <?php foreach($receita_por_categoria as $dpc ): ?>
+                        <div class="item-content-grafico">
+                            <span style="background-color: <?= $dpc['cor_cate']?>"></span>
+                            <div style="width: calc(100% - 50px); ">
+                                <div style="display: flex; justify-content:space-between; ">
+                                    <div><?= $dpc['nome'] ?></div>
+                                    <div>R$ <?= formatoMoeda($dpc['total']) ?></div>
+                                </div>
+                                <div style="display: flex; justify-content:space-between; ">
+                                    <div style="font-size: 0.99rem;">Porcentagem</div>
+                                    <div style="font-size: 0.99rem;"><?= number_format($dpc['total']/array_sum(explode(',',$arr_total))*100,2) ?>%</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                <?php endforeach; ?>            
-            <?php endif; ?>
-
-        </div>
+                    <?php endforeach; ?>
+                <?php elseif(isset($receita_por_conta)): ?>
+                    <?php foreach($receita_por_conta as $dpc ): ?>
+                        <div class="item-content-grafico">
+                            <span class="item-cor"></span>
+                            <div style="width: calc(100% - 50px); ">
+                                <div style="display: flex; justify-content:space-between; ">
+                                    <div><?= $dpc['descricao'] ?></div>
+                                    <div>R$ <?= formatoMoeda($dpc['total']) ?></div>
+                                </div>
+                                <div style="display: flex; justify-content:space-between; ">
+                                    <div style="font-size: 0.99rem;">Porcentagem</div>
+                                    <div style="font-size: 0.99rem;"><?= number_format($dpc['total']/array_sum(explode(',',$arr_total))*100,2) ?>%</div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>                 
+                <?php endif; ?>
+            </div>
+        <?php else: ?>
+            <div class='alert error-alert'><div style="width: 100%;height: 500px; display: flex; align-items: center; justify-content: center;">
+            <p>
+                <div> 
+                    <span style="text-align: center;display:block;">Nenhum dado encontrado!</span> <br>
+                    <a href="<?= HOME_URL ?>/transacoes">Clique aqui para realizar uma transação!</a>
+                </div> 
+            </p>
+            </div></div>
+        <?php endif; ?>
     </div>
 </div>
 
@@ -313,21 +321,23 @@
 </script>
 
 <script>
-    let arrCor = [];
     const itemCor = document.querySelectorAll('.item-cor');
     
     function generateColor() {
-
+        
         const letters = '0123456789ABCDEF';
         let color = '#';
-
+        
         for (let i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
+            color += letters[Math.floor(Math.random() * 16)];
         }
-
+        
         return color;
     }
+    let arrCor = [];
+    let arrCorBD = [<?= $cores ?>];
 
+    
     for (let index = 0; index < itemCor.length; index++) {
         let corGerada = generateColor();
         itemCor[index].style.backgroundColor = corGerada;
@@ -339,11 +349,7 @@
         datasets: [{
             label: 'My First Dataset',
             data: [<?= $arr_total ?>],
-            backgroundColor: arrCor
-            // ['rgb(255, 99, 132)',
-            // 'rgb(54, 162, 235)',
-            // 'rgb(255, 205, 86)']
-            ,
+            backgroundColor:  arrCor.length > 0 ? arrCor : arrCorBD,
             hoverOffset: 4
         }]
     };

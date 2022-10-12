@@ -60,6 +60,23 @@ class Transacao extends Record
         }
     }
 
+
+    public function getCorCategoria()
+    {
+        try {   
+            Transaction::open('db');
+
+            $c = Categoria::find($this->data['id_categoria']);
+            return $c->cor_cate;
+
+            Transaction::close();
+
+        } catch (\Exception $e) {
+            Transaction::rollback();
+            echo $e->getMessage();
+        }
+    }
+
     //obter nome de categoria
     public function getDescricaoConta()
     {

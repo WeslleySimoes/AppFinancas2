@@ -10,6 +10,11 @@
 ?>
 
 
+<!-- ONDE IRÁ MOSTRAR AS MENSAGENS DE SUCESSOS OU DE ERROS -->
+<?= $msg ?>
+<!-- ----------------------------------------------------- -->
+
+
 <!-- FIM POPUP FORM -->
 
   <h3 style="margin-bottom: 20px; color: #263D52;">
@@ -113,7 +118,7 @@
         <?php if($tc->tipo == 'transferencia'): ?>
           <td> <span style="width: 15px; height: 15px;display:inline-block;border-radius: 50%; margin-right: 5px; background-color:grey;"></span>transferência</td>
         <?php else: ?>
-          <td><span style="width: 15px; height: 15px;display:inline-block;border-radius: 50%; margin-right: 5px; background-color:coral;"></span><?= $tc->getNomeCategoria() ?></td>
+          <td><span style="width: 15px; height: 15px;display:inline-block;border-radius: 50%; margin-right: 5px; background-color:<?=  $tc->getCorCategoria() ?>;"></span><?= $tc->getNomeCategoria() ?></td>
         <?php endif ?>
 
         
@@ -271,10 +276,30 @@
         <!-- LISTAGEM DE RECEITAS FIXAS OU PARCELADAS  -->
         <?php if($arr_dados[0] == 'receitas'): ?>
 
-        <td><?= ucfirst($dados->status_rec) ?></td>
+        <td style="display: flex; justify-content:center;">
+          <?php if($dados->status_rec == 'fechado'): ?>
+             <!-- INÍCIO DO TOOLTIP -->
+             <div class="tooltip"> 
+               <i class="fa fa-lock" aria-hidden="true" style="font-size: 25px; color:red; "></i>     
+                <span class="tooltiptext">
+                  Encerrado
+                </span>
+              </div>
+              <!-- FINAL DO TOOLTIP  -->
+          <?php else: ?>
+             <!-- INÍCIO DO TOOLTIP -->
+             <div class="tooltip"> 
+               <i class="fa fa-unlock" aria-hidden="true" style="font-size: 25px; color:#5cb353;"></i>
+                <span class="tooltiptext">
+                  Em aberto
+                </span>
+              </div>
+              <!-- FINAL DO TOOLTIP  -->
+          <?php endif; ?>
+        </td>
         <td>R$ <?= formatoMoeda($dados->valor) ?></td>
         <td><?= ucfirst($dados->descricao) ?></td>
-        <td><?= $dados->getNomeCategoria() ?></td>
+        <td><span style="width: 15px; height: 15px;display:inline-block;border-radius: 50%; margin-right: 5px; background-color:<?=  $dados->getCorCategoria() ?>;"></span><?= $dados->getNomeCategoria() ?></td>
         <td><?= formataDataBR($dados->data_inicio) ?></td>
 
         <?php if($dados->data_fim == '0000-00-00'): ?>
@@ -333,10 +358,30 @@
         <!-- LISTAGEM DE DESPESAS FIXAS OU PARCELADAS  -->
         <?php else: ?>
 
-          <td><?= ucfirst($dados->status_desp) ?></td>
+          <td style="display: flex; justify-content:center;">
+          <?php if($dados->status_desp == 'fechado'): ?>
+             <!-- INÍCIO DO TOOLTIP -->
+             <div class="tooltip"> 
+               <i class="fa fa-lock" aria-hidden="true" style="font-size: 25px; color:red; "></i>     
+                <span class="tooltiptext">
+                  Encerrado
+                </span>
+              </div>
+              <!-- FINAL DO TOOLTIP  -->
+          <?php else: ?>
+             <!-- INÍCIO DO TOOLTIP -->
+             <div class="tooltip"> 
+               <i class="fa fa-unlock" aria-hidden="true" style="font-size: 25px; color:#5cb353;"></i>
+                <span class="tooltiptext">
+                  Em aberto
+                </span>
+              </div>
+              <!-- FINAL DO TOOLTIP  -->
+          <?php endif; ?>
+        </td>
           <td>R$ <?= formatoMoeda($dados->valor) ?></td>
           <td><?= ucfirst($dados->descricao) ?></td>
-          <td><?= $dados->getNomeCategoria() ?></td>
+          <td><span style="width: 15px; height: 15px;display:inline-block;border-radius: 50%; margin-right: 5px; background-color:<?=  $dados->getCorCategoria() ?>;"></span><?= $dados->getNomeCategoria() ?></td>
           <td><?= formataDataBR($dados->data_inicio) ?></td>
 
           <?php if($dados->data_fim == '0000-00-00'): ?>
@@ -444,9 +489,6 @@
 
 <!-- </div> -->
 
-<!-- ONDE IRÁ MOSTRAR AS MENSAGENS DE SUCESSOS OU DE ERROS -->
-<?= $msg ?>
-<!-- ----------------------------------------------------- -->
 
 <script>
 /* When the user clicks on the button, 

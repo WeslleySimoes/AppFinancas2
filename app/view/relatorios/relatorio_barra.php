@@ -113,8 +113,9 @@
     </style>
 </head>
 <body>
+<?= $msg ?>
 <div class="titulo_rela">
-    <h1 style="color: #263D52;">Relatórios</h1>
+    <h3 style="margin-bottom: 20px; color: #263D52;">Relatórios</h3>
 
     <div id="links-grafico-relatorios">
         <a href="<?= HOME_URL ?>/relatorios"><i class="fa fa-pie-chart" aria-hidden="true"></i></a>
@@ -156,7 +157,7 @@
             </tr>
             <?php foreach ($arr_despesas as $mes => $valor): ?>
                 <tr>
-                    <td style="font-weight:600;"><?= $mes ?></td>
+                    <td style="font-weight:600;"><?= ucfirst($mes) ?></td>
                     <td style="color:#1b8716;font-weight:600;">R$ <?= formatoMoeda($arr_receitas[$mes]) ?></td>
                     <td style="color: #ff3232;font-weight:600;">R$ <?= formatoMoeda($valor) ?></td>
                     <td style="color:#2986cc; font-weight:600;">R$ <?= formatoMoeda($arr_balancoMensal[$mes]) ?></td>

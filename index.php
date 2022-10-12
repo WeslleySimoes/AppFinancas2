@@ -42,6 +42,7 @@
 	// Area de categorias
 	$rota->add('/categorias','categoria@index');
 	$rota->add('/categorias/cadastrar','categoria@cadastrar');
+	$rota->add('/categorias/editar','categoria@editar');
 
 	// Transferencias
 	$rota->add('/transferencia/cadastrar','transferencia@cadastrar');

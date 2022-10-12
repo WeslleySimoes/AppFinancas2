@@ -375,7 +375,7 @@ class Relatorios extends BaseController
             try {
                 Transaction::open('db');
 
-                $sql = "SELECT t.id_categoria,c.nome,SUM(t.valor) as total FROM transacao as t INNER JOIN categoria as c ON t.id_categoria = c.idCategoria WHERE t.tipo = 'despesa' AND t.id_usuario = ".UsuarioSession::get("id")." AND MONTH(t.data_trans) = MONTH(CURDATE()) AND YEAR(t.data_trans) = YEAR(CURDATE()) GROUP BY t.id_categoria";
+                $sql = "SELECT t.id_categoria,c.nome,c.cor_cate,SUM(t.valor) as total FROM transacao as t INNER JOIN categoria as c ON t.id_categoria = c.idCategoria WHERE t.tipo = 'despesa' AND t.id_usuario = ".UsuarioSession::get("id")." AND MONTH(t.data_trans) = MONTH(CURDATE()) AND YEAR(t.data_trans) = YEAR(CURDATE()) GROUP BY t.id_categoria";
 
                 $conn = Transaction::get();
 
@@ -385,12 +385,11 @@ class Relatorios extends BaseController
 
                 Transaction::close();
 
-
+                $dados['resultado_valida'] = $resultado;
                 $dados['despesa_por_categoria'] = $resultado;
                 $dados['arr_total'] = implode(',',array_column($resultado,'total'));
                 $dados['arr_nomeCate'] = "'".implode("','",array_column($resultado,'nome'))."'";
-
-
+                $dados['cores'] = "'".implode("','",array_column($resultado,'cor_cate'))."'";
 
             } catch (\Exception $e) {
                 Transaction::rollback();
@@ -495,13 +494,13 @@ class Relatorios extends BaseController
                 switch($_POST['filtrarPor'])
                 {
                     case 1:
-                        $sql = "SELECT t.id_categoria,c.nome,SUM(t.valor) as total FROM transacao as t INNER JOIN categoria as c ON t.id_categoria = c.idCategoria WHERE t.tipo = 'despesa' AND t.id_usuario = ".UsuarioSession::get('id')." AND {$filtroData} {$situacao} {$conta} GROUP BY t.id_categoria";
+                        $sql = "SELECT t.id_categoria,c.nome,c.cor_cate,SUM(t.valor) as total FROM transacao as t INNER JOIN categoria as c ON t.id_categoria = c.idCategoria WHERE t.tipo = 'despesa' AND t.id_usuario = ".UsuarioSession::get('id')." AND {$filtroData} {$situacao} {$conta} GROUP BY t.id_categoria";
                         break;
                     case 2:
                         $sql = "SELECT t.id_conta,c.descricao,SUM(t.valor)  as total FROM transacao as t INNER JOIN conta AS c ON t.id_conta = c.idConta WHERE t.tipo = 'despesa' AND t.id_usuario = ".UsuarioSession::get('id')." AND {$filtroData} {$situacao} {$conta} GROUP BY t.id_conta";
                         break;
                     case 3:
-                        $sql = "SELECT t.id_categoria,c.nome,SUM(t.valor)  as total FROM transacao as t INNER JOIN categoria as c ON t.id_categoria = c.idCategoria WHERE t.tipo = 'receita' AND t.id_usuario = ".UsuarioSession::get('id')." AND {$filtroData} {$situacao} {$conta} GROUP BY t.id_categoria";
+                        $sql = "SELECT t.id_categoria,c.nome,c.cor_cate,SUM(t.valor)  as total FROM transacao as t INNER JOIN categoria as c ON t.id_categoria = c.idCategoria WHERE t.tipo = 'receita' AND t.id_usuario = ".UsuarioSession::get('id')." AND {$filtroData} {$situacao} {$conta} GROUP BY t.id_categoria";
                         break;
                     case 4:
                         $sql = "SELECT t.id_conta,c.descricao,SUM(t.valor)  as total FROM transacao as t INNER JOIN conta AS c ON t.id_conta = c.idConta WHERE t.tipo = 'receita' AND t.id_usuario = ".UsuarioSession::get('id')." AND {$filtroData} {$situacao} {$conta} GROUP BY t.id_conta";
@@ -522,7 +521,7 @@ class Relatorios extends BaseController
                     $resultado = $resultado->fetchAll(\PDO::FETCH_ASSOC);
 
                     Transaction::close();
-
+                  //  dd($resultado);
 
                 } catch (\Exception $e) {
                     Transaction::rollback();
@@ -532,24 +531,32 @@ class Relatorios extends BaseController
                 switch($_POST['filtrarPor'])
                 {
                     case 1:
+                    $dados['resultado_valida'] = $resultado;
                     $dados['despesa_por_categoria'] = $resultado;
                     $dados['arr_total'] = implode(',',array_column($resultado,'total'));
                     $dados['arr_nomeCate'] = "'".implode("','",array_column($resultado,'nome'))."'";
+                    $dados['cores'] = "'".implode("','",array_column($resultado,'cor_cate'))."'";
                     break;
                     case 2:
+                    $dados['resultado_valida'] = $resultado;
                     $dados['despesa_por_conta'] = $resultado;
                     $dados['arr_total'] = implode(',',array_column($resultado,'total'));
                     $dados['arr_nomeCate'] = "'".implode("','",array_column($resultado,'descricao'))."'";
+                    $dados['cores'] = "";
                     break;
                     case 3:
+                    $dados['resultado_valida'] = $resultado;
                     $dados['receita_por_categoria'] = $resultado;
                     $dados['arr_total'] = implode(',',array_column($resultado,'total'));
                     $dados['arr_nomeCate'] = "'".implode("','",array_column($resultado,'nome'))."'";
+                    $dados['cores'] = "'".implode("','",array_column($resultado,'cor_cate'))."'";
                     break;
                     case 4:
+                    $dados['resultado_valida'] = $resultado;
                     $dados['receita_por_conta'] = $resultado;
                     $dados['arr_total'] = implode(',',array_column($resultado,'total'));
                     $dados['arr_nomeCate'] = "'".implode("','",array_column($resultado,'descricao'))."'";
+                    $dados['cores'] = "";
                     break;
                 }
 
@@ -586,6 +593,11 @@ class Relatorios extends BaseController
         //LISTANDO DESPESAS POR CATEGORIAS
         if(isset($_GET['ano']))
         {
+            if(!filter_input(INPUT_GET,'ano',FILTER_VALIDATE_INT))
+            {
+                FlashMessage::set('Ano definido está incorreto!','error','relatorios/barra');
+            }
+   
             $dataAno = $_GET['ano'].'-01-01';
             $anoAtual = $_GET['ano'];
         }

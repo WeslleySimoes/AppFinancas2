@@ -131,10 +131,13 @@ if(isset($_POST['selecione']))
     <div style="margin: 20px 0px;">
 
         <table style="width: 100%;">
-
+            <tr style="text-align: left;">
+                <th>Data</th>
+                <th>Valor</th>
+            </tr>
             <?php foreach($arr_dados as $data => $valor): ?>
                 <tr>
-                    <td><?= $data ?></td>
+                    <td><?= ucfirst($data) ?></td>
                     <td style="width: 50%;">R$ <?= formatoMoeda($valor) ?></td>
                 </tr>
             <?php endforeach; ?>
