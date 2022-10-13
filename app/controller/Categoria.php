@@ -20,26 +20,73 @@ class Categoria extends BaseController
             'msg'=> FlashMessage::get()
         ];
 
+        unset($_GET['categorias']);
+
+        $where = " AND status_cate = 'ativo'";
+
+        if(!empty($_GET))
+        {
+            $arquivadas = htmlspecialchars(filter_input(INPUT_GET,'status'));
+            $arquivadas = $arquivadas == 'arquivado' ? $arquivadas : '';
+
+            $tipo = htmlspecialchars(filter_input(INPUT_GET,'tipo'));
+            $tipo = in_array($tipo,['despesa','receita']) ? $tipo : '';
+    
+            $condicoes = [
+                strlen($arquivadas) ? " status_cate = '{$arquivadas}'" : "status_cate = 'ativo'",
+                strlen($tipo) ? " tipo = '{$tipo}'" : ''
+            ];
+    
+            $condicoes = array_filter($condicoes);
+    
+            $where = strlen(implode(" AND ",$condicoes)) ? "AND ".implode(" AND ",$condicoes) : '';
+        }
+
         try {
             Transaction::open('db');
-                
-            $categoria = CategoriaModel::loadAll(UsuarioSession::get('id'));
 
-            $categoriasAtivas = CategoriaModel::findBy("id_usuario = ".UsuarioSession::get('id')." AND status_cate = 'ativo'");
+            $pg = isset($_GET['pg']) ? intval($_GET['pg']) : 1;
+            $dados['pg_atual'] = $pg;
+
+            unset($_GET['categorias']);
+            unset($_GET['pg']);
+    
+            $dados['query_get'] = http_build_query($_GET);
+
+            $categoriasAtivas = CategoriaModel::findBy("id_usuario = ".UsuarioSession::get('id')." {$where}");
+  
+            //Obtendo total de categorias
+            $totalCate = count($categoriasAtivas);
+
+            //Quantidade de transações por página
+            $quantidade_pg = 15;
+            
+            //Total de links antes e depois da página atual
+            $dados['max_links'] = 2;
+
+            //Calculando total de páginas
+            $num_pag = ceil($totalCate/$quantidade_pg);
+
+            $dados['num_pag'] = $num_pag;
+
+            //Calcular o inicio da visualização
+            $inicio = ($quantidade_pg * $pg) - $quantidade_pg;
+
+            $where .= " LIMIT {$inicio}, {$quantidade_pg} ";
+
+            $categoriasFinal = CategoriaModel::findBy("id_usuario = ".UsuarioSession::get('id')." {$where}");
 
             Transaction::close();
+            
+            $dados['categoriasAtivas'] = $categoriasFinal;
 
-            $nomeCategorias = [];
-
-            foreach($categoria as $c)
+            if($pg > $num_pag and $num_pag > 0)
             {
-                $nomeCategorias[] = $c->nome;
+                echo 'Pagina não encontrada!';
+                echo "<br><a href='".HOME_URL."/categorias'>Voltar</a>";
+                exit;
             }
-            
-            $dados['categoriasAtivas'] = $categoriasAtivas;
-
-           
-            
+        
         } catch (\Exception $th) {
             Transaction::rollback();
             FlashMessage::set('Ocorreu um erro ao cadastrar!','error');
@@ -68,8 +115,6 @@ class Categoria extends BaseController
                 
             $categoria = CategoriaModel::loadAll(UsuarioSession::get('id'));
 
-            $categoriasAtivas = CategoriaModel::findBy("id_usuario = ".UsuarioSession::get('id')." AND status_cate = 'ativo'");
-
             Transaction::close();
 
             $nomeCategorias = [];
@@ -78,21 +123,15 @@ class Categoria extends BaseController
             {
                 $nomeCategorias[] = $c->nome;
             }
+
+
         } catch (\Exception $th) {
             Transaction::rollback();
             FlashMessage::set('Ocorreu um erro ao cadastrar!','error');
         }
 
-        if(count($categoriasAtivas) >= 10)
-        {
-            header('location: '.HOME_URL.'/categorias');
-            exit;
-        }
-        
         if(isset($_POST['nomeCategoria']) and !empty($_POST))
         {
-
-
             $v = new Validacao;
 
             $v->setCampo('Nome da categoria')
@@ -251,4 +290,83 @@ class Categoria extends BaseController
             'templates/footer'
         ],$dados);
     }
-}
+
+    //=========================================================================================
+    // MÉTODO RESPONSÁVEL ARQUIVAR CATEGORIA
+    //=========================================================================================
+    public function arquivar()
+    {
+        UsuarioSession::deslogado();
+
+        $id = filter_input(INPUT_GET,'id',FILTER_VALIDATE_INT);
+
+        if(!isset($id) or !$id > 0)
+        {
+            header("location: ".HOME_URL."/categorias");
+            exit;
+        }
+
+        try {
+            Transaction::open('db');
+
+            $getCategoria = CategoriaModel::findBy('id_usuario = '.UsuarioSession::get('id')." AND idCategoria = {$id}")[0];
+
+            $getCategoria->status_cate = 'arquivado';
+
+            $resultado = $getCategoria->store();
+
+            Transaction::close();
+        }catch(\Exception $e)
+        {
+            Transaction::rollback();
+            FlashMessage::set('Ocorreu um erro ao arquivar a categoria','error','categorias');
+        }
+        
+        if($resultado)
+        {
+            FlashMessage::set('Categoria arquivada com sucesso!','success','categorias');
+        }else{
+            FlashMessage::set('Ocorreu um erro ao arquivar a categoria!','error','categorias');
+        }
+    }
+
+
+    //=========================================================================================
+    // MÉTODO RESPONSÁVEL DESARQUIVAR CATEGORIA
+    //=========================================================================================
+    public function desarquivar()
+    {
+        UsuarioSession::deslogado();
+
+        $id = filter_input(INPUT_GET,'id',FILTER_VALIDATE_INT);
+
+        if(!isset($id) or !$id > 0)
+        {
+            header("location: ".HOME_URL."/categorias");
+            exit;
+        }
+
+        try {
+            Transaction::open('db');
+
+            $getCategoria = CategoriaModel::findBy('id_usuario = '.UsuarioSession::get('id')." AND idCategoria = {$id}")[0];
+
+            $getCategoria->status_cate = 'ativo';
+
+            $resultado = $getCategoria->store();
+
+            Transaction::close();
+        }catch(\Exception $e)
+        {
+            Transaction::rollback();
+            FlashMessage::set('Ocorreu um erro ao desarquivar a categoria','error','categorias?status=arquivado');
+        }
+        
+        if($resultado)
+        {
+            FlashMessage::set('Categoria desarquivada com sucesso!','success','categorias?status=arquivado');
+        }else{
+            FlashMessage::set('Ocorreu um erro ao desarquivar a categoria!','error','categorias?status=arquivado');
+        }
+    }
+}   

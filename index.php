@@ -43,6 +43,8 @@
 	$rota->add('/categorias','categoria@index');
 	$rota->add('/categorias/cadastrar','categoria@cadastrar');
 	$rota->add('/categorias/editar','categoria@editar');
+	$rota->add('/categorias/arquivar','categoria@arquivar');
+	$rota->add('/categorias/desarquivar','categoria@desarquivar');
 
 	// Transferencias
 	$rota->add('/transferencia/cadastrar','transferencia@cadastrar');

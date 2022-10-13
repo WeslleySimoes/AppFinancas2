@@ -31,7 +31,7 @@ class Receita extends BaseController
         try {
             Transaction::open('db');
 
-            $dados['listaCategorias'] = CategoriaModel::findBy("id_usuario = ".UsuarioSession::get('id')." and tipo = 'receita'");
+            $dados['listaCategorias'] = CategoriaModel::findBy("id_usuario = ".UsuarioSession::get('id')." and tipo = 'receita'  AND status_cate = 'ativo'");
             $dados['listaContas'] = ContaModel::findBy('id_usuario = '.UsuarioSession::get('id'));
 
             Transaction::close();
@@ -202,7 +202,7 @@ class Receita extends BaseController
             try {
                 Transaction::open('db');
 
-                $dados['listaCategorias'] = CategoriaModel::findBy("id_usuario = ".UsuarioSession::get('id')." and tipo = 'receita'");
+                $dados['listaCategorias'] = CategoriaModel::findBy("id_usuario = ".UsuarioSession::get('id')." and tipo = 'receita'  AND status_cate = 'ativo'");
                 
                 $dados['listaContas'] = ContaModel::findBy('id_usuario = '.UsuarioSession::get('id'));
                 
@@ -406,7 +406,7 @@ class Receita extends BaseController
             try {
                 Transaction::open('db');
 
-                $dados['listaCategorias'] = CategoriaModel::findBy("id_usuario = ".UsuarioSession::get('id')." and tipo = 'receita'");
+                $dados['listaCategorias'] = CategoriaModel::findBy("id_usuario = ".UsuarioSession::get('id')." and tipo = 'receita'  AND status_cate = 'ativo'");
                 
                 $dados['listaContas'] = ContaModel::findBy('id_usuario = '.UsuarioSession::get('id'));
 
