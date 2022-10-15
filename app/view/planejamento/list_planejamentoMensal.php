@@ -188,8 +188,8 @@ document.getElementById("defaultOpen").click();
 <?php else:  ?>
     <div style="display: flex;justify-content: center;align-items: center; padding: 10px;">
         <form action="<?= HOME_URL ?>/planejamento" method="GET" id="form_data">
-            <label for="" style="display:inline-block;margin-right: 10px;font-weight: bold;">Mês: </label>
-            <input id="bday-month" name="data" type="month" name="bday-month" value="<?= $_GET['data'] ?? date('Y-m') ?>" onchange="handler();">
+            <!-- <label for="" style="display:inline-block;margin-right: 10px;font-weight: bold;">Mês: </label> -->
+            <input id="bday-month" name="data" type="month" name="bday-month" value="<?= $_GET['data'] ?? date('Y-m') ?>" onchange="handler();"  style="border: 2px solid #0476B9; padding: 10px 5px; font-size: 0.9em; border-radius: 10px; font-weight: bold; color: #0476B9;">
         </form>
     </div>
     <?php if(count($total_plan_mensal) > 0): ?>

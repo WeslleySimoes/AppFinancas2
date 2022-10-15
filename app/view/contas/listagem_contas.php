@@ -1,11 +1,6 @@
 
 <?= $msg ?>
 
-<div style="display: flex; justify-content: center;">
-    <form action="<?= HOME_URL ?>/contas/listar" id="form_data" method="GET">
-        <input type="month" name="data" onchange="handler();" value="<?= !isset($_GET['data']) ? date('Y-m') :  date($_GET['data']) ?>" >
-    </form>
-</div>
 <!-- <h1 style="font-size: 1.5rem!important;">Listagem contas</h1> -->
 <h3 style="margin-bottom: 20px; color: #263D52;">
     <?php 
@@ -22,8 +17,9 @@
         else{
             echo 'Contas ativas';
         }
-    ?>
+        ?>
 </h3>
+
 
 <div>
 
@@ -37,6 +33,11 @@
       </div>
     </div>
 </div>
+<div style="display: flex; justify-content: center; margin-bottom: 20px;">
+    <form action="<?= HOME_URL ?>/contas/listar" id="form_data" method="GET">
+        <input type="month" name="data" onchange="handler();" value="<?= !isset($_GET['data']) ? date('Y-m') :  date($_GET['data']) ?>"  style="border: 2px solid #0476B9; padding: 10px 5px; font-size: 0.9em; border-radius: 10px; font-weight: bold; color: #0476B9;">
+    </form>
+</div>
 <style>
     .contaUsuario{
         padding: 10px 0;
@@ -46,10 +47,11 @@
         padding: 20px; 
         width: calc(33.33% - 20px);
         margin: 20px 20px 0 0;
-        border: 1px solid lightgrey;
+        border: 1px solid #0476B9;
         border-radius: 15px;
         -webkit-box-shadow: -1px 10px 17px 0px rgba(59,59,59,0.38); 
         box-shadow: -1px 10px 17px 0px rgba(59,59,59,0.38);
+        
     }
 
     .contas-content{
