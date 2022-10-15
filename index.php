@@ -19,6 +19,9 @@
 	// Area de contas
 	$rota->add('/contas/listar','contas@index');
 	$rota->add('/contas/cadastrar','contas@cadastrar');
+	$rota->add('/contas/editar','contas@editar');
+	$rota->add('/contas/arquivar','contas@arquivar');
+	$rota->add('/contas/desarquivar','contas@desarquivar');
 
 	// Area de transacoes
 	$rota->add('/transacoes','transacoes@index');

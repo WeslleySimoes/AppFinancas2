@@ -27,7 +27,7 @@ class Despesa extends BaseController
             Transaction::open('db');
 
             $dados['listaCategorias'] = CategoriaModel::findBy("id_usuario = ".UsuarioSession::get('id')." and tipo = 'despesa' AND status_cate = 'ativo'");
-            $dados['listaContas'] = ContaModel::findBy('id_usuario = '.UsuarioSession::get('id'));
+            $dados['listaContas'] = ContaModel::findBy('id_usuario = '.UsuarioSession::get('id')." AND status_conta = 'ativo'");
 
             Transaction::close();
         } catch (\Exception $e) {
@@ -200,7 +200,7 @@ class Despesa extends BaseController
                 
                 $dados['listaCategorias'] = CategoriaModel::findBy("id_usuario = ".UsuarioSession::get('id')." and tipo = 'despesa' AND status_cate = 'ativo'");
                 
-                $dados['listaContas'] = ContaModel::findBy('id_usuario = '.UsuarioSession::get('id'));
+                $dados['listaContas'] = ContaModel::findBy('id_usuario = '.UsuarioSession::get('id')." AND status_conta = 'ativo'");
                 
                 $dados['dadosDespesa'] = TransacaoModel::findBy("idTransacao = ".$_GET['id']." and id_usuario =".UsuarioSession::get('id'));   
                 
@@ -416,7 +416,7 @@ class Despesa extends BaseController
 
                 $dados['listaCategorias'] = CategoriaModel::findBy("id_usuario = ".UsuarioSession::get('id')." and tipo = 'despesa'  AND status_cate = 'ativo'");
                 
-                $dados['listaContas'] = ContaModel::findBy('id_usuario = '.UsuarioSession::get('id'));
+                $dados['listaContas'] = ContaModel::findBy('id_usuario = '.UsuarioSession::get('id')." AND status_conta = 'ativo'");
 
                 $r = DespesaFixaModel::findBy('idDesp = '.$_GET['id'].' and id_usuario = '.UsuarioSession::get('id'));
                 

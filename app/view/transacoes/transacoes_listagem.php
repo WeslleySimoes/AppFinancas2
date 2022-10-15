@@ -123,7 +123,7 @@
 
         
         <?php if($tc->tipo == 'transferencia'): ?>
-          <td style="white-space: nowrap;"><?= $tc->getTransferencia()->getNomeConta('origem').' > '.$tc->getTransferencia()->getNomeConta('destino') ?></td>
+          <td ><?= $tc->getTransferencia()->getNomeConta('origem').' > '.$tc->getTransferencia()->getNomeConta('destino') ?></td>
         <?php else: ?>
         <td><?= $tc->getDescricaoConta() ?></td>
         <?php endif; ?>

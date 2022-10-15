@@ -117,6 +117,16 @@ class Validacao
 		}
 	}
 
+	function validateDate($date, $format = 'Y-m-d')
+	{
+		$d = \DateTime::createFromFormat($format, $date);
+		// The Y ( 4 digits year ) returns TRUE for any integer with any number of digits so changing the comparison from == to === fixes the issue.
+		if(($d && $d->format($format) === $date) == false) 
+		{
+			$this->setMsgErro("O campo {$this->campoAtual} não é válido!");
+		}
+	}
+
 	/*
 	Método responsável por validar CEP, esquemas aceitos:
 		00000-000
