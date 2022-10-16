@@ -126,7 +126,7 @@ class Despesa extends BaseController
 
                         $t = new TransacaoModel;
 
-                        $t->data_trans          = $_POST['dataDespesa'];
+                        $t->data_trans          = $_POST['dataDespesa']." ".date('H:i:s');
                         $t->valor               = FormataMoeda::moedaParaFloat($_POST['valor']);
                         $t->descricao           = $_POST['descricao'];
                         $t->id_categoria        = $_POST['categoriaDespesa'];
@@ -261,7 +261,7 @@ class Despesa extends BaseController
 
                     $ts = new TransacaoModel($_GET['id']);
 
-                    $ts->data_trans = $_POST['dataDespesa'];
+                    $ts->data_trans = $_POST['dataDespesa']." ".date('H:i:s');
                     $ts->valor = FormataMoeda::moedaParaFloat($_POST['valor']);
                     $ts->descricao = $_POST['descricao'];
                     $ts->id_categoria = $_POST['categoriaDespesa'];

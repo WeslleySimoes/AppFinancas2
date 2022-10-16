@@ -18,7 +18,7 @@
           <option value="Dinheiro">Dinheiro</option>
           <option value="Outros">Outro</option>
         </select>        
-        <button class="btn-success">Cadastrar</button>
+        <button class="botao-link botao-link-edit" style="font-size: 1.1em;">Cadastrar</button>
     </form>
     <?= $msg ?>
 </div>

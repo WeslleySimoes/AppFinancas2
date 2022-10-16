@@ -45,7 +45,7 @@
     .card{
         /* border: 1px solid black;  */
         padding: 20px; 
-        width: calc(33.33% - 20px);
+        width: calc(50% - 20px);
         margin: 20px 20px 0 0;
         border: 1px solid #0476B9;
         border-radius: 15px;
@@ -85,8 +85,8 @@
                         </div>
                     </div>
                     <div  style="margin-top: 10px;">
-                        <a href="<?= HOME_URL?>/transacoes?conta=<?= $conta->idConta ?>" class="btn btn-primary">Transações</a>
-                        <a href="<?= HOME_URL?>/contas/desarquivar?id=<?= $conta->idConta ?>" class="btn btn-danger" onclick="return confirm('Tem certeza que deseja desarquivar esta conta?');">Desarquivar</a>
+                        <a href="<?= HOME_URL?>/transacoes?conta=<?= $conta->idConta ?>" class="botao-link botao-link-transacoes">Transações</a>
+                        <a href="<?= HOME_URL?>/contas/desarquivar?id=<?= $conta->idConta ?>" class="botao-link botao-link-arquivar" onclick="return confirm('Tem certeza que deseja desarquivar esta conta?');">Desarquivar</a>
                     </div>
                 </div>
             </div>
@@ -98,7 +98,7 @@
                 <div class="card-body">
                     <h1 style="margin-bottom: 5px;font-size: 1.1em"><?= $conta->instituicao_fin ?></h1>
                     <hr>
-                    <div style="margin-top: 10px;">
+                    <div style="margin: 10px 0;">
                         <div style="display: flex; justify-content:space-between;">
                             <div> <b>Saldo atual: </b></div>
                             <div style="color:<?= $saldoContaAtual > 0 ? 'green' : 'red' ?>; font-weight: bold;">R$ <?= formatoMoeda($saldoContaAtual) ?></div>
@@ -112,17 +112,20 @@
                             <div> <?= $conta->tipo_conta ?></div>
                         </div>
                     </div>
-                    <div  style="margin-top: 10px;">
-                        <a href="<?= HOME_URL?>/contas/editar?id=<?= $conta->idConta ?>" class="btn btn-primary">Editar</a>
-                        <a href="<?= HOME_URL?>/transacoes?conta=<?= $conta->idConta ?>" class="btn btn-primary">Transações</a>
-                        <a href="<?= HOME_URL?>/contas/arquivar?id=<?= $conta->idConta ?>" class="btn btn-danger" onclick="return confirm('Tem certeza que deseja arquivar esta conta?');">Arquivar</a>
+                    <hr>
+                    <div  style="margin-top: 15px;">
+                            
+                        <a href="<?= HOME_URL?>/contas/editar?id=<?= $conta->idConta ?>" class="botao-link botao-link-edit" style="display:inline-block; margin-top: 5px;">Editar</a>
+                        <a href="<?= HOME_URL?>/transacoes?conta=<?= $conta->idConta ?>" class="botao-link botao-link-transacoes" style="display:inline-block; margin-top: 5px;">Transações</a>
+                        <a href="<?= HOME_URL?>/contas/arquivar?id=<?= $conta->idConta ?>" onclick="return confirm('Tem certeza que deseja arquivar esta conta?');" class="botao-link botao-link-arquivar" style="display:inline-block; margin-top: 5px;">Arquivar</a>
+
                     </div>
                 </div>
             </div>
         <?php endforeach; ?>
     <?php endif; ?>
 <?php else: ?>
-    <p>Nenhuma conta Cadastrada!</p>
+    <p>Nenhuma conta encontrada!</p>
 <?php endif; ?>
 </div>
 

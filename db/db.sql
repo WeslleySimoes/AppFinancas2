@@ -106,6 +106,9 @@ CREATE TABLE transacao
 
 
 -- ADICIONANDO COLUNA A UMA TABELA EXISTENTE NO BANCO DE DADOS
-ALTER TABLE transferencia ADD COLUMN status_transf ENUM('aberto','fechado') DEFAULT 'aberto' AFTER id_usuario;
+ALTER TABLE transferencia ADD COLUMN status_transf ENUM('aberto','fechado') DEFAULT 'aberto' BEF id_usuario;
 
 ALTER TABLE transferencia ADD COLUMN data_transf DATE NOT NULL;
+
+
+ALTER TABLE conta ADD COLUMN status_conta ENUM('ativo','arquivado') DEFAULT 'ativo' AFTER tipo_conta;

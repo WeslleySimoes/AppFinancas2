@@ -1,3 +1,52 @@
+
+.botao-link
+{
+    text-decoration: none; 
+    padding: 5px 10px; 
+    border-radius: 15px;
+}
+
+/* BOTÃO DE EDITAR */
+.botao-link-edit{
+    background-color: #0476B9; 
+    color:white; 
+    border: 1px solid #3498DB; 
+}
+
+.botao-link-edit:hover{
+    background-color: #3396cf; 
+    color:white; 
+}
+/* FINAL DO BOTÃO DE EDITAR */
+
+/* BOTÃO DE TRANSACOES */
+.botao-link-transacoes{
+    background-color: #818181; 
+    color:white; 
+    border: 1px solid #b9b9b9; 
+}
+
+.botao-link-transacoes:hover{
+    background-color: #9b9b9b; 
+    color:white; 
+}
+/* FINAL DO BOTÃO DE TRANSACOES */
+
+/* BOTÃO DE ARQUIVAR */
+.botao-link-arquivar{
+    background-color: #cc720b; 
+    color:white; 
+    border: 1px solid #df8b2c; 
+}
+
+.botao-link-arquivar:hover{
+    background-color: #c9873c; 
+    color:white; 
+}
+/* FINAL DO BOTÃO DE ARQUIVAR */
+
+
+
 .informacoes-monetarias{
     display: flex;
     flex-wrap: wrap;
@@ -68,13 +117,13 @@
 }
 
 .dadoItem{
+    position: relative;
     width: 33%;
     height: 100px;
     /* border: 1px solid black; */
     
-    display: flex;
-    align-items: center;
-    padding: 20px;
+    /* display: flex;
+    align-items: center; */
     border-radius: 25px;
 }
 

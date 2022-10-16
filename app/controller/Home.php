@@ -2,6 +2,8 @@
 
 namespace app\controller;
 
+use app\model\Transaction;
+use app\model\entity\DashboardModel;
 use app\session\Usuario as UsuarioSession;
 
 class Home extends BaseController
@@ -10,15 +12,49 @@ class Home extends BaseController
     {
         UsuarioSession::deslogado();
 
-        //dd(session_cache_expire());
+        $dados = [
+            'usuario_logado' => UsuarioSession::get('nome')
+        ];
+        
+        try {
+            Transaction::open('db');
+
+            $totalReceitas = DashboardModel::getTotalRD('receita');
+            $totalDespesas = DashboardModel::getTotalRD('despesa');
+
+            $contas = DashboardModel::saldoTotalContas();
+
+            $ultimasTransacoes = DashboardModel::getLastTransacoes();
+
+            $despesasCategorias = DashboardModel::drPorCategoria('despesa');
+            $receitasCategorias = DashboardModel::drPorCategoria('receita');
+            
+            Transaction::close();
+        } catch (\Exception $e) {
+            Transaction::rollback();
+        }
+
+        //DESPESAS
+        $dados['arr_total_despesas'] = implode(',',array_column($despesasCategorias,'total'));
+        $dados['arr_nomeCate_despesas'] = "'".implode("','",array_column($despesasCategorias,'nome'))."'";
+        $dados['cores_despesas'] = "'".implode("','",array_column($despesasCategorias,'cor_cate'))."'";
+
+        //RECEITAS
+        $dados['arr_total_receitas'] = implode(',',array_column($receitasCategorias,'total'));
+        $dados['arr_nomeCate_receitas'] = "'".implode("','",array_column($receitasCategorias,'nome'))."'";
+        $dados['cores_receitas'] = "'".implode("','",array_column($receitasCategorias,'cor_cate'))."'";
+
+        $dados['totalReceitas'] = $totalReceitas;
+        $dados['totalDespesas'] = $totalDespesas;
+        $dados['totalSaldoContas'] = $contas;
+        $dados['ultimasTransacoes'] = $ultimasTransacoes;
+
 
         $this->view([
             'templates/header',
             'dashboard',
             'templates/footer'
-        ],[
-            'usuario_logado' => UsuarioSession::get('nome')
-        ]);
+        ],$dados);
     }
 
     public function deslogar()

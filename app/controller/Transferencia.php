@@ -63,8 +63,11 @@ class Transferencia extends BaseController
             if($v->validar())
             {
                 try {       
+
+                    $dataHora = " ".date('H:i:s');
+
                     $transf = new TransferenciaModel();
-                    $transf->data_transf        = $_POST['dataTransferencia'];
+                    $transf->data_transf        = $_POST['dataTransferencia'].$dataHora;
                     $transf->valor              = FormataMoeda::moedaParaFloat($_POST['valor']);
                     $transf->descricao          = $_POST['descricao'];
                     $transf->id_conta_origem    = $_POST['contaOrigem'];
@@ -73,7 +76,7 @@ class Transferencia extends BaseController
                     $transf->status_transf      = 'aberto';
 
                     $tm = new TransacaoModel();
-                    $tm->data_trans         = $_POST['dataTransferencia'];
+                    $tm->data_trans         = $_POST['dataTransferencia'].$dataHora ;
                     $tm->valor              = FormataMoeda::moedaParaFloat($_POST['valor']);
                     $tm->descricao          = $_POST['descricao'];
                     $tm->tipo               = 'transferencia';
@@ -219,7 +222,9 @@ class Transferencia extends BaseController
                     Transaction::open('db'); 
                     $tm = new TransacaoModel($_GET['id']);
 
-                    $tm->data_trans         = $_POST['dataTransferencia'];
+                    $dataHora = " ".date('H:i:s');
+
+                    $tm->data_trans         = $_POST['dataTransferencia'].$dataHora;
                     $tm->valor              = FormataMoeda::moedaParaFloat($_POST['valor']);
                     $tm->descricao          = $_POST['descricao'];
                     $tm->id_conta           = $_POST['contaOrigem'];
@@ -227,7 +232,7 @@ class Transferencia extends BaseController
 
                     $transf = $tm->getTransferencia();
 
-                    $transf->data_transf        = $_POST['dataTransferencia'];
+                    $transf->data_transf        = $_POST['dataTransferencia'].$dataHora;
                     $transf->valor              = FormataMoeda::moedaParaFloat($_POST['valor']);
                     $transf->descricao          = $_POST['descricao'];
                     $transf->id_conta_origem    = intval($_POST['contaOrigem']);
