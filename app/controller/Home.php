@@ -28,11 +28,18 @@ class Home extends BaseController
 
             $despesasCategorias = DashboardModel::drPorCategoria('despesa');
             $receitasCategorias = DashboardModel::drPorCategoria('receita');
+
+            $depMensal = DashboardModel::despRespMensal('despesa');
+            $recMensal = DashboardModel::despRespMensal('receita');
             
             Transaction::close();
         } catch (\Exception $e) {
             Transaction::rollback();
         }
+ 
+        //Gráfico Receitas x Despesas
+        $dados['depMensal'] = $depMensal;
+        $dados['recMensal'] = $recMensal;
 
         //DESPESAS
         $dados['arr_total_despesas'] = implode(',',array_column($despesasCategorias,'total'));

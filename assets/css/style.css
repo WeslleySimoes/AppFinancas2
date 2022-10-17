@@ -76,13 +76,14 @@
 /* formulário usuário */
 .formularioUsuario{
     background-color: white;
-    border: 1px solid #cecdcd;
+    border: 1px solid #bdbdbd;
     margin-bottom: 1.75rem;
 }
 
 .formularioUsuario h3{
-    background-color: #EAEDEA;
+    background-color: #dbdbdb;
     padding: 10px;
+    color:#263D52;
 }
 
 .containerForm{

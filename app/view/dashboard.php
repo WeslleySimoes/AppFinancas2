@@ -1,9 +1,5 @@
 
-<div style="display: flex; justify-content: center; margin-bottom: 10px;">
-    <form action="<?= HOME_URL ?>/contas/listar" id="form_data" method="GET">
-        <input type="month" name="data" onchange="handler();" value="<?= !isset($_GET['data']) ? date('Y-m') :  date($_GET['data']) ?>"  style="border: 2px solid #0476B9; padding: 10px 5px; font-size: 0.9em; border-radius: 10px; font-weight: bold; color: #0476B9;">
-    </form>
-</div>
+
 <h3 style="margin-bottom: 20px; color: #263D52;">
     Dashboard
     <br>
@@ -67,8 +63,12 @@
 
 <div class="formularioUsuario">
     <h3>Receitas x Despesas</h3>
-    <div class="containerForm dsd">
-        <canvas id="myChart" width="400" height="125"></canvas>
+    <div class="containerForm">
+        <?php if(array_sum($depMensal) > 0 OR array_sum($recMensal) > 0 ): ?>
+            <canvas id="graficoBarra" height="120px"></canvas>
+        <?php else: ?>
+            <b>Nenhuma despesa ou receita encontrada!</b>
+        <?php endif; ?>
     </div>
 </div>
 
@@ -80,7 +80,7 @@
             <?php if(strlen($arr_total_despesas) > 0): ?>
                 <canvas id="myChartPizza" width="100%" height="400"></canvas>
             <?php else: ?>
-                Nenhuma despesa encontrada!
+                <b>Opa! Você ainda não possui despesas este mês.</b>
             <?php endif; ?>
         </div>
     </div>
@@ -90,7 +90,7 @@
         <?php if(strlen($arr_total_receitas) > 0): ?>
                 <canvas id="myChartPizza2" width="600" height="400"></canvas>
             <?php else: ?>
-                Nenhuma receita encontrada!
+                <b>Opa! Você ainda não possui receitas este mês.</b>
             <?php endif; ?>
         </div>
     </div>
@@ -98,20 +98,57 @@
 
 <div>
 <div class="formularioUsuario">
-        <h3>Últimas 10 transações</h3>
+        <h3 style="display: flex; justify-content: space-between;align-items:flex-end;">
+            <span> Últimas 10 transações </span>
+            <a href="<?= HOME_URL ?>/transacoes" style="font-size: 0.8em; text-decoration: none; color: #263D52;"> Ver mais ...</a>
+        </h3>
+        
         <div class="containerForm">
             <?php if(!empty($ultimasTransacoes)): ?>
                 <table style="width: 100%;">
                     <tr>
                         <th>Data</th>
+                        <th>Status</th>
                         <th>Valor</th>
                         <th>Categoria</th>
                         <th>Tipo</th>
                     </tr>
-                    <?php foreach($ultimasTransacoes  as  $transacao ): ?>
+                    <?php foreach($ultimasTransacoes  as $transacao ): ?>
                         <tr>
                             <td><?= formataDataBR($transacao->data_trans) ?></td>
-                            <td style="white-space: nowrap;">R$ <?= formatoMoeda($transacao->valor) ?></td>
+
+                            <td style="display: flex; justify-content:center;">
+                                <?php if($transacao->status_trans == 'fechado'): ?>
+                                <!-- INÍCIO DO TOOLTIP -->
+                                <div class="tooltip"> 
+                                    <i class="fa fa-check-circle" aria-hidden="true" style="font-size: 25px; color:#5cb353;"></i>     
+                                    <span class="tooltiptext">
+                                        Efetuada
+                                    </span>
+                                    </div>
+                                    <!-- FINAL DO TOOLTIP  -->
+                                <?php else: ?>
+                                <!-- INÍCIO DO TOOLTIP -->
+                                <div class="tooltip"> 
+                                    <i class="fa fa-exclamation-circle" aria-hidden="true" style="font-size: 25px; color: #f70039;"></i>
+                                    <span class="tooltiptext">
+                                        Pendente
+                                    </span>
+                                    </div>
+                                    <!-- FINAL DO TOOLTIP  -->
+                                <?php endif; ?>
+                            </td>
+
+
+                            <?php if($transacao->tipo == 'receita'): ?>
+                                <td style="color: green; white-space: nowrap;">R$ <?= formatoMoeda($transacao->valor) ?></td>
+                            <?php elseif($transacao->tipo == 'transferencia'): ?>
+                                <td style="color: blue; white-space: nowrap;">R$ <?= formatoMoeda($transacao->valor) ?></td>
+                            <?php else: ?>
+                                <td style="color: red; white-space: nowrap;">R$ <?= formatoMoeda($transacao->valor) ?></td>
+                            <?php endif; ?>
+
+
 
                             <?php if(isset($transacao->id_categoria)): ?>
                                 <td style="white-space: nowrap;" ><span style="width: 15px; height: 15px;display:inline-block;border-radius: 50%; margin-right: 5px; background-color:<?=  $transacao->getCorCategoria() ?>;"></span><?= $transacao->getNomeCategoria() ?></td>
@@ -124,7 +161,7 @@
                     <?php endforeach; ?>
                 </table>
             <?php else: ?>
-                Nenhuma transação encontrada!
+                <b>Opa! Você ainda não possui transaão este mês.</b>
             <?php endif; ?>
         </div>
     </div>
@@ -240,3 +277,45 @@ const myChartPizza = new Chart(
     );
 </script>
 <!-- FIM DO SCRIPT CHART.JS -->
+
+
+<script>
+    new Chart(document.getElementById("graficoBarra"), {
+    type: 'bar',
+    data: {
+      labels:['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
+      datasets: [
+        {
+          label: "Despesa",
+          backgroundColor: "#ff3232",
+          data: [<?= implode(',',array_values($depMensal)) ?>]
+        }, {
+          label: "Receita",
+          backgroundColor: '#0BB783',
+          data: [<?= implode(',',array_values($recMensal)) ?>]
+        }
+      ]
+    },
+    options: {
+      title: {
+        display: true,
+        text: 'Population growth (millions)'
+      },
+      scales:{
+        y:{
+            beginAtZero: true,
+            grid:{
+                color: (context) => {
+                    if(context.tick.value === 0)
+                    {
+                        return 'rgba(1,1,1,1)'; //Colorindo a linha ZERO do gráfico
+                    }else{
+                        return 'rgba(0,0,0,0.1)';//Colorindo as outras linhas do gráfico
+                    }
+                }
+            }
+        }
+      }
+    }
+});
+    </script>

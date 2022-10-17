@@ -251,13 +251,16 @@ document.getElementById("defaultOpen").click();
             <?php endforeach; ?>
     </table>
     <?php else: ?>
-        <p>Nenhum planejamento encontrado!</p>
         
-        <?php if(isset($_GET['data'])): ?>
-            <a href="<?= HOME_URL ?>/planejamento/cadastrarPM?data=<?= $_GET['data'] ?>">Criar planejamento</a>
-        <?php else: ?>
-            <a href="<?= HOME_URL ?>/planejamento/cadastrarPM">Criar planejamento</a>
-        <?php endif; ?>
+        <div style="border: 1px solid #b7b4b4; display: flex; justify-content: center; align-items: center; height: 500px; box-shadow: -1px 10px 17px 0px rgb(59 59 59 / 38%); border-radius: 20px;">
+            <div style="text-align: center;">               
+                <?php if(isset($_GET['data'])): ?>
+                    <a href="<?= HOME_URL ?>/planejamento/cadastrarPM?data=<?= $_GET['data'] ?>" style="text-decoration:none; color: grey; font-size: 1.8em;"> <span style="display: block; text-align: center; font-size: 30px; color:grey;"><i class="fa fa-plus" aria-hidden="true"></i></span> Criar planejamento</a>
+                <?php else: ?>
+                    <a href="<?= HOME_URL ?>/planejamento/cadastrarPM" style="text-decoration:none; color: grey; font-size: 1.8em;"> <span style="display: block; text-align: center; font-size: 30px; color:grey; "><i class="fa fa-plus" aria-hidden="true"></i></span> Criar planejamento</a>
+                <?php endif; ?>
+            </div>
+        </div>
     <?php endif; ?>
 
 <?php endif; ?>

@@ -90,9 +90,9 @@
     <h3 style="margin-bottom: 20px; color: #263D52;">Relatórios</h3>
 
         <div id="links-grafico-relatorios">
-            <a href="<?= HOME_URL ?>/relatorios"><i class="fa fa-pie-chart" aria-hidden="true"></i></a>
-            <a href="<?= HOME_URL ?>/relatorios/linha"><i class="fa fa-line-chart" aria-hidden="true"></i></a>
-            <a href="<?= HOME_URL ?>/relatorios/barra"><i class="fa fa-bar-chart" aria-hidden="true"></i></a>
+            <a href="<?= HOME_URL ?>/relatorios"><i class="fa fa-pie-chart" aria-hidden="true" style="color: red;"></i></a>
+            <a href="<?= HOME_URL ?>/relatorios/linha"><i class="fa fa-line-chart" aria-hidden="true" style="color: blue;"></i></a>
+            <a href="<?= HOME_URL ?>/relatorios/barra"><i class="fa fa-bar-chart" aria-hidden="true " style="color: green;"></i></a>
         </div>
     </div>
     <div style="padding: 10px; margin-top: 10px;border: 1px solid lightgray; display: flex; justify-content:space-between; align-items: center;">
