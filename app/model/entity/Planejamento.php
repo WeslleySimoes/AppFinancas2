@@ -6,6 +6,7 @@ use app\model\Record;
 use app\model\Transaction;
 use app\helpers\FormataMoeda;
 use app\model\entity\PlanejamentoCate;
+use app\session\Usuario as UsuarioSession;
 
 class Planejamento extends Record
 {
@@ -225,6 +226,27 @@ class Planejamento extends Record
             return false;
         }
 
+    }
+
+    //FAZ COM QUE TODOS OS PLANEJAMENTOS PERSONALIZADO NO QUAL AS DATA JÁ PASSARAM
+    public static function alterandoStatus()
+    {
+        $sql = "UPDATE planejamento SET status_plan = 'expirado' WHERE id_usuario = ".UsuarioSession::get('id')." AND status_plan = 'ativo' AND tipo = 'personalizado' AND DATE(data_fim) < DATE(CURDATE());";
+
+        try {
+            Transaction::open('db');
+
+            $conn = Transaction::get();
+            
+            $result = $conn->exec($sql);
+
+            Transaction::close();
+
+        } catch (\Exception $e) {
+            Transaction::rollback();
+        }
+
+        return $result;
     }
 
 }

@@ -100,19 +100,36 @@ body {font-family: Arial;}
     display: flex;
     justify-content: space-between;
 }
+.item-menu-perso{
+    display: inline-block;
+    /* border: 1px solid black; */
+    padding: 15px 10px;
+    text-decoration: none;
+    background-color: lightgray;
+    color: black;
+}
+
+.item-menu-perso:hover{
+    background-color: #a6a6a6;
+}
 </style>
 
-<div class="tab" style="margin-top: 10px;">
-  <button class="tablinks" onclick="openCity(event, 'London')" id="defaultOpen">Ativos</button>
-  <button class="tablinks" onclick="openCity(event, 'Paris')">Expirados</button>
+<div class="tab" style="margin-top: 10px;background-color: lightgray;">
+    
+  <a href="<?= HOME_URL ?>/planejamento?p=personalizado&status=ativo" class="item-menu-perso" <?=  !isset($_GET['status']) || (isset($_GET['status']) && $_GET['status'] == 'ativo') ? "style='background-color: #a6a6a6 !important;'" : ' ' ?>>Ativos</button>
+
+  <a href="<?= HOME_URL ?>/planejamento?p=personalizado&status=expirado" class="item-menu-perso" <?= isset($_GET['status']) && $_GET['status'] == 'expirado'? "style='background-color: #a6a6a6 !important;'" : ' ' ?>>Expirados</a>
 </div>
 
-<div id="London" class="tabcontent">
+<div style="display: flex;">
+
+    <?php if(isset($_GET['status']) && $_GET['status'] != 'expirado'): ?>
     <div id="inserir-plan-person">
         <div>
             <a href="<?= HOME_URL ?>/planejamento/cadastrarPP"> <span style="display: block; text-align: center; font-size: 30px;"><i class="fa fa-plus" aria-hidden="true"></i></span>Novo planejamento</a>
         </div>
     </div>
+    <?php endif;  ?>
 
     <?php if(count($total_plan_semanal) > 0): ?>
         <?php foreach($total_plan_semanal as $planS): ?>
@@ -121,18 +138,23 @@ body {font-family: Arial;}
             <div class="plan-perso-header">
                 <p style="font-size: 1.2em;"><b><?= $planS->descricao ?></b></p>
                 <div>
+                <?php if(isset($_GET['status']) && $_GET['status'] != 'expirado'): ?>
+
                 <div class="tooltip"> 
                         <a href="<?= HOME_URL ?>/planejamento/editarPP?id=<?= $planS->idPlan ?>" style="display:inline-block; margin-right: 5px;font-size:1.15em; color:blue;"><i class="fa fa-pencil" aria-hidden="true" ></i></a>
                     <span class="tooltiptext">
                     Editar
                     </span>
                 </div>
+                <?php endif; ?>
+                
                 <div class="tooltip"> 
                         <a href="<?= HOME_URL ?>/planejamento/removerPP?id=<?= $planS->idPlan ?>" style="display:inline-block; margin-right: 5px;font-size:1.15em; color:red;" onclick="return confirm('Tem certeza que deseja remover o planejamento?');"><i class="fa fa-trash" aria-hidden="true"></i></a>
                     <span class="tooltiptext">
                     Remover
                     </span>
                 </div>
+
                 <div class="tooltip"> 
                     <a href="<?= HOME_URL ?>/planejamento/detalhePP?id=<?= $planS->idPlan ?>" style="color: grey;"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
                     
@@ -155,7 +177,12 @@ body {font-family: Arial;}
                 <progress id="file" value="<?= $planS->getPorcentagemGasto(true,'PERSONALIZADO') ?>" max="100" style="width: 100%;"></progress>
                 <div style="text-align: right;"><?= $planS->getPorcentagemGasto(false,'PERSONALIZADO') ?>%</div>
             </div>
-            <p style="margin-top: 5px;"><b>Expira em:</b> <?= diffDataDias($planS->data_fim) ?> dias</p>
+
+            <?php if(isset($_GET['status']) && $_GET['status'] == 'expirado'): ?>
+                <p style="margin-top: 5px; color:red;"><b>Expirado!</b></p>
+            <?php else: ?>
+                <p style="margin-top: 5px;"><b>Expira em:</b> <?= diffDataDias($planS->data_fim)+1 ?> dia(s)</p>
+            <?php endif; ?>
         </div>
         <?php endforeach; ?>
     <?php endif; ?>
@@ -211,10 +238,10 @@ document.getElementById("defaultOpen").click();
         </tr>
         <tr>
             <td><span style="width: 15px; height: 15px;display:inline-block;border-radius: 50%; margin-right: 5px; background-color:grey;"></span><b>Total</b></td>
-            <td>R$ <?= formatoMoeda($total_plan_mensal[0]->calcularMetaGasto()) ?></td>
-            <td>R$ <?= formatoMoeda($total_plan_mensal[0]->getTotalGasto()) ?></td>
-            <td>R$ <?= formatoMoeda($total_plan_mensal[0]->resultado()) ?></td>
-            <td><progress id="file" value="<?= $total_plan_mensal[0]->getPorcentagemGasto() ?>" max="100" style="accent-color:blue;"></progress> <?= $total_plan_mensal[0]->getPorcentagemGasto(false) ?>%</td>
+            <td style="color:blue;">R$ <?= formatoMoeda($total_plan_mensal[0]->calcularMetaGasto()) ?></td>
+            <td style="color:red;">R$ <?= formatoMoeda($total_plan_mensal[0]->getTotalGasto()) ?></td>
+            <td style="color: <?= $total_plan_mensal[0]->resultado()>= 0 ? 'green' : 'red' ?>">R$ <?= formatoMoeda($total_plan_mensal[0]->resultado()) ?></td>
+            <td><progress id="file" value="<?= $total_plan_mensal[0]->getPorcentagemGasto() ?>" max="100" <?= $total_plan_mensal[0]->getPorcentagemGasto() > 100 ? 'style="accent-color:red;"' : '' ?>></progress> <?= $total_plan_mensal[0]->getPorcentagemGasto(false) ?>%</td>
 
             <td>
                 <div class="tooltip"> 
@@ -236,16 +263,15 @@ document.getElementById("defaultOpen").click();
         <?php foreach( $total_plan_mensal[0]->getPlanCategorias() as $planCate): ?>
 
             <?php $planCate->getCategoria(); ?>
-
             <tr>
                 <td> <!--<span style='font-size:20px;'>&#10148;</span>  -->
-                <span style="width: 15px; height: 15px;display:inline-block;border-radius: 50%; margin-right: 5px; background-color:coral;"></span>
+                <span style="width: 15px; height: 15px;display:inline-block;border-radius: 50%; margin-right: 5px; background-color:<?= $planCate->categoria_obj->cor_cate ?>;"></span>
                 <?= $planCate->categoria_obj->nome ?></td> 
-                <td>R$ <?= formatoMoeda($planCate->valorMeta) ?></td>
-                <td>R$ <?= formatoMoeda($planCate->categoria_obj->TotalGastoMesAtual())?></td>
-                <td>R$ <?= formatoMoeda($planCate->resultado()) ?></td>
+                <td style="color:blue;">R$ <?= formatoMoeda($planCate->valorMeta) ?></td>
+                <td style="color:red;">R$ <?= formatoMoeda($planCate->categoria_obj->TotalGastoMesAtual())?></td>
+                <td style="color: <?= $planCate->resultado() >= 0 ? 'green' : 'red' ?>">R$ <?= formatoMoeda($planCate->resultado()) ?></td>
 
-                <td colspan="2"><progress id="file" value="<?=  $planCate->getPorcentagemGasto() ?? 100   ?>" max="100"></progress><?= $planCate->getPorcentagemGasto(false);?>%</td>
+                <td colspan="2"><progress id="file" value="<?=  $planCate->getPorcentagemGasto() ?? 100   ?>" max="100" <?= $planCate->getPorcentagemGasto() > 100 ? 'style="accent-color:red;"' : '' ?>></progress><?= $planCate->getPorcentagemGasto(false);?>%</td>
                 
             </tr>
             <?php endforeach; ?>

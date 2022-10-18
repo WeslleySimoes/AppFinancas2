@@ -50,7 +50,7 @@
 
             </div>
             <div style="margin-bottom: 10px;" id="totalCategorias"><b style="color:green;">Valor restante: R$ 0,00</b></div>
-            <button type="submit" id="btnCadastrarPlan" >Editar</button>
+            <button type="submit" id="btnCadastrarPlan" class="botao-link botao-link-edit2" >Editar</button>
         </form>
     </div>
     <?= $msg ?>

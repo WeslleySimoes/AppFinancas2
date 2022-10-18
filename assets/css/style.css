@@ -6,8 +6,21 @@
     border-radius: 15px;
 }
 
+.botao-link:disabled{
+    background-color: rgb(167, 164, 164);
+    border: 1px solid rgb(167, 164, 164);
+    
+}
+
 /* BOTÃO DE EDITAR */
 .botao-link-edit{
+    background-color: #0476B9; 
+    color:white; 
+    border: 1px solid #3498DB; 
+}
+
+/* BOTÃO DE EDITAR */
+.botao-link-edit2{
     background-color: #0476B9; 
     color:white; 
     border: 1px solid #3498DB; 
@@ -17,6 +30,8 @@
     background-color: #3396cf; 
     color:white; 
 }
+
+
 /* FINAL DO BOTÃO DE EDITAR */
 
 /* BOTÃO DE TRANSACOES */

@@ -20,6 +20,8 @@ class Planejamento extends BaseController
     public function index()
     {
         UsuarioSession::deslogado();
+        
+        PlanejamentoModel::alterandoStatus();
 
         $dados = [
             'usuario_logado' => UsuarioSession::get('nome'),
@@ -53,7 +55,11 @@ class Planejamento extends BaseController
                 $dados['total_plan_mensal'] = PlanejamentoModel::findBy("id_usuario = ".UsuarioSession::get('id')." AND tipo = 'mensal' AND MONTH(data_fim) = MONTH(CURDATE()) AND YEAR(data_fim) = YEAR(CURDATE())");
             }
 
-            $dados['total_plan_semanal'] =  PlanejamentoModel::findBy("id_usuario = ".UsuarioSession::get('id')." AND tipo = 'personalizado'");
+
+            $filtroStatus = htmlspecialchars(filter_input(INPUT_GET,'status'));
+            $filtroStatus = in_array($filtroStatus,['ativo','expirado']) ? "status_plan = '{$filtroStatus}'" : "status_plan = 'ativo'";
+
+            $dados['total_plan_semanal'] =  PlanejamentoModel::findBy("id_usuario = ".UsuarioSession::get('id')." AND tipo = 'personalizado' AND {$filtroStatus}");
 
 
             Transaction::close();
@@ -618,7 +624,7 @@ class Planejamento extends BaseController
         try {
             Transaction::open('db');
 
-            $planejamento = PlanejamentoModel::findBy('id_usuario = '.UsuarioSession::get('id')." AND tipo = 'personalizado' AND idPlan = {$id}")[0];
+            $planejamento = PlanejamentoModel::findBy('id_usuario = '.UsuarioSession::get('id')." AND tipo = 'personalizado' AND status_plan = 'ativo' AND idPlan = {$id}")[0];
 
             Transaction::close();
 

@@ -17,7 +17,7 @@ class Login extends BaseController
         try { 
              
             Transaction::open('db');
-            //$usuario = UsuarioModel::checarUsuario('jose@pires.com','123');
+           // $usuario = UsuarioModel::checarUsuario('jose@pires.com','123');
             $usuario = UsuarioModel::checarUsuario('weslley@teste.com','123456');
             Transaction::close();
             

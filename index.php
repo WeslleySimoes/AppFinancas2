@@ -14,7 +14,7 @@
 	$rota->add('/','login@index');
 
 	//DASHBOARD
-	$rota->add('/dashboard','home@index');
+	$rota->add('/dashboard','dashboard@index');
 	
 	// Area de contas
 	$rota->add('/contas/listar','contas@index');
