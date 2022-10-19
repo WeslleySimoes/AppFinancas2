@@ -17,7 +17,7 @@
     <?php endif; ?></button>
     <div id="myDropdown" class="dropdown-content">
     <a href="<?= HOME_URL ?>/planejamento">Mensal</a>
-    <a href="<?= HOME_URL ?>/planejamento?p=personalizado">Personalizado</a>
+    <a href="<?= HOME_URL ?>/planejamento?p=personalizado&status=ativo">Personalizado</a>
     </div>
 </div>
 <!-- FIM - LINKS DA PÁGINA -->

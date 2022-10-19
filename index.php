@@ -10,6 +10,9 @@
 	
 	$rota = new Rota;
 
+
+	$rota->add('/teste','teste@index');
+
 	// LOGIN
 	$rota->add('/','login@index');
 

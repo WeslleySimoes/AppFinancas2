@@ -53,7 +53,7 @@
         <input type="text" name="descricao" value="<?= $dadosTransferencia[0]->getTransferencia()->descricao ?>">
         
         <label for="dataTransferencia">Data:</label>
-        <input type="date" name="dataTransferencia" value="<?= $dadosTransferencia[0]->getTransferencia()->data_transf ?>">
+        <input type="date" name="dataTransferencia" value="<?= explode(' ',$dadosTransferencia[0]->getTransferencia()->data_transf)[0] ?>">
         
         <label for="contaOrigem">Conta de origem:</label>
 

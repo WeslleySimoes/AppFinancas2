@@ -20,6 +20,10 @@ class Transacoes extends BaseController
             'msg' => FlashMessage::get()
         );
 
+        Transacao::inseriDespesasFixasMesAtual();
+        Transacao::inseriReceitasFixasMesAtual();
+
+
         if(isset($_GET['s']))
         {
             switch ($_GET['s']) {

@@ -52,10 +52,8 @@
         <input type="text" name="descricao" value="<?= $dadosReceita[0]->descricao ?>">
         
         <label for="dataReceita">Data:</label>
-        <input type="date" name="dataReceita" value="<?= $dadosReceita[0]->data_trans ?>">
+        <input type="date" name="dataReceita" value="<?= explode(' ',$dadosReceita[0]->data_trans)[0] ?>">
         
-
-
         <label for="categoriaReceita">Categoria:</label>
         <select name="categoriaReceita">
             <?php if(count($listaCategorias) > 0): ?>

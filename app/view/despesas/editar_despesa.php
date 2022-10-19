@@ -45,8 +45,6 @@
             <input type="checkbox" name="despesaPaga" value="1" class="checkboxForm" <?= $dadosDespesa[0]->status_trans == 'fechado' ? 'checked' : '' ?>>
             <span class="checkmark">Pago</span> 
         </label>
-
-
         
         <label for="valor">Valor (R$):</label>
         <input type="text" class="money" name="valor" value="<?= $dadosDespesa[0]->valor ?? '' ?>">
@@ -55,7 +53,7 @@
         <input type="text" name="descricao" value="<?= $dadosDespesa[0]->descricao ?? '' ?>">
         
         <label for="dataDespesa">Data:</label>
-        <input type="date" name="dataDespesa" value="<?= $dadosDespesa[0]->data_trans ?? '' ?>">
+        <input type="date" name="dataDespesa" value="<?= explode(' ',$dadosDespesa[0]->data_trans)[0] ?? '' ?>">
         
         <label for="categoriaDespesa">Categoria:</label>
         <select name="categoriaDespesa">

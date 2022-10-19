@@ -92,22 +92,35 @@ function diffDataDias($data_fim)
     return $dateInterval->days;
 }
 
-// function getDatasDoMes()
-// {
-//     $inicio = date('Y-m').'-01';
-//     $final  = getDataFinalMesAtual();
+function geraListaDatas($dataInicio,$dataFim,$intervalo = 'meses')
+{
+    switch($intervalo)
+    {
+        case 'dias':
+            $intevaloData = 'P1D';
+            $somaData = '+1 day';
+            break;
+        case 'meses':
+            $intevaloData = 'P1M';
+            $somaData = '+1 month';
+            break;
+    }
 
-//     $period = new \DatePeriod(
-//         new \DateTime('2022-10-31'),
-//         new \DateInterval('P1D'),
-//         new \DateTime('2022-10-01'),
-//     );
-    
-//     $arrDate = [];
-    
-//     foreach ($period as $key => $value) {
-//         $arrDate[] =  $value->format('Y-m-d');
-//     }
+    $finalCerto = new \DateTime($dataFim);
+    $finalCerto->modify($somaData);
 
-//     return $arrDate;
-// }
+
+    $period = new \DatePeriod(
+        new \DateTime($dataInicio),
+        new \DateInterval($intevaloData),
+        new \DateTime($finalCerto->format('Y-m-d'))
+    );
+    
+    $arrDate = [];
+    
+    foreach ($period as $key => $value) {
+        $arrDate[] =  $value->format('Y-m-d');
+    }
+
+    return $arrDate;
+}

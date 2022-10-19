@@ -3,6 +3,7 @@
 namespace app\controller;
 
 use app\model\Transaction;
+use app\model\entity\Transacao;
 use app\model\entity\DashboardModel;
 use app\session\Usuario as UsuarioSession;
 
@@ -15,6 +16,9 @@ class Dashboard extends BaseController
         $dados = [
             'usuario_logado' => UsuarioSession::get('nome')
         ];
+
+        Transacao::inseriDespesasFixasMesAtual();
+        Transacao::inseriReceitasFixasMesAtual();
         
         try {
             Transaction::open('db');
