@@ -6,7 +6,9 @@
 	require_once __DIR__."/core/ClassLoad.php";
 	require_once __DIR__."/core/Rota.php";
 	
+	
 	(new ClassLoad)->register();
+	require __DIR__ . '/vendor/autoload.php';
 	
 	$rota = new Rota;
 
@@ -15,9 +17,16 @@
 
 	// LOGIN
 	$rota->add('/','login@index');
+	$rota->add('/cadastro','login@cadastrar');
+	$rota->add('/alterarSenha','login@requisarAlteracaoSenha');
+	$rota->add('/novaSenha','login@novaSenha');
+	$rota->add('/senhaAlteradaInfo','login@senhaAlteradaInfo');
 
 	//DASHBOARD
 	$rota->add('/dashboard','dashboard@index');
+	$rota->add('/configuracoes','dashboard@configuracoes');
+	$rota->add('/configuracoes/alterarEmail','dashboard@configuracoesAltEmail');
+	$rota->add('/configuracoes/alterarSenha','dashboard@configuracoesAltSenha');
 	
 	// Area de contas
 	$rota->add('/contas/listar','contas@index');
@@ -75,7 +84,7 @@
 
 	
 	// Deslogar
-	$rota->add('/deslogar','Home@deslogar');
+	$rota->add('/deslogar','dashboard@deslogar');
 	
 	$rota->executar();
 

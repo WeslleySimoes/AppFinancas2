@@ -236,7 +236,11 @@ abstract class Record
 
     public function escape($value)
     {
-        if(is_string($value) && !empty($value))
+        if($value == 'NULL' OR $value == 'null')
+        {
+            return 'NULL';
+        }
+        else if(is_string($value) && !empty($value))
         {
             //adiciona \ em aspas
             $value = addslashes($value);
@@ -251,7 +255,7 @@ abstract class Record
             return $value;
         }
         else {
-            return 'null';
+            return 'NULL';
         }
     }
 

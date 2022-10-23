@@ -7,6 +7,7 @@ use app\helpers\FlashMessage;
 use app\model\entity\Transacao;
 use app\session\Usuario as UsuarioSession;
 use app\model\entity\{Categoria, Conta, ReceitaFixa, DespesaFixa}; 
+use app\model\entity\Conta as ContaModel;
 
 class Transacoes extends BaseController
 {
@@ -19,6 +20,26 @@ class Transacoes extends BaseController
             'usuario_logado' => UsuarioSession::get('nome'),
             'msg' => FlashMessage::get()
         );
+
+        ###########################################################################################
+        //Verifica se o usuário possui conta, caso contrário o redireciona para cadastro de contas
+        ###########################################################################################
+        try {
+            Transaction::open('db');
+
+            $totalContasUsuarioAtual = ContaModel::totalContas(UsuarioSession::get('id'));
+
+            Transaction::close();
+        } catch (\Exception $e) {
+            Transaction::rollback();
+        }
+        
+        if($totalContasUsuarioAtual  == 0)
+        {
+            header('location: '.HOME_URL.'/contas/cadastrar');
+            exit;
+        }
+        //##################################################################################
 
         Transacao::inseriDespesasFixasMesAtual();
         Transacao::inseriReceitasFixasMesAtual();

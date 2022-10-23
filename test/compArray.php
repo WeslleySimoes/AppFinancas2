@@ -31,6 +31,6 @@ function arrayMap()
     ];
 
     array_map(function ($valor){
-        return $valor != '' or $valor != '0'
+        return $valor != '' or $valor != '0';
     },$valores);
 }

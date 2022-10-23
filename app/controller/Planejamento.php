@@ -11,6 +11,7 @@ use app\session\Usuario as UsuarioSession;
 use app\model\entity\Planejamento as PlanejamentoModel;
 use app\model\entity\PlanejamentoCate;
 use app\utils\FormataMoeda as UtilsFormataMoeda;
+use app\model\entity\Conta as ContaModel;
 
 class Planejamento extends BaseController
 {
@@ -20,6 +21,26 @@ class Planejamento extends BaseController
     public function index()
     {
         UsuarioSession::deslogado();
+
+        ###########################################################################################
+        //Verifica se o usuário possui conta, caso contrário o redireciona para cadastro de contas
+        ###########################################################################################
+        try {
+            Transaction::open('db');
+
+            $totalContasUsuarioAtual = ContaModel::totalContas(UsuarioSession::get('id'));
+
+            Transaction::close();
+        } catch (\Exception $e) {
+            Transaction::rollback();
+        }
+        
+        if($totalContasUsuarioAtual  == 0)
+        {
+            header('location: '.HOME_URL.'/contas/cadastrar');
+            exit;
+        }
+        //##################################################################################
         
         PlanejamentoModel::alterandoStatus();
 
@@ -81,6 +102,26 @@ class Planejamento extends BaseController
     public function cadastrarPM()
     {
         UsuarioSession::deslogado();
+
+                ###########################################################################################
+        //Verifica se o usuário possui conta, caso contrário o redireciona para cadastro de contas
+        ###########################################################################################
+        try {
+            Transaction::open('db');
+
+            $totalContasUsuarioAtual = ContaModel::totalContas(UsuarioSession::get('id'));
+
+            Transaction::close();
+        } catch (\Exception $e) {
+            Transaction::rollback();
+        }
+        
+        if($totalContasUsuarioAtual  == 0)
+        {
+            header('location: '.HOME_URL.'/contas/cadastrar');
+            exit;
+        }
+        //##################################################################################
 
         $dataFiltro = null;
 

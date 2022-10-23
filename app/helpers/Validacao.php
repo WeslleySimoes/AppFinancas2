@@ -19,6 +19,13 @@ class Validacao
         return $this;
     }
 
+	public function confirmaSenha($senha,$confSenha)
+	{
+		if($senha != $confSenha)
+		{
+			$this->setMsgErro("O campo senha e confirmar senha estão diferentes!");
+		}
+	}
 
 	public function select(string $valor,array $arr,$df = true)
 	{

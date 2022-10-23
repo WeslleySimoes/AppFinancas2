@@ -7,6 +7,7 @@ use app\helpers\{FlashMessage, Validacao};
 use app\model\Transaction;
 use app\model\entity\Categoria as CategoriaModel;
 use app\model\entity\Transacao;
+use app\model\entity\Conta as ContaModel;
 
 class Categoria extends BaseController
 {
@@ -19,6 +20,26 @@ class Categoria extends BaseController
             'usuario_logado' => UsuarioSession::get('nome'),
             'msg'=> FlashMessage::get()
         ];
+
+        ###########################################################################################
+        //Verifica se o usuário possui conta, caso contrário o redireciona para cadastro de contas
+        ###########################################################################################
+        try {
+            Transaction::open('db');
+
+            $totalContasUsuarioAtual = ContaModel::totalContas(UsuarioSession::get('id'));
+
+            Transaction::close();
+        } catch (\Exception $e) {
+            Transaction::rollback();
+        }
+        
+        if($totalContasUsuarioAtual  == 0)
+        {
+            header('location: '.HOME_URL.'/contas/cadastrar');
+            exit;
+        }
+        //##################################################################################
 
         unset($_GET['categorias']);
 
@@ -109,6 +130,26 @@ class Categoria extends BaseController
             'msg'=> FlashMessage::get()
         ];
 
+        ###########################################################################################
+        //Verifica se o usuário possui conta, caso contrário o redireciona para cadastro de contas
+        ###########################################################################################
+        try {
+            Transaction::open('db');
+
+            $totalContasUsuarioAtual = ContaModel::totalContas(UsuarioSession::get('id'));
+
+            Transaction::close();
+        } catch (\Exception $e) {
+            Transaction::rollback();
+        }
+        
+        if($totalContasUsuarioAtual  == 0)
+        {
+            header('location: '.HOME_URL.'/contas/cadastrar');
+            exit;
+        }
+        //##################################################################################
+
 
         try {
             Transaction::open('db');
@@ -195,6 +236,26 @@ class Categoria extends BaseController
             'usuario_logado' => UsuarioSession::get('nome'),
             'msg'=> FlashMessage::get()
         ];
+
+        ###########################################################################################
+        //Verifica se o usuário possui conta, caso contrário o redireciona para cadastro de contas
+        ###########################################################################################
+        try {
+            Transaction::open('db');
+
+            $totalContasUsuarioAtual = ContaModel::totalContas(UsuarioSession::get('id'));
+
+            Transaction::close();
+        } catch (\Exception $e) {
+            Transaction::rollback();
+        }
+        
+        if($totalContasUsuarioAtual  == 0)
+        {
+            header('location: '.HOME_URL.'/contas/cadastrar');
+            exit;
+        }
+        //##################################################################################
 
         $id = filter_input(INPUT_GET,'id',FILTER_VALIDATE_INT);
 
@@ -298,6 +359,26 @@ class Categoria extends BaseController
     {
         UsuarioSession::deslogado();
 
+        ###########################################################################################
+        //Verifica se o usuário possui conta, caso contrário o redireciona para cadastro de contas
+        ###########################################################################################
+        try {
+            Transaction::open('db');
+
+            $totalContasUsuarioAtual = ContaModel::totalContas(UsuarioSession::get('id'));
+
+            Transaction::close();
+        } catch (\Exception $e) {
+            Transaction::rollback();
+        }
+        
+        if($totalContasUsuarioAtual  == 0)
+        {
+            header('location: '.HOME_URL.'/contas/cadastrar');
+            exit;
+        }
+        //##################################################################################
+
         $id = filter_input(INPUT_GET,'id',FILTER_VALIDATE_INT);
 
         if(!isset($id) or !$id > 0)
@@ -337,6 +418,26 @@ class Categoria extends BaseController
     public function desarquivar()
     {
         UsuarioSession::deslogado();
+
+        ###########################################################################################
+        //Verifica se o usuário possui conta, caso contrário o redireciona para cadastro de contas
+        ###########################################################################################
+        try {
+            Transaction::open('db');
+
+            $totalContasUsuarioAtual = ContaModel::totalContas(UsuarioSession::get('id'));
+
+            Transaction::close();
+        } catch (\Exception $e) {
+            Transaction::rollback();
+        }
+        
+        if($totalContasUsuarioAtual  == 0)
+        {
+            header('location: '.HOME_URL.'/contas/cadastrar');
+            exit;
+        }
+        //##################################################################################
 
         $id = filter_input(INPUT_GET,'id',FILTER_VALIDATE_INT);
 

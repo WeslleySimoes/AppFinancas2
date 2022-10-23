@@ -67,7 +67,9 @@
         <?php if(array_sum($depMensal) > 0 OR array_sum($recMensal) > 0 ): ?>
             <canvas id="graficoBarra" height="120px"></canvas>
         <?php else: ?>
-            <b>Nenhuma despesa ou receita encontrada!</b>
+            <div class="alert error-alert" style="height: 200px; display: flex; text-align:center; justify-content: center; align-items: center;">
+                <b>Nenhuma despesa ou receita encontrada!</b>        
+            </div>
         <?php endif; ?>
     </div>
 </div>
@@ -80,7 +82,9 @@
             <?php if(strlen($arr_total_despesas) > 0): ?>
                 <canvas id="myChartPizza" width="100%" height="400"></canvas>
             <?php else: ?>
-                <b>Opa! Você ainda não possui despesas este mês.</b>
+                <div class="alert error-alert" style="height: 200px; display: flex; text-align:center; justify-content: center; align-items: center;">
+                    <b>Opa! Você ainda não possui despesas este mês.</b>
+                </div>
             <?php endif; ?>
         </div>
     </div>
@@ -90,7 +94,9 @@
         <?php if(strlen($arr_total_receitas) > 0): ?>
                 <canvas id="myChartPizza2" width="600" height="400"></canvas>
             <?php else: ?>
-                <b>Opa! Você ainda não possui receitas este mês.</b>
+                <div class="alert error-alert" style="height: 200px; display: flex; text-align:center; justify-content: center; align-items: center;">
+                    <b>Opa! Você ainda não possui receitas este mês.</b>
+                </div>
             <?php endif; ?>
         </div>
     </div>
@@ -161,7 +167,9 @@
                     <?php endforeach; ?>
                 </table>
             <?php else: ?>
-                <b>Opa! Você ainda não possui transaão este mês.</b>
+                <div class="alert error-alert" style="height: 200px; display: flex; text-align:center; justify-content: center; align-items: center;">
+                    <b>Opa! Você ainda não possui transação este mês.</b>
+                </div>
             <?php endif; ?>
         </div>
     </div>

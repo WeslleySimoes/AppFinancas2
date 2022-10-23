@@ -80,7 +80,7 @@
                 </a>
             </li> 
             <li> 
-                <a href="#configuracoes" class="link-menu-lateral">
+                <a href="<?= HOME_URL ?>/configuracoes" class="link-menu-lateral">
                     <i class="fa fa-cog" aria-hidden="true"></i>
                     Configurações
                 </a>
@@ -97,7 +97,7 @@
             <li><i class="fa fa-user" aria-hidden="true"></i>&nbsp;
             <?= $usuario_logado ?> 
                 <ul>
-                    <li><a href="#configuracoes"><i class="fa fa-cog" aria-hidden="true"></i> Configurações</a></li>
+                    <li><a href="<?= HOME_URL ?>/configuracoes"><i class="fa fa-cog" aria-hidden="true"></i> Configurações</a></li>
                     <li><a href="<?= HOME_URL.'/deslogar' ?>"><i class="fa fa-sign-out" aria-hidden="true"></i> Sair</a></li>
                 </ul>
             </li>

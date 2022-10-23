@@ -124,3 +124,17 @@ function geraListaDatas($dataInicio,$dataFim,$intervalo = 'meses')
 
     return $arrDate;
 }
+
+function token($tamanho=10, $id="", $up=false) {
+    $characters = $id.'abcdefghijklmnopqrstuvwxyz0123456789';
+    $charactersLength = strlen($characters);
+    $randomString = '';
+    for ($i = 0; $i < $tamanho; $i++) {
+        $randomString .= $characters[rand(0, $charactersLength - 1)];
+    }
+    if($up === true) {
+      return strtoupper($id.$randomString);
+    } else {
+      return $id.$randomString;
+    }
+  }

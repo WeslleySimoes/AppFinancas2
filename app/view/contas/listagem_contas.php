@@ -125,7 +125,9 @@
         <?php endforeach; ?>
     <?php endif; ?>
 <?php else: ?>
-    <p>Nenhuma conta encontrada!</p>
+    <div class="alert error-alert">
+        Nenhuma conta foi encontrada!
+      </div>
 <?php endif; ?>
 </div>
 

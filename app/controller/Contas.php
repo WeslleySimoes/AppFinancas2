@@ -19,6 +19,26 @@ class Contas extends BaseController
             'msg' => FlashMessage::get()
         ];
 
+        ###########################################################################################
+        //Verifica se o usuário possui conta, caso contrário o redireciona para cadastro de contas
+        ###########################################################################################
+        try {
+            Transaction::open('db');
+
+            $totalContasUsuarioAtual = ContaModel::totalContas(UsuarioSession::get('id'));
+
+            Transaction::close();
+        } catch (\Exception $e) {
+            Transaction::rollback();
+        }
+        
+        if($totalContasUsuarioAtual  == 0)
+        {
+            header('location: '.HOME_URL.'/contas/cadastrar');
+            exit;
+        }
+        //##################################################################################
+
         $status_conta = htmlspecialchars(filter_input(INPUT_GET,'status'));
         $status_conta = in_array($status_conta,['ativo','arquivado']) ? " status_conta = '{$status_conta}'" : "status_conta = 'ativo'";
 

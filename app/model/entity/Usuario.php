@@ -13,7 +13,7 @@ class Usuario extends Record
     // Método responsável por verificar se existe um usuário cadastrado
     public static function checarUsuario($email,$senha): Usuario|NULL
     {
-        $sql = "SELECT * FROM ".self::TABLENAME." WHERE email = '{$email}' and senha = '{$senha}'";
+        $sql = "SELECT * FROM ".self::TABLENAME." WHERE email = '{$email}'";
 
         if($conn = Transaction::get())
         {
@@ -23,7 +23,18 @@ class Usuario extends Record
                 $object = $result->fetchObject(get_called_class());
             }
 
-            return $object ?? NULL;
+            if($object)
+            {
+                if(password_verify($senha,$object->senha))
+                {
+                    return $object;
+                }
+                else{
+                    return NULL;
+                }
+            }
+
+            return NULL;
         }
         
         throw new \Exception('Não há transação aberta!');

@@ -60,6 +60,26 @@ class Relatorios extends BaseController
             'usuario_logado' => UsuarioSession::get('nome'),
             'msg' => FlashMessage::get()
         ];
+
+        ###########################################################################################
+        //Verifica se o usuário possui conta, caso contrário o redireciona para cadastro de contas
+        ###########################################################################################
+        try {
+            Transaction::open('db');
+
+            $totalContasUsuarioAtual = ContaModel::totalContas(UsuarioSession::get('id'));
+
+            Transaction::close();
+        } catch (\Exception $e) {
+            Transaction::rollback();
+        }
+        
+        if($totalContasUsuarioAtual  == 0)
+        {
+            header('location: '.HOME_URL.'/contas/cadastrar');
+            exit;
+        }
+        //##################################################################################
         
         
         //RETORNA TODAS AS CONTAS/CATEGORIAS DO USUÁRIO
@@ -358,6 +378,26 @@ class Relatorios extends BaseController
             'msg' => FlashMessage::get()
         ];
 
+        ###########################################################################################
+        //Verifica se o usuário possui conta, caso contrário o redireciona para cadastro de contas
+        ###########################################################################################
+        try {
+            Transaction::open('db');
+
+            $totalContasUsuarioAtual = ContaModel::totalContas(UsuarioSession::get('id'));
+
+            Transaction::close();
+        } catch (\Exception $e) {
+            Transaction::rollback();
+        }
+        
+        if($totalContasUsuarioAtual  == 0)
+        {
+            header('location: '.HOME_URL.'/contas/cadastrar');
+            exit;
+        }
+        //##################################################################################
+
         try {
             Transaction::open('db');
 
@@ -586,6 +626,26 @@ class Relatorios extends BaseController
             'usuario_logado' => UsuarioSession::get('nome'),
             'msg' => FlashMessage::get()
         ];
+
+        ###########################################################################################
+        //Verifica se o usuário possui conta, caso contrário o redireciona para cadastro de contas
+        ###########################################################################################
+        try {
+            Transaction::open('db');
+
+            $totalContasUsuarioAtual = ContaModel::totalContas(UsuarioSession::get('id'));
+
+            Transaction::close();
+        } catch (\Exception $e) {
+            Transaction::rollback();
+        }
+        
+        if($totalContasUsuarioAtual  == 0)
+        {
+            header('location: '.HOME_URL.'/contas/cadastrar');
+            exit;
+        }
+        //##################################################################################
         
         $dataAno = date('Y-m-d');
         $anoAtual = date('Y');

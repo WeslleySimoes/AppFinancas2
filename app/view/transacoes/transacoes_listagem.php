@@ -54,6 +54,7 @@
     <a href="<?= HOME_URL ?>/transacoes">Transações</a>
     <a href="<?= HOME_URL ?>/transacoes?s=receitasFixas">Receitas fixas e/ou parceladas</a>
     <a href="<?= HOME_URL ?>/transacoes?s=despesasFixas">Despesas fixas e/ou parceladas</a>
+    </div>
   </div>
   <!-- ############################################################################ -->
 
@@ -258,7 +259,8 @@
   
   
   <!-- LISTAGEM DE RECEITAS E DESPESAS FIXAS OU PARCELADAS -->
-    <?php elseif (isset($arr_dados)): ?>
+    <?php elseif (isset($arr_dados) AND count($arr_dados[1]) > 0 ): ?>
+    
       <table style="margin-top: 20px;">
         <tr>
           <th>Status</th>
@@ -436,13 +438,15 @@
             </span>
             </div>
             <!-- FINAL DO TOOLTIP  --> 
-  
-  
+
           <?php endif; ?>
         </tr>
         <?php endforeach ?>
     <?php else: ?>
-      <br><br>Nenhuma transação encontrada!<br><br>
+
+      <div class="alert error-alert" style="height: 500px; display: flex; text-align:center; justify-content: center; align-items: center;">
+                <b>  Nenhuma transação encontrada!</b>        
+            </div>
     <?php endif ?>
     
   </table>
