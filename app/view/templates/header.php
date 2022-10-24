@@ -74,7 +74,7 @@
                 </a>
             </li> 
             <li> 
-                <a href="#calculadoras" class="link-menu-lateral">
+                <a href="<?= HOME_URL ?>/calculadoras" class="link-menu-lateral">
                 <i class="fa fa-calculator" aria-hidden="true"></i>
                     Calculadoras
                 </a>

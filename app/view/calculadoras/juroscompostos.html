@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Juros Compostos</title>
+	</head>
+	<style type="text/css">
+		
+	</style>
+	<script type="text/javascript">
+		window.onload = function(){
+
+			var calcular = document.getElementById("calcular");
+			var limpar = document.getElementById("limpar");
+
+			var resultado = document.getElementById("resultado");
+
+			var capital = document.getElementById("capital");
+			var juros = document.getElementById("juros");
+			var tempo = document.getElementById("meses");
+
+			calcular.onclick = function(){
+
+				var montante = "";
+				var final = (capital.value*(Math.pow(1+(juros.value/100),tempo.value))).toFixed(2);
+
+				for (var i = 0; i <= tempo.value; i++) {
+					montante += "Mês "+i+" :     R$ "+(capital.value*(Math.pow(1+(juros.value/100),i))).toFixed(2) + "<br/><br/>";
+
+					if (i == tempo.value) {
+						montante += "Juros liquido : R$ "+(final-capital.value).toFixed(2);
+					}
+				}
+
+				resultado.innerHTML = montante;
+			}
+
+			limpar.onclick = function(){
+				resultado.innerHTML = "";
+				capital.value = "";
+				juros.value = "";
+				tempo.value = "";
+
+			}
+		}
+	</script>
+	<style type="text/css">
+		*{
+			box-sizing: border-box;
+		}
+		#conteudo-principal{
+			border: 1px solid black;
+			width: 400px;
+			padding: 0px;
+			margin: 40px auto 0 auto;
+		}
+
+		#conteudo-principal h1{
+			border-bottom: 1px solid black;
+			margin: 0;
+			padding: 5px;
+			background-color: lightgreen;
+			font-size: 28px;
+		}
+
+		#resultado{
+			margin: 10px;
+			font-weight: bold;
+		}
+
+		.inserir-valor{
+			border-bottom: 1px solid black;
+			margin: 10px;
+			font-weight: bold;
+		}
+
+		.inserir-valor input[type="text"]{
+			display: block;
+			width: 100%;
+			height: 25px;
+			padding-left: 5px;
+			border: 0.5px solid green;
+		}
+
+		.inserir-valor button{
+			border: 1px solid black;
+			padding: 5px 10px;
+			font-weight: bold;
+			font-size: 16px;
+		}
+	</style>
+	<body>
+		<div id="conteudo-principal">
+			<h1>Calculadora de Juros compostos</h1>
+			<div class="inserir-valor">
+				<p>Capital (R$): </p>
+				<input type="text" name="capital" id="capital">
+				<p>Juros (%): </p>
+				<input type="text" name="juros" id="juros">
+				<p>Tempo (meses): </p>
+				<input type="text" name="tempo" id="meses"><br><br>
+				<button id="calcular">Calcular</button>
+				<button id="limpar">Limpar</button><br><br>
+			</div>
+			<p id="resultado"></p>
+		</div>
+	</body>
+</html>

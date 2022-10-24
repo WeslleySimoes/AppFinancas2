@@ -28,6 +28,7 @@
 	$rota->add('/configuracoes/alterarEmail','dashboard@configuracoesAltEmail');
 	$rota->add('/configuracoes/alterarSenha','dashboard@configuracoesAltSenha');
 	
+	
 	// Area de contas
 	$rota->add('/contas/listar','contas@index');
 	$rota->add('/contas/cadastrar','contas@cadastrar');
@@ -81,6 +82,9 @@
 	$rota->add('/relatorios','relatorios@index');
 	$rota->add('/relatorios/linha','relatorios@linha');
 	$rota->add('/relatorios/barra','relatorios@barra');
+
+	//Calculadoras
+	$rota->add('/calculadoras','calculadoras@listagem');
 
 	
 	// Deslogar
