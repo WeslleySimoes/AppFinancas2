@@ -124,11 +124,11 @@
     </div>
 </div>
 <div style="padding: 10px; margin-top: 10px;border: 1px solid lightgray; display: flex; justify-content:space-between; align-items: center;">
-    <h3>Balanço mensal</h3>
+    <h3 style="color: #263D52;">Balanço mensal</h3>
     <h3>
         
         <form action="<?= HOME_URL ?>/relatorios/barra" method="get" id="form_data">
-            <select name="ano" data-component="date" style="width: 100%; padding: 10px;" id="selectedANO" onchange="handler();">
+            <select name="ano" data-component="date" style="width: 100%; padding: 10px;border: 1px solid #263D52;; color: #263D52;;" id="selectedANO" onchange="handler();">
                 <?php
                     for($year=date('Y'); $year>=1900; $year--){
                         if(isset($_GET['ano']) AND $year == $_GET['ano'])

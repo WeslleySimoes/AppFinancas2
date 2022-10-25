@@ -103,24 +103,22 @@
             </li>
         </ul>
     </div>
-    <style>
-        .exemplo{
-            width:calc(100% - 250px);
-            position: fixed;
-            left: 250px;
-            top: 60px;
-            display: flex;
-            justify-content:space-between;
-            background-color: white;
-            padding: 5px 20px;
-            border-bottom: 1px solid #cecdcd;
-            color: #495057;
-            z-index: 1;
-        }
-    </style>
-    <div class="exemplo">
-        <p style="font-weight: bold;">Cadastro de conta</p>
-        <p style="font-size: 0.9rem;">Contas / Cadastro</p>
+    <div class="exemplo">   
+    
+        <a href="<?= HOME_URL.'/'.$nomepagina[0] ?>" class='exemplo-titulo-pag'><?= $nomepagina[1] ?></a>
+        <div>
+            <?php $totalLinkCaminhoPagina = count($link_caminho_pagina);$contaItemPagAtual = 0; foreach( $link_caminho_pagina as $linkPagAtual ): ?>
+
+                <a href="<?= HOME_URL.'/'.$linkPagAtual[0] ?>" class='exemplo-link-pag'> <?= $linkPagAtual[1]  ?></a>
+
+                <?php $contaItemPagAtual++ ?>
+
+                <?php if($contaItemPagAtual != $totalLinkCaminhoPagina ): ?>
+                    /
+                <?php endif; ?>
+
+            <?php endforeach; ?>
+        </div>
     </div>
     <!-- <div style="margin: 45px 0 0 200px; background-color:#EAEDEA; position:fixed; top:0; width: 100%; padding: 5px 20px;">
         Dashboard

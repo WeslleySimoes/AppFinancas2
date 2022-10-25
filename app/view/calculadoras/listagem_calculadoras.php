@@ -19,7 +19,7 @@
     }
 </style>
 
-<h3>Lista de calculadoras</h3>
+<h3 style="color:#263D52;">Lista de calculadoras</h3>
 
 <div id="links-calc">
     <a href="<?= HOME_URL ?>/calculadoras?t=jurosCompostos">Calculadora de juros compostos</a>

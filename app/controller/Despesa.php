@@ -19,7 +19,12 @@ class Despesa extends BaseController
 
         $dados = [
             'usuario_logado' => UsuarioSession::get('nome'),
-            'msg' => FlashMessage::get()
+            'msg' => FlashMessage::get(),
+            'nomepagina' => ['despesa/cadastrar','Cadastro de despesa'],
+            'link_caminho_pagina' => [
+                ['transacoes','Transações'],
+                ['despesa/cadastrar','Cadastro de despesa']
+            ]
         ];
 
         //LISTAGEM DOS CAMPOS CATEGORIAS E CONTAS
@@ -188,7 +193,12 @@ class Despesa extends BaseController
 
         $dados = [
             'usuario_logado' => UsuarioSession::get('nome'),
-            'msg' => FlashMessage::get()
+            'msg' => FlashMessage::get(),
+            'nomepagina' => ['despesa/editar?id='.$_GET['id'],'Editar despesa'],
+            'link_caminho_pagina' => [
+                ['transacoes','Transações'],
+                ['despesa/editar?id='.$_GET['id'],'Editar despesa']
+            ]
         ];
 
         // VALIDANDO ID INSERIDO NA URL 
@@ -393,7 +403,12 @@ class Despesa extends BaseController
 
         $dados = [
             'usuario_logado' => UsuarioSession::get('nome'),
-            'msg' => FlashMessage::get()
+            'msg' => FlashMessage::get(),
+            'nomepagina' => ['despesa/editarFP?id='.$_GET['id'].'&t='.$_GET['t'],'Editar despesa'],
+            'link_caminho_pagina' => [
+                ['transacoes','Transações'],
+                ['despesa/editarFP?id='.$_GET['id'].'&t='.$_GET['t'],'Editar despesa']
+            ]
         ];
 
         switch($_GET['t'])

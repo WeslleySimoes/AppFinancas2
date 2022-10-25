@@ -108,7 +108,7 @@
             <span> Últimas 10 transações </span>
             <a href="<?= HOME_URL ?>/transacoes" style="font-size: 0.8em; text-decoration: none; color: #263D52;"> Ver mais ...</a>
         </h3>
-        
+
         <div class="containerForm">
             <?php if(!empty($ultimasTransacoes)): ?>
                 <table style="width: 100%;">

@@ -1,8 +1,24 @@
 <!-- <button id="btn-filtro-trans">Clique aqui</button> -->
+<style>
 
+    #form-filtro-trans  select{
+        margin: 5px 0 0 0 !important;
+    }
+
+    #form-filtro-trans button{
+        background-color: #0476B9;
+        border: 1px solid #0476B9;
+        color: white;
+        font-size: 1.02em;
+    }
+
+</style>
 <div id="fundoFiltroTrans">
     <div id="form-container">
-        <h1 style="margin-bottom: 10px; text-align: center;">Filtro</h1>
+        <div style="display: flex; justify-content:flex-end;">
+            <span id="btn-fechar-filtro-trans">X</span>
+        </div>
+        <h2 style="margin-bottom: 5px; text-align: center; color: #263D52;">Filtro</h2>
         <form action="<?= HOME_URL ?>/transacoes" method="GET" id="form-filtro-trans">
             <div>
                 <label for="status">Status:</label><br>
@@ -56,16 +72,43 @@
 
                 </select>
             </div>
-            <br>                 
+            <br> 
+
             <div>
+                <input type="checkbox"  id="dataEspecifica">
                 <label for="data">Data:</label><br>
-                <input type="date" name="data">
+                <input type="date" name="data" style="border: 1px solid #ccc;" id="dataEspecificaInput" value="<?= date('Y-m-d') ?>" disabled>
+            </div>
+            <div style="margin-top: 10px;">
+                <input type="checkbox"  id="dataMes" checked>
+                <label for="dataMes">Mês:</label><br>
+                <input type="month" name="dataMes" style="width: 100%; padding: 10px;border: 1px solid #ccc; font-size: 1.02rem;" value="<?= date('Y-m') ?>" id="dataMesInput">
             </div>
             <br>
 
             <button type="submit" style="padding: 10px;">Aplicar filtro</button>
-            <button type="reset" style="padding: 10px;">Limpar</button>
-            <span id="btn-fechar-filtro-trans">Fechar</span>
+            <!-- <button type="reset" style="padding: 10px;">Limpar</button> -->
+            
         </form>
     </div>
 </div>
+
+<script>
+    const dataEspecifica = document.querySelector('#dataEspecifica');
+    const dataMes        = document.querySelector('#dataMes');
+    const dataEspecificaInput = document.querySelector("#dataEspecificaInput");
+    const dataMesInput   = document.querySelector('#dataMesInput');
+
+
+    dataEspecifica.onclick = () =>{
+        dataMes.checked = false;
+        dataMesInput.disabled = true;
+        dataEspecificaInput.disabled = false;
+    }
+
+    dataMes.onclick = () =>{
+        dataEspecifica.checked = false;
+        dataEspecificaInput.disabled = true;
+        dataMesInput.disabled = false;
+    }
+</script>

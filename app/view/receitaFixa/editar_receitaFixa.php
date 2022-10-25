@@ -86,7 +86,7 @@
                 <?php endforeach; ?>
             <?php endif; ?>
         </select>  
-        <button class="btn-success">Editar</button>
+        <button  class="botao-link botao-link-edit" style="font-size: 1.1em;">Editar</button>
     </form>
     <?= $msg ?>
 </div>

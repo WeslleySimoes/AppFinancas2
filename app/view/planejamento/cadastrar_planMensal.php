@@ -9,7 +9,7 @@
             <input type="text" name="renda" id="valorRenda"  style="width: 100%;" class="money" value="0,00" >
 
             <label for="">Meta de gasto (%):</label>
-            <input type="number" name="porcentMeta" id="porcentMeta" min="10" max="80"  value="10"/>
+            <input type="number" name="porcentMeta" id="porcentMeta" min="10" max="80"  value="10" style="width: 80px;"/>
 
             <input type="text" name="metaGasto"  id="metaGasto" style="border: none; color: red; width: auto;" value="R$ 0,00" disabled >
 
@@ -29,7 +29,7 @@
                 <?php $i++; endforeach; ?>
             </div>
             <div style="margin-bottom: 10px;" id="totalCategorias"><b style="color:red;">Valor restante: R$ 0,00</b></div>
-            <button type="submit" id="btnCadastrarPlan" class="botao-link botao-link-edit2" disabled>Cadastrar</button>
+            <button type="submit" id="btnCadastrarPlan" class="botao-link botao-link-edit2" disabled style="font-size: 1.02em">Cadastrar</button>
         </form>
     </div>
     <?= $msg ?>

@@ -22,7 +22,12 @@ class Transferencia extends BaseController
 
         $dados = [
             'usuario_logado' => UsuarioSession::get('nome'),
-            'msg' => FlashMessage::get()
+            'msg' => FlashMessage::get(),
+            'nomepagina' => ['transferencia/cadastrar','Cadastro de transferência'],
+            'link_caminho_pagina' => [
+                ['transacoes','Transações'],
+                ['transferencia/cadastrar','Cadastro de transferência']
+            ]
         ];
 
         //LISTAGEM DOS CAMPOS CONTAS ORIGEM E DESTINO
@@ -146,7 +151,12 @@ class Transferencia extends BaseController
 
         $dados = [
             'usuario_logado' => UsuarioSession::get('nome'),
-            'msg' => FlashMessage::get()
+            'msg' => FlashMessage::get(),
+            'nomepagina' => ['transferencia/editar?id='.$_GET['id'],'Editar transferência'],
+            'link_caminho_pagina' => [
+                ['transacoes','Transações'],
+                ['transferencia/editar?id='.$_GET['id'],'Editar transferência']
+            ]
         ];
        
 

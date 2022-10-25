@@ -18,7 +18,7 @@
             <input type="color" name="corCate" value="<?=   $get_categoria->cor_cate?>" style="display: block; width: 50px; height: 50px; border:none;">
         </div>
 
-        <button class="btn-success">Cadastrar</button>
+        <button  class="botao-link botao-link-edit" style="font-size: 1.1em;">Cadastrar</button>
     </form>
     <?= $msg ?>
 </div>

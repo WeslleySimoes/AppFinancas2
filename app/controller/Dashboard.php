@@ -19,7 +19,11 @@ class Dashboard extends BaseController
         UsuarioSession::deslogado();
 
         $dados = [
-            'usuario_logado' => UsuarioSession::get('nome')
+            'usuario_logado' => UsuarioSession::get('nome'),
+            'nomepagina' => ['dashboard','Dashboard'],
+            'link_caminho_pagina' => [
+                ['dashboard','Dashboard']
+            ]
         ];
 
         ###########################################################################################
@@ -119,7 +123,11 @@ class Dashboard extends BaseController
 
         $dados = [
             'usuario_logado' => UsuarioSession::get('nome'),
-            'msg' => FlashMessage::get()
+            'msg' => FlashMessage::get(),
+            'nomepagina' => ['configuracoes','Meu cadastro'],
+            'link_caminho_pagina' => [
+                ['configuracoes','Meu cadastro']
+            ]
         ];
 
 
@@ -198,7 +206,12 @@ class Dashboard extends BaseController
 
         $dados = [
             'usuario_logado' => UsuarioSession::get('nome'),
-            'msg' => FlashMessage::get()
+            'msg' => FlashMessage::get(),
+            'nomepagina' => ['configuracoes/alterarEmail','Alteração de E-mail'],
+            'link_caminho_pagina' => [
+                ['configuracoes','Configurações'],
+                ['configuracoes/alterarEmail','Alteração de E-mail']
+            ]
         ];
 
         if(!empty($_POST))
@@ -268,7 +281,12 @@ class Dashboard extends BaseController
 
         $dados = [
             'usuario_logado' => UsuarioSession::get('nome'),
-            'msg' => FlashMessage::get()
+            'msg' => FlashMessage::get(),
+            'nomepagina' => ['configuracoes/alterarSenha','Alteração de senha'],
+            'link_caminho_pagina' => [
+                ['configuracoes','Configurações'],
+                ['configuracoes/alterarSenha','Alteração de senha']
+            ]
         ];
 
         if(!empty($_POST))

@@ -94,7 +94,7 @@
             <?php endif; ?>
         </select>  
 
-        <button class="btn-success">Alterar</button>
+        <button  class="botao-link botao-link-edit" style="font-size: 1.1em;">Alterar</button>
     </form>
     <?= $msg ?>
 </div>

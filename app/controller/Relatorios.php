@@ -58,7 +58,11 @@ class Relatorios extends BaseController
         
         $dados = [
             'usuario_logado' => UsuarioSession::get('nome'),
-            'msg' => FlashMessage::get()
+            'msg' => FlashMessage::get(),
+            'nomepagina' => ['relatorios/linha','Relatório em linha'],
+            'link_caminho_pagina' => [
+                ['relatorios/linha','Relatório em linha']
+            ]
         ];
 
         ###########################################################################################
@@ -375,7 +379,11 @@ class Relatorios extends BaseController
 
         $dados = [
             'usuario_logado' => UsuarioSession::get('nome'),
-            'msg' => FlashMessage::get()
+            'msg' => FlashMessage::get(),
+            'nomepagina' => ['relatorios','Relatório em pizza'],
+            'link_caminho_pagina' => [
+                ['relatorios','Relatório em pizza']
+            ]
         ];
 
         ###########################################################################################
@@ -624,7 +632,11 @@ class Relatorios extends BaseController
 
         $dados = [
             'usuario_logado' => UsuarioSession::get('nome'),
-            'msg' => FlashMessage::get()
+            'msg' => FlashMessage::get(),
+            'nomepagina' => ['relatorios/barra','Relatório em barra'],
+            'link_caminho_pagina' => [
+                ['relatorios/barra','Relatório em barra']
+            ]
         ];
 
         ###########################################################################################

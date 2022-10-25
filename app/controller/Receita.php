@@ -24,7 +24,12 @@ class Receita extends BaseController
 
         $dados = [
             'usuario_logado' => UsuarioSession::get('nome'),
-            'msg' => FlashMessage::get()
+            'msg' => FlashMessage::get(),
+            'nomepagina' => ['receita/cadastrar','Cadastro de receita'],
+            'link_caminho_pagina' => [
+                ['transacoes','Transações'],
+                ['receita/cadastrar','Cadastro de receita']
+            ]
         ];
 
         //LISTAGEM DOS CAMPOS CATEGORIAS E CONTAS
@@ -191,7 +196,12 @@ class Receita extends BaseController
 
         $dados = [
             'usuario_logado' => UsuarioSession::get('nome'),
-            'msg' => FlashMessage::get()
+            'msg' => FlashMessage::get(),
+            'nomepagina' => ['receita/editar?id='.$_GET['id'],'Editar receita'],
+            'link_caminho_pagina' => [
+                ['transacoes','Transações'],
+                ['receita/editar?id='.$_GET['id'],'Editar receita']
+            ]
         ];
 
         // VALIDANDO ID INSERIDO NA URL 
@@ -385,7 +395,12 @@ class Receita extends BaseController
 
         $dados = [
             'usuario_logado' => UsuarioSession::get('nome'),
-            'msg' => FlashMessage::get()
+            'msg' => FlashMessage::get(),
+            'nomepagina' => ['receita/editarFP?id='.$_GET['id'].'&t='.$_GET['t'],'Editar receita'],
+            'link_caminho_pagina' => [
+                ['transacoes','Transações'],
+                ['receita/editarFP?id='.$_GET['id'].'&t='.$_GET['t'],'Editar receita']
+            ]
         ];
 
         switch($_GET['t'])

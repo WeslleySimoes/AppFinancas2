@@ -8,6 +8,33 @@
     font-family: 'Lato', sans-serif;
 }
 
+.exemplo{
+    width:calc(100% - 250px);
+    position: fixed;
+     left: 250px; 
+
+    top: 60px;
+    display: flex;
+    justify-content:space-between;
+    background-color: white;
+    padding: 5px 20px;
+    border-bottom: 1px solid #cecdcd;
+    color: #495057;
+    z-index: 1;
+
+}
+
+.exemplo-titulo-pag {
+    text-decoration: none;
+    font-weight: bold;
+    color: #263D52;
+}
+
+.exemplo-link-pag{
+    text-decoration: none;
+    font-size: 0.9em;
+    color: #263D52;
+}
 
 /* MENU LATERAL */
 #menuLateral{
@@ -191,13 +218,32 @@
 /* FIM DA PARTE DE CONFIGURAÇÃO DO MENU LATERAL */
 
 
+.exemplo-remove{
+    left:0 !important; 
+    width: 100% !important; 
+} 
+
+.exemplo-remove2{
+    left:250px !important; 
+    width: calc(100% - 250px) !important;
+}   
+
 /* RESPONSIVIDADE DO DASHBOARD */
 @media only screen and (max-width: 700px) 
 {
     #menuLateral{transform:translateX(-250px)}
     #menuSuperior,.conteudo{margin-left: 0;}
     #menuSuperior{width: 100vw;}
-}
+    .exemplo{left:0; width: 100%;}
+    .dadosFinanceiros{flex-direction: column;}
+    .dadoItem{margin: 10px 0 !important; width: 100% !important;}
+    .outrosDados{flex-direction: column;}
+    .outrosDados > div{width: 100% !important;}
+    .containerForm{overflow-x: scroll;}
+    .contas-content{flex-direction: column;}
+    .contas-content .card{width: 100% !important;}
+    .lista-plan-personalizado{flex-direction: column;}
+} 
 
 /*POPUP*/
 
@@ -226,8 +272,22 @@
     height: 300px;
     background-color: white;
     padding: 20px;
+    border: 2px solid #3498DB;
+    color: #263D52;
 }
 
+.btn-dp-fix-p{
+    border: none;
+    background-color: #0476B9;
+    padding: 5px 10px;
+    font-size: 16px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+.dasdasas{
+    background-color: #D70040 !important;
+}
 .remove-RFP{
     border: none;
     background-color: transparent;
@@ -235,3 +295,4 @@
     font-size: 16px;
     cursor: pointer;
 }
+

@@ -121,7 +121,7 @@ body {font-family: Arial;}
   <a href="<?= HOME_URL ?>/planejamento?p=personalizado&status=expirado" class="item-menu-perso" <?= isset($_GET['status']) && $_GET['status'] == 'expirado'? "style='background-color: #a6a6a6 !important;'" : ' ' ?>>Expirados</a>
 </div>
 
-<div style="display: flex;">
+<div style="display: flex;" class="lista-plan-personalizado">
 
     <?php if(isset($_GET['status']) && $_GET['status'] != 'expirado'): ?>
     <div id="inserir-plan-person">

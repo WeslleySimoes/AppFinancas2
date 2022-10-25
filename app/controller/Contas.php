@@ -16,7 +16,11 @@ class Contas extends BaseController
         
         $dados = [
             'usuario_logado' => UsuarioSession::get('nome'),
-            'msg' => FlashMessage::get()
+            'msg' => FlashMessage::get(),
+            'nomepagina' => ['contas/listar','Contas'],
+            'link_caminho_pagina' => [
+                ['contas/listar','Contas']
+            ]
         ];
 
         ###########################################################################################
@@ -139,7 +143,12 @@ class Contas extends BaseController
             'templates/footer'
         ],[
             'usuario_logado' => UsuarioSession::get('nome'),
-            'msg'=> FlashMessage::get()
+            'msg'=> FlashMessage::get(),
+            'nomepagina' => ['contas/cadastrar','Cadastro de conta'],
+            'link_caminho_pagina' => [
+                ['contas/listar','Contas'],
+                ['contas/cadastrar','Cadastro de conta']
+            ]
         ]);
     }
 
@@ -149,7 +158,12 @@ class Contas extends BaseController
 
         $dados = [
             'usuario_logado' => UsuarioSession::get('nome'),
-            'msg'=> FlashMessage::get()
+            'msg'=> FlashMessage::get(),
+            'nomepagina' => ['contas/editar?id='.$_GET['id'],'Editar de conta'],
+            'link_caminho_pagina' => [
+                ['contas/listar','Contas'],
+                ['contas/editar?id='.$_GET['id'],'Editar de conta']
+            ]
         ];
 
         $id = filter_input(INPUT_GET,'id',FILTER_VALIDATE_INT);

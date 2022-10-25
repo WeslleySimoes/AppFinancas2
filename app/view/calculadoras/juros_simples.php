@@ -62,8 +62,8 @@
             <p>Tempo (meses): </p>
             <input type="number" name="tempo" id="meses" value="0">
             <br>
-            <button id="calcular">Calcular</button>
-            <button id="limpar">Limpar</button>
+            <button id="calcular" class="botao-link botao-link-edit">Calcular</button>
+            <button id="limpar" class="botao-link botao-link-edit">Limpar</button>
         </div>
         <table id="resultado"></table>
     </div>

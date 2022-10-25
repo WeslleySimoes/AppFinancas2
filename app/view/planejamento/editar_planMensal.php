@@ -9,7 +9,7 @@
             <input type="text" name="renda" id="valorRenda"  style="width: 100%;" class="money" value="<?= formatoMoeda($planejamento_atual->valor) ?>" >
 
             <label for="">Meta de gasto (%):</label>
-            <input type="number" name="porcentMeta" id="porcentMeta" min="10" max="80"  value="<?= $planejamento_atual->porcentagem  ?>"/>
+            <input type="number" name="porcentMeta" id="porcentMeta" min="10" max="80"  value="<?= $planejamento_atual->porcentagem  ?>" style="width:80px;"/>
 
             <input type="text" name="metaGasto"  id="metaGasto" style="border: none; color: red; width: auto;" value="R$ <?= formatoMoeda($planejamento_atual->valor*($planejamento_atual->porcentagem/100)) ?>" disabled >
 
@@ -50,7 +50,7 @@
 
             </div>
             <div style="margin-bottom: 10px;" id="totalCategorias"><b style="color:green;">Valor restante: R$ 0,00</b></div>
-            <button type="submit" id="btnCadastrarPlan" class="botao-link botao-link-edit2" >Editar</button>
+            <button type="submit" id="btnCadastrarPlan" class="botao-link botao-link-edit2"  style="font-size: 1.02em">Editar</button>
         </form>
     </div>
     <?= $msg ?>

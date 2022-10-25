@@ -1,7 +1,7 @@
 
 <div id="fundo-escuro-popup" class="conteudo-pop"> 
     <div class="conteudo-pop">
-        <div id="conteudo-popup-form">
+        <div id="conteudo-popup-form" style="height: auto;">
             <h1 style="margin-bottom: 10px;">Deseja mesmo remover esta <?= $_GET['s'] == 'receitasFixas'  ? 'receita' : 'despesa' ?></h1>
 
 
@@ -23,8 +23,8 @@
                 
                 <br>
                 
-                <button class="fechar-popup">Remover</button>
-                <span class="fechar-popup">Cancelar</span>
+                <button class="fechar-popup dasdasas btn-dp-fix-p">Remover</button>
+                <span class="fechar-popup  btn-dp-fix-p" >Cancelar</span>
             </form>
         </div>
     </div>

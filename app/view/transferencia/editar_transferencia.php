@@ -35,7 +35,7 @@
 </style>
 
 <div class="container-form">
-    <h3 class="title-form">Cadastro de transferência</h3>
+    <h3 class="title-form">Editar transferência</h3>
     <hr style="margin-bottom: 20px; border: 0.5px solid #cecdcd;">
 
     <form action="<?= HOME_URL ?>/transferencia/editar?id=<?= $_GET['id'] ?>" method="POST">    
@@ -86,7 +86,7 @@
                 <?php endforeach; ?>
             <?php endif; ?>
         </select>  
-        <button class="btn-success">Alterar</button>
+        <button  class="botao-link botao-link-edit" style="font-size: 1.1em;">Alterar</button>
     </form>
     <?= $msg ?>
 </div>

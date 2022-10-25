@@ -8,6 +8,7 @@
         const menuLateral   = document.getElementById('menuLateral');
         const menuSuperior  = document.getElementById('menuSuperior');
         const conteudo      = document.querySelector(".conteudo");
+        const exemplocont   = document.querySelector(".exemplo");
 
         function resetarClasses(valor){
             if(valor == true)
@@ -16,17 +17,20 @@
                 menuSuperior.classList.remove('marginLeftMS');
                 conteudo.classList.remove('marginLeftMS');
                 menuSuperior.classList.remove('larguraMenuSuperior');
+                exemplocont.classList.remove('exemplo-remove');
             }
             else{
                 menuLateral.classList.remove('moverMenuLateral2');
                 menuSuperior.classList.remove('marginLeftMS2');
                 conteudo.classList.remove('marginLeftMS2');
                 menuSuperior.classList.remove('larguraMenuSuperior2');
+                exemplocont.classList.remove('exemplo-remove2');
+               
+                
             }
         }
 
         btnToggleMenu.onclick = () => {
-
             if(window.innerWidth >= 700)
             {
                 resetarClasses(false);
@@ -34,6 +38,7 @@
                 menuSuperior.classList.toggle('marginLeftMS');
                 conteudo.classList.toggle('marginLeftMS');
                 menuSuperior.classList.toggle('larguraMenuSuperior');
+                exemplocont.classList.toggle('exemplo-remove');
             }
             else{
                 resetarClasses(true);
@@ -41,6 +46,7 @@
                 menuSuperior.classList.toggle('marginLeftMS2');
                 conteudo.classList.toggle('marginLeftMS2');
                 menuSuperior.classList.toggle('larguraMenuSuperior2');
+                exemplocont.classList.toggle('exemplo-remove2');
             }
         }
     </script>

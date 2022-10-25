@@ -86,7 +86,7 @@
             <input type="number" name="totalParcelas">
         </div><br>
 
-        <button class="btn-success">Cadastrar</button>
+        <button class="botao-link botao-link-edit" style="font-size: 1.1em;">Cadastrar</button>
     </form>
     <?= $msg ?>
 </div>

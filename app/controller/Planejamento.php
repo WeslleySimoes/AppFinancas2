@@ -46,7 +46,11 @@ class Planejamento extends BaseController
 
         $dados = [
             'usuario_logado' => UsuarioSession::get('nome'),
-            'msg' => FlashMessage::get()
+            'msg' => FlashMessage::get(),
+            'nomepagina' => ['planejamento','Planejamento '],
+            'link_caminho_pagina' => [
+                ['planejamento','Planejamento']
+            ]
         ];
 
         $dataFiltro = null;
@@ -165,7 +169,12 @@ class Planejamento extends BaseController
         //PROCESSO DE INSERÇÃO
         $dados = [
             'usuario_logado' => UsuarioSession::get('nome'),
-            'msg' => FlashMessage::get()
+            'msg' => FlashMessage::get(),
+            'nomepagina' => ['planejamento/cadastrarPM','Cadastro de planejamento Mensal'],
+            'link_caminho_pagina' => [
+                ['planejamento','Planejamento'],
+                ['planejamento/cadastrarPM','Cadastro de planejamento Mensal']
+            ]
         ];
 
         try {
@@ -402,7 +411,12 @@ class Planejamento extends BaseController
         $dados = [
             'usuario_logado' => UsuarioSession::get('nome'),
             'msg' => FlashMessage::get(),
-            'planejamento_atual' => $planejamento
+            'planejamento_atual' => $planejamento,
+            'nomepagina' => ['planejamento/editarPM?id='.$_GET['id'],'Editar planejamento Mensal'],
+            'link_caminho_pagina' => [
+                ['planejamento','Planejamento'],
+                ['planejamento/editarPM?id='.$_GET['id'],'Editar planejamento Mensal']
+            ]
         ];
 
         try {
@@ -469,7 +483,12 @@ class Planejamento extends BaseController
 
         $dados = [
             'usuario_logado' => UsuarioSession::get('nome'),
-            'msg' => FlashMessage::get()
+            'msg' => FlashMessage::get(),
+            'nomepagina' => ['planejamento/cadastrarPP','Cadastro de planejamento Personalizado'],
+            'link_caminho_pagina' => [
+                ['planejamento?p=personalizado&status=ativo','Planejamento'],
+                ['planejamento/cadastrarPP','Cadastro de planejamento Personalizado']
+            ]
         ];
 
         //##############################################
@@ -686,7 +705,12 @@ class Planejamento extends BaseController
         $dados = [
             'usuario_logado' => UsuarioSession::get('nome'),
             'msg' => FlashMessage::get(),
-            'planejamento_atual' => $planejamento
+            'planejamento_atual' => $planejamento,
+            'nomepagina' => ['planejamento/editarPP?id='.$_GET['id'],'Editar planejamento Personalizado'],
+            'link_caminho_pagina' => [
+                ['planejamento?p=personalizado&status=ativo','Planejamento'],
+                ['planejamento/editarPP?id='.$_GET['id'],'Editar planejamento Personalizado']
+            ]
         ];
 
         try {
@@ -784,7 +808,12 @@ class Planejamento extends BaseController
         $dados = [
             'usuario_logado' => UsuarioSession::get('nome'),
             'msg' => FlashMessage::get(),
-            'detalhePP' => $planejamento
+            'detalhePP' => $planejamento,
+            'nomepagina' => ['planejamento/detalhePP?id='.$_GET['id'],'Detalhe de planejamento personalizado'],
+            'link_caminho_pagina' => [
+                ['planejamento?p=personalizado&status=ativo','Planejamento'],
+                ['planejamento/detalhePP?id='.$_GET['id'],'Detalhe de planejamento personalizado']
+            ]
 
         ];
 

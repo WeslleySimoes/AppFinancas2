@@ -18,7 +18,11 @@ class Categoria extends BaseController
 
         $dados = [
             'usuario_logado' => UsuarioSession::get('nome'),
-            'msg'=> FlashMessage::get()
+            'msg'=> FlashMessage::get(),
+            'nomepagina' => ['categorias','Categorias'],
+            'link_caminho_pagina' => [
+                ['categorias','Categorias']
+            ]
         ];
 
         ###########################################################################################
@@ -127,7 +131,12 @@ class Categoria extends BaseController
 
         $dados = [
             'usuario_logado' => UsuarioSession::get('nome'),
-            'msg'=> FlashMessage::get()
+            'msg'=> FlashMessage::get(),
+            'nomepagina' => ['categorias/cadastrar','Cadastro de categoria'],
+            'link_caminho_pagina' => [
+                ['categorias','Categorias'],
+                ['categorias/cadastrar','Cadastro de categoria']
+            ]
         ];
 
         ###########################################################################################
@@ -234,7 +243,12 @@ class Categoria extends BaseController
 
         $dados = [
             'usuario_logado' => UsuarioSession::get('nome'),
-            'msg'=> FlashMessage::get()
+            'msg'=> FlashMessage::get(),
+            'nomepagina' => ['categorias/editar?id='.$_GET['id'],'Editar categoria'],
+            'link_caminho_pagina' => [
+                ['categorias','Categorias'],
+                ['categorias/editar?id='.$_GET['id'],'Editar categoria']
+            ]
         ];
 
         ###########################################################################################

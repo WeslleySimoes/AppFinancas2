@@ -18,7 +18,11 @@ class Transacoes extends BaseController
 
         $dados = array(
             'usuario_logado' => UsuarioSession::get('nome'),
-            'msg' => FlashMessage::get()
+            'msg' => FlashMessage::get(),
+            'nomepagina' => ['transacoes','Transações'],
+            'link_caminho_pagina' => [
+                ['transacoes','Transações']
+            ]
         );
 
         ###########################################################################################
@@ -143,6 +147,7 @@ class Transacoes extends BaseController
 
                 //Data
                 $dataURL    = isset($_GET['data']) ? $_GET['data'] : '';
+                $dataMesURL = isset($_GET['dataMes']) ? $_GET['dataMes'].'-01' : '';
 
                 if (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/",$dataURL)) {
                     $dataURL = $dataURL;
@@ -156,6 +161,7 @@ class Transacoes extends BaseController
                     $contaURL > 0 ? "id_conta = {$contaURL}": null,
                     $categoriaURL > 0 ? "id_categoria = {$categoriaURL}": null,
                     strlen($dataURL) ? "data_trans = '{$dataURL}'" : null,
+                    strlen($dataMesURL) ? " MONTH(data_trans) = MONTH('{$dataMesURL}') AND YEAR(data_trans) = YEAR('{$dataMesURL}')" : null
                 ];
 
                 $condicoes = array_filter($condicoes);
@@ -169,12 +175,12 @@ class Transacoes extends BaseController
 
                 //############ FIM DO FILTRO ###################
 
-                if(strlen($dataURL) < 1)
+                if(strlen($dataURL) < 1 && strlen($dataMesURL) < 1)
                 {
                     $where .= strlen($where) > 0 ? " AND MONTH(data_trans) = MONTH(CURDATE()) AND YEAR(data_trans) = YEAR(CURDATE())" :  " MONTH(data_trans) = MONTH(CURDATE()) AND YEAR(data_trans) = YEAR(CURDATE())";
                 }
 
-                //dd($where);
+                //dd($where)
 
                 //Obtendo total de transações
                 $totalT = Transacao::total(UsuarioSession::get('id'),$where)['total'];
@@ -196,7 +202,7 @@ class Transacoes extends BaseController
                 //LIMPANDO A WHERE DO FILTRO, CASO ELA ESTEJA SETADO COLOCA O AND NA FRENTE
                 $where = strlen($where) ? " AND $where " : '';
 
-                $porMesAtual = strlen($dataURL) < 1 ? " AND MONTH(data_trans) = MONTH(CURDATE()) AND YEAR(data_trans) = YEAR(CURDATE())" : '';
+                $porMesAtual = strlen($dataURL) < 1 && strlen($dataMesURL) < 1 ? " AND MONTH(data_trans) = MONTH(CURDATE()) AND YEAR(data_trans) = YEAR(CURDATE())" : '';
 
                 //ORDENANDO TRANSAÇÕES PELA DATA DA MAIOR PARA O MENOR
                 $dados['transacoes_cliente'] = Transacao::findBy(

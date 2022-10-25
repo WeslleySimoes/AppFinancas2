@@ -35,7 +35,7 @@
 </div>
 <div style="display: flex; justify-content: center; margin-bottom: 20px;">
     <form action="<?= HOME_URL ?>/contas/listar" id="form_data" method="GET">
-        <input type="month" name="data" onchange="handler();" value="<?= !isset($_GET['data']) ? date('Y-m') :  date($_GET['data']) ?>"  style="border: 2px solid #0476B9; padding: 10px 5px; font-size: 0.9em; border-radius: 10px; font-weight: bold; color: #0476B9;">
+        <input type="month" name="data" onchange="handler();" value="<?= !isset($_GET['data']) ? date('Y-m') :  date($_GET['data']) ?>"  style="border: 2px solid #0476B9; padding: 10px 5px; font-size: 0.9em; border-radius: 10px; font-weight: bold; color: #0476B9; margin-top: 15px;">
     </form>
 </div>
 <style>
@@ -51,7 +51,6 @@
         border-radius: 15px;
         -webkit-box-shadow: -1px 10px 17px 0px rgba(59,59,59,0.38); 
         box-shadow: -1px 10px 17px 0px rgba(59,59,59,0.38);
-        
     }
 
     .contas-content{
@@ -117,7 +116,13 @@
                             
                         <a href="<?= HOME_URL?>/contas/editar?id=<?= $conta->idConta ?>" class="botao-link botao-link-edit" style="display:inline-block; margin-top: 5px;">Editar</a>
                         <a href="<?= HOME_URL?>/transacoes?conta=<?= $conta->idConta ?>" class="botao-link botao-link-transacoes" style="display:inline-block; margin-top: 5px;">Transações</a>
+
+
+                        <?php if(count($contas_usuario) > 1): ?>
+                        
                         <a href="<?= HOME_URL?>/contas/arquivar?id=<?= $conta->idConta ?>" onclick="return confirm('Tem certeza que deseja arquivar esta conta?');" class="botao-link botao-link-arquivar" style="display:inline-block; margin-top: 5px;">Arquivar</a>
+
+                        <?php endif; ?>
 
                     </div>
                 </div>

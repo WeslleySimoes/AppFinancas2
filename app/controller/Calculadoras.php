@@ -14,7 +14,11 @@ class Calculadoras extends BaseController
         
         $dados = [
             'usuario_logado' => UsuarioSession::get('nome'),
-            'msg' => FlashMessage::get()
+            'msg' => FlashMessage::get(),
+            'nomepagina' => ['calculadoras','Lista de calculadoras'],
+            'link_caminho_pagina' => [
+                ['calculadoras','Lista de calculadoras']
+            ]
         ];
 
         if(isset($_GET['t']))

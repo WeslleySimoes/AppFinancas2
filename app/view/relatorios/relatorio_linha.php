@@ -90,7 +90,6 @@ if(isset($_POST['selecione']))
     border-radius: 50%;
     background-color: tomato;
 }
-
 </style>
 <?= $msg.'</br>' ?>
 <div class="titulo_rela">
@@ -103,7 +102,7 @@ if(isset($_POST['selecione']))
     </div>
 </div>
 <div style="padding: 10px; margin-top: 10px;border: 1px solid lightgray; display: flex; justify-content:space-between; align-items: center;">
-    <h3>
+    <h3 style="color: #263D52;">
         <?php if(isset($_POST['selecione'])): ?>
             <?= ucfirst($_POST['selecione']) ?>
         <?php else: ?>
@@ -124,7 +123,8 @@ if(isset($_POST['selecione']))
         <?php endif; ?>
     
     </h3>
-    <button style="font-size: 25px;" id="filtro-pizza"> <i class="fa fa-filter" aria-hidden="true"></i></button>
+    <button class="dropbtn" id="filtro-pizza" style="padding: 11px;"><i class="fa fa-filter" ></i></button>
+
 </div>
 <div class="conteudo3">
     <canvas id="myChart"></canvas>
@@ -153,13 +153,14 @@ if(isset($_POST['selecione']))
 </div>
 
 <div id="background-popUp-pizza" style="position: fixed; top:0; left: 0; width: 100%; min-height: 100vh;background-color: rgba(1,1,1,0.6); display:none; z-index: 3000;">
-<div style="width: 600px; background-color: white; padding: 10px;">
+<div style="width: 600px; background-color: white; padding: 10px;" class="popup-relatorios-pag">
 
-    <div style="margin-bottom: 20px;">
-        <button id="fechar-popUp-pizza" style="float: right; border: none; font-size: 23px;">X</button>
-    </div>
+        <div style="display: flex; justify-content:flex-end;">
+            <span id="fechar-popUp-pizza" class="btn-close-popup">X</span>
+        </div>
+        <h2 style="text-align: center; color: #263D52;">Filtro</h2>
 
-    <form action="<?= HOME_URL ?>/relatorios/linha" method="POST" style="padding: 10px;">
+    <form action="<?= HOME_URL ?>/relatorios/linha" method="POST" style="padding: 5px;">
 
     <div style="margin: 10px 0;"> 
         <input type="radio" id="dataAno" name="dataRadio" value="dataAno" checked>
