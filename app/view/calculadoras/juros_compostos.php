@@ -65,7 +65,10 @@
             <button id="calcular" class="botao-link botao-link-edit">Calcular</button>
             <button id="limpar" class="botao-link botao-link-edit">Limpar</button>
         </div>
-        <table id="resultado"></table>
+		<div id="msg_error_pag"></div>
+		<div id="estilo-resultado-calculadoras">
+			<table id="resultado"></table>
+		</div>
     </div>
     <script type="text/javascript">
         function moneyToFloat(money)
@@ -95,7 +98,7 @@
 
 			calcular.onclick = function(){
 
-				  //Instanciando o objeto
+				//Instanciando o objeto
 				var formatter = new Intl.NumberFormat('pt-BR', {
 					style: 'currency',
 					currency: 'BRL',
@@ -107,6 +110,16 @@
 				resultado.innerHTML = "";
 
                 let capitalFloat = moneyToFloat(capital.value);
+
+				if(capitalFloat <= 0 || parseFloat(juros.value) <= 0 || parseFloat(tempo.value) <= 0){
+					document.querySelector('#msg_error_pag').innerHTML = "<div class='alert error-alert'><div>Preencha todos os campos da calculadora!</div></div>";
+					return;
+				}
+
+				document.querySelector('#msg_error_pag').innerHTML = '';
+
+				document.querySelector('#estilo-resultado-calculadoras').style.height = '500px';
+				document.querySelector('#estilo-resultado-calculadoras').style.overflowY = 'auto';
 				
 				var montante = "";
 				var final = (capitalFloat*(Math.pow(1+(juros.value/100),tempo.value))).toFixed(2);
@@ -136,6 +149,8 @@
 				capital.value = "0,00";
 				juros.value = 0,00;
 				tempo.value = "0";
+				document.querySelector('#estilo-resultado-calculadoras').style.height = '0px';
+				document.querySelector('#estilo-resultado-calculadoras').style.overflowY = 'auto';
 
 			}
 		}

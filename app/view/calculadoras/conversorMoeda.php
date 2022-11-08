@@ -51,9 +51,9 @@
 
     <label for="moeda">Moeda:</label>
     <select name="moeda" id="moedaAconverter">
-        <option value="dolar" selected>Dolar</option>
-        <option value="euro">Euro</option>
-        <option value="libra">Libra</option>
+        <option value="dolar" selected id="option-dolar-cm">Dolar</option>
+        <option value="euro" id="option-euro-cm">Euro</option>
+        <option value="libra" id="option-libra-cm">Libra</option>
     </select>     
 
     <label for="valor">Valor Convertido:</label>
@@ -86,16 +86,20 @@
     $.getJSON('https://economia.awesomeapi.com.br/json/last/USD-BRL',function (data)
     {
         valorDolar = data.USDBRL.ask;
+        console.log(parseFloat(data.USDBRL.ask));
+        document.querySelector("#option-dolar-cm").innerHTML = 'DOLAR - R$ '+(parseFloat(data.USDBRL.ask).toFixed(2)) ;
     });
 
     $.getJSON('https://economia.awesomeapi.com.br/json/last/EUR-BRL',function (data)
     {
         valorEURO = data.EURBRL.ask;
+        document.querySelector("#option-euro-cm").innerHTML = 'EURO - R$ '+(parseFloat(data.EURBRL.ask).toFixed(2)) ;
     });
 
     $.getJSON('https://economia.awesomeapi.com.br/json/last/GBP-BRL',function (data)
     {
         valorLIBRA = data.GBPBRL.ask;
+        document.querySelector("#option-libra-cm").innerHTML = 'LIBRA - R$ '+(parseFloat(data.GBPBRL.ask).toFixed(2));
     });
 
     const valorReal = document.querySelector("#valorReal");

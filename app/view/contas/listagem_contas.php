@@ -34,8 +34,9 @@
     </div>
 </div>
 <div style="display: flex; justify-content: center; margin-bottom: 20px;">
+
     <form action="<?= HOME_URL ?>/contas/listar" id="form_data" method="GET">
-        <input type="month" name="data" onchange="handler();" value="<?= !isset($_GET['data']) ? date('Y-m') :  date($_GET['data']) ?>"  style="border: 2px solid #0476B9; padding: 10px 5px; font-size: 0.9em; border-radius: 10px; font-weight: bold; color: #0476B9; margin-top: 15px;">
+        <input type="month" name="data" onchange="handler();" value="<?= !isset($_GET['data']) ? date('Y-m') : date($_GET['data']) ?>"  style="border: 2px solid #0476B9; padding: 10px 5px; font-size: 0.9em; border-radius: 10px; font-weight: bold; color: #0476B9; margin-top: 15px;">
     </form>
 </div>
 <style>
@@ -83,7 +84,8 @@
                             <div> <?= $conta->tipo_conta ?></div>
                         </div>
                     </div>
-                    <div  style="margin-top: 10px;">
+                    <hr style="margin: 15px 0;">
+                    <div  style="margin-top: 15px;">
                         <a href="<?= HOME_URL?>/transacoes?conta=<?= $conta->idConta ?>" class="botao-link botao-link-transacoes">Transações</a>
                         <a href="<?= HOME_URL?>/contas/desarquivar?id=<?= $conta->idConta ?>" class="botao-link botao-link-arquivar" onclick="return confirm('Tem certeza que deseja desarquivar esta conta?');">Desarquivar</a>
                     </div>

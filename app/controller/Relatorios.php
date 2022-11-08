@@ -161,7 +161,7 @@ class Relatorios extends BaseController
                     if(isset($_POST['mesAno']))
                     {
                         $v->setCampo('Data mês')
-                            ->data($_POST['mesAno'],'Y-m');
+                            ->validateDate($_POST['mesAno'].'-01');
                     }
                     else{
                         FlashMessage::set('Data não especificada!','error','relatorios/linha');
@@ -463,7 +463,7 @@ class Relatorios extends BaseController
                     if(isset($_POST['mesAno']))
                     {
                         $v->setCampo('Data mês')
-                            ->data($_POST['mesAno'],'Y-m');
+                            ->validateDate($_POST['mesAno'].'-01');
                     }
                     else{
                         FlashMessage::set('Data não especificada!','error','relatorios');

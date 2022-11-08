@@ -57,14 +57,19 @@ class Planejamento extends BaseController
 
         if(isset($_GET['data']))
         {
-            $filtroData = \DateTime::createFromFormat('Y-m', $_GET['data']);
-        
-            if(!$filtroData || $filtroData->format('Y-m') != $_GET['data']){
-                header('location: '.HOME_URL.'/planejamento');
-                exit;
+            $v = new Validacao();
+
+            $v->setCampo('Mês/Ano')
+                ->validateDate($_GET['data'].'-01');
+
+            if($v->validar())
+            {
+                $dataFiltro = $_GET['data'];
+            }
+            else{
+                FlashMessage::set($v->getMsgErros(),'error','planejamento');
             }
             
-            $dataFiltro = $_GET['data'];
         }
 
 
@@ -618,7 +623,7 @@ class Planejamento extends BaseController
 
         if(!isset($id) or !$id > 0)
         {
-            header("location: ".HOME_URL."/planejamento?p=personalizado");
+            header("location: ".HOME_URL."/planejamento?p=personalizado&status=ativo");
             exit;
         }
 
@@ -632,7 +637,7 @@ class Planejamento extends BaseController
             //Se não achar o planejamento, o sistema volta a página de planejamento
             if(empty($planejamento) or !isset($planejamento))
             {
-                header("location: ".HOME_URL."/planejamento?p=personalizado");
+                header("location: ".HOME_URL."/planejamento?p=personalizado&status=ativo");
                 exit;
             }
 
@@ -652,10 +657,10 @@ class Planejamento extends BaseController
 
             if($resultado)
             {
-                FlashMessage::set('Planejamento Removido com sucesso!','success',"planejamento?p=personalizado");
+                FlashMessage::set('Planejamento Removido com sucesso!','success',"planejamento?p=personalizado&status=ativo");
             }
             else{
-                FlashMessage::set('Erro ao tentar remover planejamento!','error',"planejamento?p=personalizado");
+                FlashMessage::set('Erro ao tentar remover planejamento!','error',"planejamento?p=personalizado&status=ativo");
             }
 
         } catch (\Exception $e) {
@@ -677,7 +682,7 @@ class Planejamento extends BaseController
 
         if(!isset($id) or !$id > 0)
         {
-            header("location: ".HOME_URL."/planejamento?p=personalizado");
+            header("location: ".HOME_URL."/planejamento?p=personalizado&status=ativo");
             exit;
         }
 
@@ -691,7 +696,7 @@ class Planejamento extends BaseController
             //Se não achar o planejamento, o sistema volta a página de planejamento
             if(empty($planejamento) or !isset($planejamento))
             {
-                header("location: ".HOME_URL."/planejamento?p=personalizado");
+                header("location: ".HOME_URL."/planejamento?p=personalizado&status=ativo");
                 exit;
             }
 
@@ -727,6 +732,7 @@ class Planejamento extends BaseController
 
         if(!empty($_POST))
         {
+            //dd($_POST,false);
             $arrIdCatPlanCat = [];
             foreach($planejamento->getPlanCategorias() as $planCat)
             {
@@ -751,14 +757,14 @@ class Planejamento extends BaseController
 
                 if($resultado)
                 {
-                    FlashMessage::set('Planejamento personalizado alterado com sucesso!','success',"planejamento?p=personalizado");
+                    FlashMessage::set('Planejamento personalizado alterado com sucesso!','success',"planejamento?p=personalizado&status=ativo");
                 }
                 else{
-                    FlashMessage::set('Erro ao tentar editar planejamento personalizado!','error',"planejamento?p=personalizado");
+                    FlashMessage::set('Erro ao tentar editar planejamento personalizado!','error',"planejamento?p=personalizado&status=ativo");
                 }
             } catch (\Exception $e) {
                 Transaction::rollback();
-                FlashMessage::set('Erro ao tentar editar planejamento personalizado!','error',"planejamento?p=personalizado");
+                FlashMessage::set('Erro ao tentar editar planejamento personalizado!','error',"planejamento?p=personalizado&status=ativo");
             }
         }
 

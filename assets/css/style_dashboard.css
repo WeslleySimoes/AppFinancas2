@@ -120,7 +120,7 @@
 }
 
 .larguraMenuSuperior{
-    width: 100vw !important;
+    width: 100% !important;
 }
 
 .larguraMenuSuperior2{
@@ -233,7 +233,7 @@
 {
     #menuLateral{transform:translateX(-250px)}
     #menuSuperior,.conteudo{margin-left: 0;}
-    #menuSuperior{width: 100vw;}
+    #menuSuperior{width: 100%;}
     .exemplo{left:0; width: 100%;}
     .dadosFinanceiros{flex-direction: column;}
     .dadoItem{margin: 10px 0 !important; width: 100% !important;}
@@ -244,6 +244,17 @@
     .contas-content .card{width: 100% !important;}
     .lista-plan-personalizado{flex-direction: column;}
 } 
+
+@media only screen and (max-width: 1000px) 
+{
+    .conteudo2{flex-direction: column;}
+    .conteudo2 .grafico{width: 100%;align-items: center; justify-content:center;}
+    .conteudo .content-grafico{width: 100%;}
+    .lista-plan-personalizado{flex-direction: column;}
+    .item-perso{width: 100% !important;}
+
+
+}
 
 /*POPUP*/
 

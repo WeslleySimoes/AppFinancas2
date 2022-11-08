@@ -51,14 +51,15 @@ class Contas extends BaseController
             $v = new Validacao();
 
             $v->setCampo('Mês/Ano')
-                ->validateDate($_GET['data'],'Y-m');
+                ->validateDate($_GET['data'].'-01');
 
-            if(!$v->validar())
+            if($v->validar())
             {   
-                FlashMessage::set($v->getMsgErros(),'error','contas/listar');
+                $dados['data_filtro_mes'] = $_GET['data'].'-'.getDataFinalMesAtual($_GET['data'].'-01');
+
             }
             else{
-                $dados['data_filtro_mes'] = $_GET['data'].'-'.getDataFinalMesAtual($_GET['data'].'-01');
+                FlashMessage::set($v->getMsgErros(),'error','contas/listar');
             }
         }
 

@@ -72,11 +72,15 @@ class Dashboard extends BaseController
 
             $depMensal = DashboardModel::despRespMensal('despesa');
             $recMensal = DashboardModel::despRespMensal('receita');
+
+            $transacoesPendentes = Transacao::total(UsuarioSession::get('id')," status_trans = 'pendente' AND MONTH(data_trans) = MONTH(CURDATE()) AND YEAR(data_trans) = YEAR(CURDATE()) ");
             
             Transaction::close();
         } catch (\Exception $e) {
             Transaction::rollback();
         }
+
+        $dados['totalTransPendentes'] = $transacoesPendentes['total'];
  
         //Gráfico Receitas x Despesas
         $dados['depMensal'] = $depMensal;

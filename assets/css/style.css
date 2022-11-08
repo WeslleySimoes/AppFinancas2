@@ -1,3 +1,7 @@
+.lista-plan-personalizado{
+    flex-wrap: wrap;
+}
+
 
 .botao-link
 {
@@ -102,7 +106,7 @@
 }
 
 .containerForm{
-    margin: 20px;
+    margin: 0 15px;
 }
 
 

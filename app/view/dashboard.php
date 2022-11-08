@@ -53,13 +53,12 @@
     </div>
 </div>
 
-<!-- <div class="formularioUsuario">
-    <h3>Pendências e Alertas</h3>
-    <div class="containerForm">
-        Despesas pendentes<br>
-        R$ 2.586,00
+<?php if($totalTransPendentes > 0): ?>
+    <div class='alert warning-alert' style="height: 100px; align-items: center; justify-content: center; margin-bottom: 20px;">
+        <div>Atenção! Você possui transações pendentes, <a href="<?= HOME_URL ?>/transacoes?status=pendente" style="color:darkgoldenrod;">Clique Aqui</a> para visualiza-las.</div>
     </div>
-</div> -->
+<?php endif; ?>
+
 
 <div class="formularioUsuario">
     <h3>Receitas x Despesas</h3>
@@ -111,7 +110,7 @@
 
         <div class="containerForm">
             <?php if(!empty($ultimasTransacoes)): ?>
-                <table style="width: 100%;">
+                <table style="width: 100%; margin: 15px 0;">
                     <tr>
                         <th>Data</th>
                         <th>Status</th>
@@ -177,50 +176,7 @@
 
 <!-- SCRIPT CHART.JS -->
 
-<script>
-    const ctx = document.getElementById('myChart');
-    const myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['Fevereiro', 'Março', 'Abril', 'Green', 'Purple', 'Orange'],
-            datasets: [{
-                label: 'Despesas',
-                data: [12, 19, 3, 5, 2, 3],
-                backgroundColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
-                ]
-            }]
-        },
-        options: {
-            tooltips: {
-                callbacks: {
-                    label: function(tooltipItem, data) {
-                        return tooltipItem.xLabel.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
-                    }
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            },
-            "responsonsive": true,
-            "maintainAspectRatio": false,
-            
-            // oculta a label(legenda) do gráfico
-            plugins: {
-                legend: {
-                    display: false
-                }
-            }
-        }
-    });
-</script>
+
 
 <script>
     
@@ -235,16 +191,38 @@
     };
     const configPizza = {
      type: 'pie',
-     data: dataPizza
-    // ,options:{
-    //     // oculta a label(legenda) do gráfico
-    //     plugins: {
-    //         legend: {
-    //             display: false
-    //         }
-    //     }
-    // }
-
+     data: dataPizza,
+     plugins: [ChartDataLabels],
+     options: {
+        plugins: {
+            legend: {
+                position: "right",
+                align: "middle"
+            },
+            datalabels: {
+                    formatter: function(value, context) {
+                        return  (value /<?= $totalDespesas->total ?>*100).toFixed(2) +'%';
+                       // 'R$ '+ value.toLocaleString('pt-br', {minimumFractionDigits: 2})+' | '+
+                    },
+                    color: 'black',
+                    backgroundColor: '#ccc',
+                    font:{
+                        size:13,
+                        weight: 'bold'
+                    }
+                    ,anchor:'end'
+                    //,rotation: -6
+            },
+            tooltip:{
+                callbacks: {
+                    label: (value,context) =>{
+                        console.log(value);
+                        return value.label+': R$ '+value.parsed.toLocaleString('pt-br', {minimumFractionDigits: 2});
+                    }
+                }
+            }
+        }
+      }
    };
 
 const myChartPizza = new Chart(
@@ -267,16 +245,37 @@ const myChartPizza = new Chart(
     };
     const configPizza2 = {
      type: 'pie',
-     data: dataPizza2
-    // ,options:{
-    //     // oculta a label(legenda) do gráfico
-    //     plugins: {
-    //         legend: {
-    //             display: false
-    //         }
-    //     }
-    // }
-
+     data: dataPizza2,
+     plugins: [ChartDataLabels],
+     options: {
+        plugins: {
+            legend: {
+              position: "right",
+              align: "middle"
+          },
+          datalabels: {
+                formatter: function(value, context) {
+                    return   (value /<?= $totalReceitas->total ?>*100).toFixed(2) +'%';                   
+                },
+                color: 'black',
+                backgroundColor: '#ccc',
+                font:{
+                    size:13,
+                    weight: 'bold'
+                }
+                ,anchor:'end'
+                //,rotation: -6
+            },
+            tooltip:{
+                callbacks: {
+                    label: (value,context) =>{
+                       // console.log(value);
+                        return value.label+': R$ '+value.parsed.toLocaleString('pt-br', {minimumFractionDigits: 2});
+                    }
+                }
+            }
+        }
+      }
    };
 
     const myChartPizza2 = new Chart(
@@ -304,7 +303,18 @@ const myChartPizza = new Chart(
         }
       ]
     },
+    //plugins: [ChartDataLabels],
     options: {
+        plugins: {
+            tooltip:{
+                callbacks: {
+                    label: (value,context) =>{
+                        //console.log(value);
+                        return value.label+': R$ '+value.raw.toLocaleString('pt-br', {minimumFractionDigits: 2});
+                    }
+                }
+            }
+        },
       title: {
         display: true,
         text: 'Population growth (millions)'
@@ -320,6 +330,11 @@ const myChartPizza = new Chart(
                     }else{
                         return 'rgba(0,0,0,0.1)';//Colorindo as outras linhas do gráfico
                     }
+                }
+            },
+            ticks:{
+                callback: (value,index,values) => {
+                  return 'R$ '+ value.toLocaleString('pt-br', {minimumFractionDigits: 2});
                 }
             }
         }

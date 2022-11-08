@@ -16,10 +16,10 @@
 <?php if(count($categoriasAtivas) < 10): ?>
   <?php endif; ?>
   
-<div>
-  <div class="dropdown" style="margin: 10px 0;">
+<div >
+ 
     <a href="<?= HOME_URL ?>/categorias/cadastrar" class="dropbtn" style="text-decoration:none;">Nova Categoria</a>
-  </div>
+
 
   <div class="dropdown">
     <button onclick="myFunction3()" class="dropbtn">Status</button>

@@ -2,7 +2,7 @@
 <div id="fundo-escuro-popup" class="conteudo-pop"> 
     <div class="conteudo-pop">
         <div id="conteudo-popup-form" style="height: auto;">
-            <h1 style="margin-bottom: 10px;">Deseja mesmo remover esta <?= $_GET['s'] == 'receitasFixas'  ? 'receita' : 'despesa' ?></h1>
+            <h1 style="margin-bottom: 10px;">Deseja mesmo remover esta <?= $_GET['s'] == 'receitasFixas'  ? 'receita' : 'despesa' ?>?   </h1>
 
 
             <?php if(isset($_GET['s']) and $_GET['s'] == 'receitasFixas'): ?>

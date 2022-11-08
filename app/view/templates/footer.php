@@ -25,8 +25,6 @@
                 conteudo.classList.remove('marginLeftMS2');
                 menuSuperior.classList.remove('larguraMenuSuperior2');
                 exemplocont.classList.remove('exemplo-remove2');
-               
-                
             }
         }
 
@@ -81,5 +79,12 @@
             }        
         }
     </script>
+
+
+<script>
+    localStorage.setItem("cor","red");
+
+    console.log(localStorage.getItem("cor"));
+</script>
 </body>
 </html>

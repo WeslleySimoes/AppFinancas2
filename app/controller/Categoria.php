@@ -307,7 +307,6 @@ class Categoria extends BaseController
             FlashMessage::set('Ocorreu um erro ao cadastrar!','error',"categorias/editar?id={$id}");
         }
 
-
         if(isset($_POST['nomeCategoria']) and !empty($_POST))
         {
             $v = new Validacao;
@@ -316,9 +315,6 @@ class Categoria extends BaseController
                 ->min_caracteres($_POST['nomeCategoria'])
                 ->max_caracteres($_POST['nomeCategoria'])
                 ->select(ucfirst(mb_strtolower($_POST['nomeCategoria'])),array_keys($nomeCategorias),false);
-
-            $v->setCampo('Tipo de categoria')
-                ->select($_POST['tipoCategoria'],['despesa','receita']);
             
             $v->setCampo('Cor da categoria')
                 ->is_hex($_POST['corCate']);
@@ -329,10 +325,9 @@ class Categoria extends BaseController
                 try {
                     Transaction::open('db');
                     
-                    $cm = new CategoriaModel();
+                    $cm = new CategoriaModel((int) $categoriaAtivas[0]->idCategoria);
                     $cm->idCategoria = $id;
                     $cm->nome        = ucfirst(mb_strtolower($_POST['nomeCategoria']));
-                    $cm->tipo        = $_POST['tipoCategoria'];
                     $cm->id_usuario  = UsuarioSession::get('id');
                     $cm->status_cate = 'ativo';
                     $cm->cor_cate    = $_POST['corCate'];

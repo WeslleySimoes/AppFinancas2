@@ -10,6 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400&family=Roboto:ital,wght@1,500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="<?= ASSET_CSS_URL ?>/style.css">
+<link rel="stylesheet" href="<?= ASSET_URL ?>/font-awesome-4.7.0/css/font-awesome.min.css">
 
 </head>
 <style>
@@ -79,6 +80,12 @@
 
                 <div>
                     <label for="senha">Senha:</label>
+                    <div class="tooltip" style="margin: 0;"> 
+                           <i class="fa fa-info-circle" aria-hidden="true"></i>
+                        <span class="tooltiptext">
+                            A sua senha deve conter 8 caracteres!
+                        </span>
+                    </div>
                     <input type="password" name="senha" id="senhaUsuario" value="123456ac" required>
                 </div>
 
