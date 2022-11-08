@@ -58,11 +58,11 @@ class Conta extends Record
         try {
             Transaction::open('db');
 
-            $sql1 = "SELECT (IFNULL(montante,0) + (SELECT IFNULL(SUM(valor),0) FROM transacao WHERE id_usuario = ".UsuarioSession::get('id')." AND tipo = 'receita' AND id_conta = {$this->data['idConta']} AND DATE(data_trans) <= DATE('{$anoMes}')) - (SELECT IFNULL(SUM(valor),0) FROM transacao WHERE id_usuario = ".UsuarioSession::get('id')." AND tipo = 'despesa' AND id_conta = {$this->data['idConta']} AND DATE(data_trans) <= DATE('{$anoMes}'))) total FROM conta WHERE id_usuario = ".UsuarioSession::get('id')." AND idConta = {$this->data['idConta']}";
+            $sql1 = "SELECT (IFNULL(montante,0) + (SELECT IFNULL(SUM(valor),0) FROM transacao WHERE id_usuario = ".UsuarioSession::get('id')." AND tipo = 'receita' AND status_trans = 'fechado' AND id_conta = {$this->data['idConta']} AND DATE(data_trans) <= DATE('{$anoMes}')) - (SELECT IFNULL(SUM(valor),0) FROM transacao WHERE id_usuario = ".UsuarioSession::get('id')." AND tipo = 'despesa' AND status_trans = 'fechado' AND id_conta = {$this->data['idConta']} AND DATE(data_trans) <= DATE('{$anoMes}'))) total FROM conta WHERE id_usuario = ".UsuarioSession::get('id')." AND idConta = {$this->data['idConta']}";
             //-
-            $sql2 = "SELECT IFNULL(SUM(valor),0) AS total FROM transferencia WHERE id_usuario = ".UsuarioSession::get('id')." AND id_conta_origem = {$this->data['idConta']} AND DATE(data_transf) <= DATE('{$anoMes}')";
+            $sql2 = "SELECT IFNULL(SUM(valor),0) AS total FROM transferencia WHERE id_usuario = ".UsuarioSession::get('id')." AND id_conta_origem = {$this->data['idConta']} AND status_transf = 'fechado' AND DATE(data_transf) <= DATE('{$anoMes}')";
             //+
-            $sql3 = "SELECT IFNULL(SUM(valor),0) AS total FROM transferencia WHERE id_usuario = ".UsuarioSession::get('id')." AND id_conta_destino = {$this->data['idConta']} AND DATE(data_transf) <= DATE('{$anoMes}')";
+            $sql3 = "SELECT IFNULL(SUM(valor),0) AS total FROM transferencia WHERE id_usuario = ".UsuarioSession::get('id')." AND id_conta_destino = {$this->data['idConta']} AND status_transf = 'fechado' AND DATE(data_transf) <= DATE('{$anoMes}')";
 
 
             $conn = Transaction::get();

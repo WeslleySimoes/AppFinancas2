@@ -361,21 +361,39 @@
     const config = {
         type: 'doughnut',
         data: data,
+        plugins: [ChartDataLabels],
         options:{
             // oculta a label(legenda) do gráfico
             plugins: {
                 legend: {
                     display: false
-                }
-            },
-            tooltips: {
-                callbacks: {
-                    label: function(tooltipItem, data) {
-                        return tooltipItem.data.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                },
+                datalabels: {
+                    formatter: function(value, context) {
+                        return   (value /<?= array_sum(explode(',',$arr_total)) ?>*100).toFixed(2) +'%';
+    
+                        //return   'R$ '+ value.toLocaleString('pt-br', {minimumFractionDigits: 2})+' | '+(value /100*100).toFixed(2) +'%';
+                        //'R$ '+ value.toLocaleString('pt-br', {minimumFractionDigits: 2})+' | '+
+                       
+                    },
+                    color: 'black',
+                    backgroundColor: '#ccc',
+                    font:{
+                        size:12,
+                        weight: 'bold'
+                    }
+                    ,anchor:'center'
+                    //,rotation: -6
+                },
+                tooltip:{
+                    callbacks: {
+                        label: (value,context) =>{
+                        // console.log(value);
+                            return value.label+': R$ '+value.parsed.toLocaleString('pt-br', {minimumFractionDigits: 2});
+                        }
                     }
                 }
-            } 
-            //,cutout: 160 //esperssura do gráfico
+            }
         }
     };
     const myChart = new Chart(

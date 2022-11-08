@@ -67,7 +67,7 @@ body {font-family: Arial;}
 }
 
 #inserir-plan-person{
-    min-width: 200px;
+    min-width: calc(50% - 20px);
     height: 200px;
     border: 1px solid lightgrey;
     border-radius: 15px;
@@ -89,7 +89,7 @@ body {font-family: Arial;}
 .item-perso
 {
     border-radius: 15px;
-    min-width: 250px;
+    min-width: calc(50% - 20px);
     padding: 10px;
     margin: 10px;
     border: 1px solid lightgrey;
@@ -166,11 +166,11 @@ body {font-family: Arial;}
                 </div>
             </div>
             <p style="font-size: 0.85em;color:grey;font-weight:bold;margin-top:10px;"><?= formataDataBR($planS->data_inicio) ?> até <?= formataDataBR($planS->data_fim) ?></p>
-            <div style="margin-top: 15px;">
+            <div style="margin-top: 15px; display:flex; justify-content: space-around;">
                 <span style="display:inline-block; text-align: center;">R$ <?= formatoMoeda($planS->valor) ?> <br> Meta</span>
-                <b style="display: inline-bloc;margin: 0 5px;">-</b>
+                <b style="display: inline-bloc;margin: 0 5px; font-size:25px;">-</b>
                 <span style="display:inline-block; text-align: center;color:red;">R$ <?= formatoMoeda($planS->getTotalGasto(" DATE('{$planS->data_inicio}') AND DATE('{$planS->data_fim}')")) ?> <br> Valor Gasto</span>
-                <b style="display: inline-bloc;margin: 0 5px;">=</b>
+                <b style="display: inline-bloc;margin: 0 5px; font-size:20px;">=</b>
                 <span style="display:inline-block; text-align: center;color:green;">R$ <?= formatoMoeda($planS->resultado('PESONALIZADO')) ?> <br> Restam</span>
             </div>
             <div style="margin-top: 15px;">

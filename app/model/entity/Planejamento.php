@@ -172,10 +172,10 @@ class Planejamento extends Record
             foreach(array_diff($categorias,$arrCate) as $chave => $valor)
             {
                 $addPlanCate = new PlanejamentoCate();
-                $addPlanCate->valorMeta = FormataMoeda::moedaParaFloat($_POST['item'][$chave]);
+                $addPlanCate->valorMeta = FormataMoeda::moedaParaFloat($valores[$chave]);
                 $addPlanCate->id_categoria = (int) $valor;
                 $addPlanCate->id_planejamento = (int) $_GET['id'];
-                
+
                 if($addPlanCate->store())
                 {
                     $contaADD++;
@@ -215,8 +215,6 @@ class Planejamento extends Record
                 $conta++;
             }
         }
-
-
 
         if($resultado or $conta > 0 or $contaADD > 0 or $contaRemove > 0)
         {

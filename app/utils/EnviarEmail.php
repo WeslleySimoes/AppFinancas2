@@ -37,7 +37,8 @@ class EnviarEmail{
 
             //Recipients
             $mail->setFrom($this->Username, 'Alteracao de senha - Finanças pessoais');
-            $mail->addAddress('weslley_silvas@hotmail.com', 'Weslley silva');     //Add a recipient
+            
+            $mail->addAddress($this->EmailDestinatario, '');     //Add a recipient
 
             $mail->addReplyTo($this->Username, 'Information');
 

@@ -205,6 +205,16 @@ function handler()
       ]
     },
     options: {
+        plugins: {
+            tooltip:{
+                callbacks: {
+                    label: (value,context) =>{
+                        //console.log(value);
+                        return value.label+': R$ '+value.raw.toLocaleString('pt-br', {minimumFractionDigits: 2});
+                    }
+                }
+            }
+        },
       title: {
         display: true,
         text: 'Population growth (millions)'
@@ -220,6 +230,11 @@ function handler()
                     }else{
                         return 'rgba(0,0,0,0.1)';//Colorindo as outras linhas do gráfico
                     }
+                }
+            },
+            ticks:{
+                callback: (value,index,values) => {
+                  return 'R$ '+ value.toLocaleString('pt-br', {minimumFractionDigits: 2});
                 }
             }
         }

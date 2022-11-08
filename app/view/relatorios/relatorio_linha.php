@@ -348,14 +348,33 @@ console.log(getWeekFromStartDay(-7));
             const config = {
                 type: 'line',
                 data: data,
+                //plugins: [ChartDataLabels],
                 options:{
                     // oculta a label(legenda) do gráfico
                     plugins: {
                         legend: {
                             display: false
+                        },
+                        tooltip:{
+                            callbacks: {
+                                label: (value,context) =>{
+                                    //console.log(value);
+                                    return 'R$ '+parseFloat(value.raw).toLocaleString('pt-br', {minimumFractionDigits: 2});
+                                }
+                            }
                         }
                     },
-                    locale: 'pt-BR'
+                    //locale: 'pt-BR',
+                    scales:{
+                        y:{
+                            beginAtZero: true,
+                            ticks:{
+                                callback: (value,index,values) => {
+                                    return 'R$ '+ value.toLocaleString('pt-br', {minimumFractionDigits: 2});
+                                }
+                            }
+                        }
+                    }
                 }
             };
 
