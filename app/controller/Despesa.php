@@ -67,7 +67,7 @@ class Despesa extends BaseController
                         $df->descricao      = $_POST['descricao'];
                         $df->id_categoria    = $_POST['categoriaDespesa'];
                         $df->data_inicio    = $_POST['dataDespesa'];
-                        $df->data_fim       = 'NULL';
+                        $df->data_fim       = '0000-00-00';
                         $df->status_desp    = 'aberto';
                         $df->id_usuario     = UsuarioSession::get('id');
                         $df->id_conta       = $_POST['ContaDespesa'];
@@ -234,12 +234,6 @@ class Despesa extends BaseController
             exit;
         }
 
-        // if($_SERVER['REQUEST_METHOD']== 'POST')
-        // {
-        //     echo 'Okay';
-        //     exit;
-        // }
-
         if(!empty($_POST) and isset($_POST['valor']))
         {
             $v = new Validacao;
@@ -254,9 +248,11 @@ class Despesa extends BaseController
             $v->setCampo('Data')
                 ->data($_POST['dataDespesa'],'Y/m/d');
                 
+            
             if($v->validar())
             {
                 try {
+
                     Transaction::open('db');
 
                     if(!CategoriaModel::find(intval($_POST['categoriaDespesa'])))
@@ -268,6 +264,8 @@ class Despesa extends BaseController
                     {
                         FlashMessage::set('Conta escolhida não existe!','error',"despesa/editar?id={$_GET['id']}");
                     }
+
+                   
 
                     $ts = new TransacaoModel($_GET['id']);
 
@@ -484,10 +482,10 @@ class Despesa extends BaseController
                     }
     
                     $rf = new DespesaFixaModel($_GET['id']);
-                    $rf->valor          = $_POST['valor'];
+                    $rf->valor          = FormataMoeda::moedaParaFloat($_POST['valor']);
                     $rf->descricao      = $_POST['descricao'];
-                    $rf->id_categoria   = $_POST['categoriaDespesa'];
-                    $rf->id_conta       = $_POST['ContaDespesa'];
+                    $rf->id_categoria   = (int) $_POST['categoriaDespesa'];
+                    $rf->id_conta       = (int) $_POST['ContaDespesa'];
     
                     if(isset($_POST['despesaRecebida']))
                     {

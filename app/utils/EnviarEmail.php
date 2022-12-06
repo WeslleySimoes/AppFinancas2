@@ -11,7 +11,7 @@ class EnviarEmail{
 
     private $host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
     private $Username   = 'weslleyFinancastcc@gmail.com';                     //SMTP username
-    private $Password   = '#';                               //SMTP password
+    private $Password   = 'nakbdmftrqaicrpy';                               //SMTP password
 
     public $EmailDestinatario = '';
 

@@ -159,8 +159,8 @@ if(isset($_POST['selecione']))
             <span id="fechar-popUp-pizza" class="btn-close-popup">X</span>
         </div>
         <h2 style="text-align: center; color: #263D52;">Filtro</h2>
-
     <form action="<?= HOME_URL ?>/relatorios/linha" method="POST" style="padding: 5px;">
+    <div style="border:1px solid #d1caca;height: 400px; overflow-y: auto; margin-bottom: 10px; padding: 0 10px;">
 
     <div style="margin: 10px 0;"> 
         <input type="radio" id="dataAno" name="dataRadio" value="dataAno" checked>
@@ -247,7 +247,8 @@ if(isset($_POST['selecione']))
             </select>
         </div>
 
-
+        
+         </div>
         <button type="submit">Filtrar</butt on>
     </form>
 </div>

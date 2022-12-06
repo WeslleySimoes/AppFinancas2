@@ -327,7 +327,7 @@ class Categoria extends BaseController
                     
                     $cm = new CategoriaModel((int) $categoriaAtivas[0]->idCategoria);
                     $cm->idCategoria = $id;
-                    $cm->nome        = ucfirst(mb_strtolower($_POST['nomeCategoria']));
+                    $cm->nome        = $_POST['nomeCategoria'];
                     $cm->id_usuario  = UsuarioSession::get('id');
                     $cm->status_cate = 'ativo';
                     $cm->cor_cate    = $_POST['corCate'];

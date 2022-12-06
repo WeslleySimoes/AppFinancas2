@@ -101,6 +101,10 @@
                     <hr>
                     <div style="margin: 10px 0;">
                         <div style="display: flex; justify-content:space-between;">
+                            <div> <b>Valor inicial: </b></div>
+                            <div style="color:#0476B9; font-weight: bold;">R$ <?= formatoMoeda($conta->montante) ?></div>
+                        </div>
+                        <div style="display: flex; justify-content:space-between;">
                             <div> <b>Saldo atual: </b></div>
                             <div style="color:<?= $saldoContaAtual > 0 ? 'green' : 'red' ?>; font-weight: bold;">R$ <?= formatoMoeda($saldoContaAtual) ?></div>
                         </div>

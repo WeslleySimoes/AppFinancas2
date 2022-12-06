@@ -305,13 +305,13 @@
           <td><span style="width: 15px; height: 15px;display:inline-block;border-radius: 50%; margin-right: 5px; background-color:<?=  $dados->getCorCategoria() ?>;"></span><?= $dados->getNomeCategoria() ?></td>
           <td><?= formataDataBR($dados->data_inicio) ?></td>
   
-          <?php if($dados->data_fim == '0000-00-00'): ?>
+          <?php if($dados->data_fim == '0000-00-00' || $dados->data_fim == NULL ): ?>
             <td>---------------</td>
           <?php else: ?>
             <td><?= formataDataBR($dados->data_fim) ?></td>
           <?php endif ?>
   
-          <?php if($dados->data_fim == '0000-00-00'): ?>
+          <?php if($dados->data_fim == '0000-00-00' || $dados->data_fim == NULL): ?>
   
             <td>Fixo</td>
   

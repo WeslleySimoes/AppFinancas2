@@ -48,6 +48,8 @@ class Receita extends BaseController
         //LÓGICA DO FORMULÁRIO  
         if(!empty($_POST) && isset($_POST['valor']))
         {
+
+           // dd($_POST);
             $v = new Validacao;
 
             $v->setCampo('Valor (R$)')
@@ -66,6 +68,8 @@ class Receita extends BaseController
                     //SE SELECIONAR A DESPESA FIXA
                     if(isset($_POST['receitaFixa']) and $_POST['receitaFixa'] == '1')
                     {
+
+                      //  dd('teste');
                         //Definindo parâmetros da despesa fixa
                         $df                 = new ReceitaFixaModel();
                         $df->valor          = FormataMoeda::moedaParaFloat($_POST['valor']);
@@ -76,6 +80,7 @@ class Receita extends BaseController
                         $df->status_rec     = 'aberto';
                         $df->id_usuario     = UsuarioSession::get('id');
                         $df->id_conta       = $_POST['ContaReceita'];
+
 
                         Transaction::open('db');
                         $resultado = $df->store();
@@ -91,7 +96,7 @@ class Receita extends BaseController
                     }
 
                     //SE SELECIONA A DESPESA PARCELADA
-                    else if(isset($_POST['receitaPercelada']) and $_POST['receitaPercelada'] == '1'){
+                    else if(isset($_POST['receitaPercelada']) and $_POST['receitaPercelada'] == '1' and isset($_POST['totalParcelas'])){
 
                         //Definindo parâmetros da despesa fixa
                         $df                 = new ReceitaFixaModel();
@@ -479,10 +484,10 @@ class Receita extends BaseController
                     }
     
                     $rf = new ReceitaFixaModel($_GET['id']);
-                    $rf->valor          = $_POST['valor'];
+                    $rf->valor          = FormataMoeda::moedaParaFloat($_POST['valor']);
                     $rf->descricao      = $_POST['descricao'];
-                    $rf->id_categoria   = $_POST['categoriaReceita'];
-                    $rf->id_conta       = $_POST['ContaReceita'];
+                    $rf->id_categoria   = (int) $_POST['categoriaReceita'];
+                    $rf->id_conta       = (int) $_POST['ContaReceita'];
     
                     if($_POST['receitaRecebida'])
                     {

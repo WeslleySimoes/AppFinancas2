@@ -85,7 +85,7 @@
 
         <div id="totalParcelas">
             <label for="totalParcelas">Total de Parcelas:</label>
-            <input type="number" name="totalParcelas">
+            <input type="number" name="totalParcelas" >
         </div><br>
 
         <button  class="botao-link botao-link-edit" style="font-size: 1.1em;">Cadastrar</button>
@@ -116,9 +116,11 @@
         if(despParce.checked)
         {
             totalParcelas.style.display='block';
+            
         }
         else{
             totalParcelas.style.display='none';
+
         }
     }
 </script>

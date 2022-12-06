@@ -205,12 +205,14 @@
                        // 'R$ '+ value.toLocaleString('pt-br', {minimumFractionDigits: 2})+' | '+
                     },
                     color: 'black',
-                    backgroundColor: '#ccc',
+                    backgroundColor: 'rgba(204, 204, 204,0.8)',
                     font:{
-                        size:13,
+                        size:12,
                         weight: 'bold'
                     }
-                    ,anchor:'end'
+                    ,anchor:'end',
+                    clamp: true,
+                    align: 'start'
                     //,rotation: -6
             },
             tooltip:{
@@ -258,13 +260,15 @@ const myChartPizza = new Chart(
                     return   (value /<?= $totalReceitas->total ?>*100).toFixed(2) +'%';                   
                 },
                 color: 'black',
-                backgroundColor: '#ccc',
+                backgroundColor: 'rgba(204, 204, 204,0.8)',
                 font:{
-                    size:13,
+                    size:12,
                     weight: 'bold'
                 }
-                ,anchor:'end'
-                //,rotation: -6
+                ,anchor:'end',
+                clamp: true,
+                align: 'start',
+                display:'true'
             },
             tooltip:{
                 callbacks: {

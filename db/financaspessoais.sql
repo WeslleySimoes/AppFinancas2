@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 08-Nov-2022 às 20:28
+-- Tempo de geração: 06-Dez-2022 às 21:06
 -- Versão do servidor: 10.4.24-MariaDB
 -- versão do PHP: 8.1.6
 
@@ -64,7 +64,13 @@ INSERT INTO `categoria` (`idCategoria`, `nome`, `cor_cate`, `tipo`, `id_usuario`
 (21, 'Saúde', '#47e5bb', 'despesa', 4, 'ativo'),
 (22, 'Salário', '#2b34ad', 'receita', 4, 'ativo'),
 (23, 'Renda extra', '#f73b3b', 'receita', 4, 'ativo'),
-(24, 'Dividendos', '#5a6045', 'receita', 4, 'ativo');
+(24, 'Dividendos', '#5a6045', 'receita', 4, 'ativo'),
+(25, 'Renda extra', '#388703', 'receita', 1, 'ativo'),
+(26, 'Equipamentos', '#1d5d25', 'despesa', 1, 'ativo'),
+(27, 'Maquinas', '#d59515', 'despesa', 1, 'ativo'),
+(28, 'Mão de obra', '#a415cb', 'despesa', 1, 'ativo'),
+(29, 'Água', '#f532b8', 'despesa', 1, 'ativo'),
+(30, 'Energia', '#1724d3', 'despesa', 1, 'ativo');
 
 -- --------------------------------------------------------
 
@@ -91,7 +97,6 @@ INSERT INTO `conta` (`idConta`, `descricao`, `montante`, `instituicao_fin`, `tip
 (2, 'Conta 2 (Bradesco)', '120.00', 'Bradesco', 'Corrente', 'ativo', 1),
 (3, 'Conta 3 (Bradesco)', '120.00', 'Bradesco', 'Corrente', 'ativo', 1),
 (4, 'Dividendos (Santander)', '950.00', 'Santander', 'Corrente', 'ativo', 1),
-(5, 'Poupança (Caixa)', '900.00', 'Caixa econômica', 'Poupança', 'ativo', 1),
 (6, 'Teste', '100.00', 'Bradesco', 'Corrente', 'ativo', 2),
 (7, 'Conta principal', '200.00', 'Brandesco', 'Corrente', 'ativo', 3),
 (8, 'Conta principal', '100.00', 'Brandesco', 'Corrente', 'ativo', 4),
@@ -120,7 +125,8 @@ CREATE TABLE `despesa_fixa` (
 --
 
 INSERT INTO `despesa_fixa` (`idDesp`, `valor`, `descricao`, `id_categoria`, `data_inicio`, `data_fim`, `status_desp`, `id_usuario`, `id_conta`) VALUES
-(1, '3.00', 'Despesa parcelada', 1, '2022-10-19', '2023-02-19', 'aberto', 1, 1);
+(1, '7.50', 'Mensalidade Academia', 2, '2022-12-06', '2023-12-06', 'aberto', 1, 1),
+(2, '50.00', 'Mensalidade Netflix', 2, '2022-12-06', '0000-00-00', 'aberto', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -140,9 +146,6 @@ CREATE TABLE `plancategoria` (
 --
 
 INSERT INTO `plancategoria` (`idPCat`, `valorMeta`, `id_categoria`, `id_planejamento`) VALUES
-(15, '1000.00', 1, 5),
-(20, '4000.00', 2, 5),
-(21, '5000.00', 3, 5),
 (22, '100.00', 1, 6),
 (23, '50.00', 2, 6),
 (24, '150.00', 3, 6),
@@ -151,21 +154,18 @@ INSERT INTO `plancategoria` (`idPCat`, `valorMeta`, `id_categoria`, `id_planejam
 (31, '3000.00', 1, 10),
 (32, '500.00', 3, 10),
 (33, '500.00', 2, 10),
-(34, '2500.00', 1, 11),
-(35, '2500.00', 2, 11),
-(36, '250.00', 1, 12),
-(37, '250.00', 2, 12),
 (38, '500.00', 1, 13),
-(39, '2000.00', 1, 14),
-(40, '500.00', 2, 14),
-(41, '2500.00', 3, 14),
-(42, '1000.00', 1, 15),
-(43, '500.00', 2, 15),
 (44, '10000.00', 1, 16),
 (45, '20000.00', 2, 16),
-(46, '20000.00', 3, 16),
-(47, '1500.00', 1, 17),
-(62, '1500.00', 4, 17);
+(68, '250.00', 3, 15),
+(69, '1000.00', 4, 15),
+(70, '250.00', 8, 15),
+(71, '10000.00', 4, 16),
+(72, '10000.00', 9, 16),
+(73, '20000.00', 1, 19),
+(74, '30000.00', 2, 19),
+(75, '10000.00', 3, 19),
+(76, '1000.00', 2, 15);
 
 -- --------------------------------------------------------
 
@@ -190,17 +190,13 @@ CREATE TABLE `planejamento` (
 --
 
 INSERT INTO `planejamento` (`idPlan`, `valor`, `descricao`, `porcentagem`, `data_inicio`, `data_fim`, `tipo`, `status_plan`, `id_usuario`) VALUES
-(5, '10000.00', 'Compra de imóveis', NULL, '2022-09-15', '2022-09-24', 'personalizado', 'expirado', 1),
 (6, '3000.00', NULL, 10, '2022-08-01', '2022-08-31', 'mensal', 'ativo', 1),
 (7, '3000.00', NULL, 50, '2022-07-01', '2022-07-31', 'mensal', 'ativo', 1),
 (10, '50000.00', NULL, 10, '2022-09-01', '2022-09-30', 'mensal', 'ativo', 1),
-(11, '5000.00', 'wdwqdqw', NULL, '2022-10-18', '2022-10-20', 'personalizado', 'expirado', 1),
-(12, '500.00', 'dqwdwq', NULL, '2022-10-25', '2022-10-28', 'personalizado', 'expirado', 1),
 (13, '5000.00', NULL, 10, '2022-10-01', '2022-10-31', 'mensal', 'ativo', 1),
-(14, '5000.00', 'dwqd', NULL, '2022-10-18', '2022-11-03', 'personalizado', 'expirado', 1),
 (15, '5000.00', NULL, 30, '2022-11-01', '2022-11-30', 'mensal', 'ativo', 1),
-(16, '50000.00', 'dwqdqwd', NULL, '2022-11-05', '2022-12-10', 'personalizado', 'ativo', 1),
-(17, '3000.00', 'Testando', NULL, '2022-11-05', '2022-11-25', 'personalizado', 'ativo', 1);
+(16, '50000.00', 'Construção de banheiro', NULL, '2022-11-05', '2022-12-10', 'personalizado', 'ativo', 1),
+(19, '60000.00', 'Reforma da casa', NULL, '2022-11-29', '2023-02-28', 'personalizado', 'ativo', 1);
 
 -- --------------------------------------------------------
 
@@ -225,7 +221,8 @@ CREATE TABLE `receita_fixa` (
 --
 
 INSERT INTO `receita_fixa` (`idRec`, `valor`, `descricao`, `id_categoria`, `data_inicio`, `data_fim`, `status_rec`, `id_usuario`, `id_conta`) VALUES
-(1, '156.00', 'Dividêndo PETR4', 7, '2022-08-25', '0000-00-00', 'aberto', 1, 2);
+(1, '156.00', 'Dividêndo PETR4', 7, '2022-08-25', '0000-00-00', 'aberto', 1, 2),
+(2, '5000.00', 'Salário empresa Teste LTDA.', 5, '2022-12-06', NULL, 'aberto', 1, 2);
 
 -- --------------------------------------------------------
 
@@ -254,7 +251,6 @@ CREATE TABLE `transacao` (
 --
 
 INSERT INTO `transacao` (`idTransacao`, `data_trans`, `valor`, `descricao`, `id_categoria`, `tipo`, `fixo`, `status_trans`, `id_despesaFixa`, `id_receitaFixa`, `id_transferencia`, `id_usuario`, `id_conta`) VALUES
-(9, '2021-09-20 00:00:00', '8787.87', 'grgrgdgr', 1, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
 (10, '2022-08-09 00:00:00', '12123.11', 'effwfwefef', 3, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
 (12, '2022-08-12 00:00:00', '500.00', 'sfddsfsdf', 5, 'receita', 0, 'fechado', NULL, NULL, NULL, 1, 4),
 (13, '2022-08-12 00:00:00', '120.00', 'Tua conta', NULL, 'transferencia', 0, 'fechado', NULL, NULL, 1, 1, 1),
@@ -296,15 +292,8 @@ INSERT INTO `transacao` (`idTransacao`, `data_trans`, `valor`, `descricao`, `id_
 (51, '2022-09-15 00:00:00', '1500.00', 'Compras exemplo', 2, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
 (52, '2022-09-19 00:00:00', '500.00', 'Teste', 1, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
 (53, '2022-09-19 00:00:00', '500.00', 'sadwadwda', NULL, 'transferencia', 0, 'fechado', NULL, NULL, 6, 1, 1),
-(100, '2021-09-08 00:00:00', '3000.00', 'sddwad', 3, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
-(101, '2021-07-07 00:00:00', '30.00', 'PAssado', 1, 'despesa', 0, 'pendente', NULL, NULL, NULL, 1, 1),
-(102, '2021-08-25 00:00:00', '30.00', 'PAssado', 1, 'despesa', 0, 'pendente', NULL, NULL, NULL, 1, 1),
-(103, '2021-02-02 00:00:00', '300.00', 'teste passadp', 1, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
-(104, '2023-01-25 00:00:00', '300.00', 'dwqdqwqwd', 3, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 3),
-(105, '2021-09-25 00:00:00', '30.00', 'teste passadp', 1, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
 (106, '2022-09-25 00:00:00', '300.00', 'PAssado', 1, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
 (107, '2022-09-25 00:00:00', '30.00', 'qqweqweqweqweqwe', 1, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
-(108, '2020-09-25 00:00:00', '150.00', 'Ano de 2020', 1, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
 (109, '2022-09-25 00:00:00', '150.00', 'aaa', NULL, 'transferencia', 0, 'fechado', NULL, NULL, 7, 1, 1),
 (110, '2022-09-26 00:00:00', '65.00', 'Hoje', 1, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
 (111, '2022-09-27 00:00:00', '60.00', 'kinkn', 9, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
@@ -335,15 +324,12 @@ INSERT INTO `transacao` (`idTransacao`, `data_trans`, `valor`, `descricao`, `id_
 (143, '2022-10-27 14:26:52', '30.00', 'fwefwef', 1, 'despesa', 0, 'pendente', NULL, NULL, NULL, 1, 1),
 (144, '2022-10-17 16:19:49', '13.00', 'qdqwd', 12, 'despesa', 0, 'fechado', NULL, NULL, NULL, 2, 6),
 (145, '2022-10-18 13:11:53', '3000.00', 'dwdwd', 1, 'despesa', 0, 'pendente', NULL, NULL, NULL, 1, 1),
-(146, '0000-00-00 00:00:00', '1000.00', 'fdfe', 2, 'despesa', 0, 'pendente', NULL, NULL, NULL, 1, 1),
-(147, '2022-10-19 15:50:16', '3.00', 'Despesa parcelada', 1, 'despesa', 0, 'pendente', 1, NULL, NULL, 1, 1),
 (148, '2022-10-25 16:13:54', '156.00', 'Dividêndo PETR4', 7, 'receita', 1, 'pendente', NULL, 1, NULL, 1, 2),
 (149, '2022-09-25 11:52:46', '30.00', 'qdqwd', 1, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
 (150, '2022-07-25 11:55:47', '50.00', 'qwdqwd', 1, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
 (151, '2022-10-29 14:41:56', '32.00', 'wqdqwd', NULL, 'transferencia', 0, 'fechado', NULL, NULL, 10, 1, 1),
 (152, '2022-10-31 12:49:50', '30.00', 'dwqdw', 1, 'despesa', 0, 'pendente', NULL, NULL, NULL, 1, 1),
-(153, '2022-11-19 12:35:07', '3.00', 'Despesa parcelada', 1, 'despesa', 0, 'fechado', 1, NULL, NULL, 1, 1),
-(154, '2022-11-25 12:35:07', '156.00', 'Dividêndo PETR4', 7, 'receita', 1, 'fechado', NULL, 1, NULL, 1, 2),
+(154, '2022-11-25 13:26:20', '156.00', 'Dividêndo PETR4', 7, 'receita', 1, 'fechado', NULL, 1, NULL, 1, 2),
 (155, '2022-11-05 14:13:52', '600.00', 'Carrefuor', 1, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 2),
 (156, '2022-11-05 14:45:55', '60.00', 'Credito para celular', 4, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 2),
 (157, '2022-11-05 15:27:08', '1000.20', 'dqwqd', 5, 'receita', 0, 'fechado', NULL, NULL, NULL, 1, 2),
@@ -357,7 +343,52 @@ INSERT INTO `transacao` (`idTransacao`, `data_trans`, `valor`, `descricao`, `id_
 (165, '2022-11-08 11:45:39', '60.00', 'dqwdwd', 22, 'receita', 0, 'fechado', NULL, NULL, NULL, 4, 8),
 (166, '2022-10-08 11:47:25', '300.00', 'ewfwefewf', 19, 'despesa', 0, 'fechado', NULL, NULL, NULL, 4, 8),
 (167, '2022-09-08 11:49:31', '150.00', 'dedwwdw', 19, 'despesa', 0, 'fechado', NULL, NULL, NULL, 4, 8),
-(168, '2022-11-08 11:52:43', '20.00', 'dqwqwdqwd', NULL, 'transferencia', 0, 'fechado', NULL, NULL, 12, 4, 9);
+(168, '2022-11-08 11:52:43', '20.00', 'dqwqwdqwd', NULL, 'transferencia', 0, 'fechado', NULL, NULL, 12, 4, 9),
+(169, '2022-11-04 13:25:09', '500.00', 'dwqdqwd', 2, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
+(172, '2022-11-21 12:56:32', '500.00', 'dwdqd', 25, 'receita', 0, 'fechado', NULL, NULL, NULL, 1, 1),
+(173, '2022-11-21 13:14:53', '300.00', 'qdqwdwd', 9, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
+(174, '2022-11-21 13:15:13', '70.00', 'dqwd', 3, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
+(175, '2022-11-21 13:55:11', '20.00', 'wqd', 13, 'despesa', 0, 'fechado', NULL, NULL, NULL, 3, 7),
+(176, '2022-10-21 13:55:33', '20.00', 'dwqd', 13, 'despesa', 0, 'fechado', NULL, NULL, NULL, 3, 7),
+(177, '2022-09-21 13:55:52', '150.00', 'qwdwqd', 13, 'despesa', 0, 'fechado', NULL, NULL, NULL, 3, 7),
+(178, '2022-08-21 15:01:57', '60.00', '30wdqw', 13, 'despesa', 0, 'fechado', NULL, NULL, NULL, 3, 7),
+(179, '2022-11-21 15:14:56', '30.00', 'dwqdw', 16, 'receita', 0, 'fechado', NULL, NULL, NULL, 3, 7),
+(180, '2022-11-21 15:21:50', '50.00', 'qdqwdwd', 14, 'despesa', 0, 'pendente', NULL, NULL, NULL, 3, 7),
+(181, '2022-11-29 12:12:34', '600.00', 'dqwdwd', 1, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
+(182, '2022-11-29 12:20:28', '250.00', 'dqwdqwd', 3, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
+(194, '2022-12-06 14:23:20', '300.00', 'Transferência teste', NULL, 'transferencia', 0, 'fechado', NULL, NULL, 13, 1, 1),
+(196, '2022-12-06 13:20:38', '200.00', 'Cinema', 2, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
+(197, '2022-12-06 13:20:54', '30.00', 'Pastel', 3, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
+(198, '2022-12-06 13:21:48', '20.00', 'Créditos de celular', 4, 'despesa', 0, 'pendente', NULL, NULL, NULL, 1, 1),
+(199, '2022-12-06 13:22:15', '21.00', 'dwd', 9, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
+(201, '2022-12-06 14:16:12', '1300.00', 'Venda de roupas.', 25, 'receita', 0, 'fechado', NULL, NULL, NULL, 1, 1),
+(202, '2022-12-05 14:24:00', '210.00', 'dwd', NULL, 'transferencia', 0, 'pendente', NULL, NULL, 14, 1, 1),
+(203, '2022-12-06 14:27:36', '5000.00', 'Salário empresa Teste LTDA.', 5, 'receita', 1, 'fechado', NULL, 2, NULL, 1, 2),
+(204, '2022-04-06 14:38:44', '1000.00', 'Venda de roupas.', 25, 'receita', 0, 'fechado', NULL, NULL, NULL, 1, 3),
+(205, '2022-04-06 14:39:08', '5000.00', 'Salário empresa Teste LTDA.', 5, 'receita', 0, 'fechado', NULL, NULL, NULL, 1, 1),
+(206, '2022-04-20 14:39:40', '1200.00', 'Compras do mês', 1, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 2),
+(207, '2022-04-15 14:40:00', '200.00', 'Cinema', 2, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 2),
+(208, '2022-04-10 14:40:21', '50.00', 'Pasteis', 3, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
+(209, '2022-03-06 15:20:28', '200.15', 'Compras do dia', 1, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
+(210, '2022-03-06 15:20:37', '200.00', 'Cinema', 2, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
+(211, '2022-03-06 15:20:57', '200.00', 'Frutas e legumes', 3, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
+(212, '2022-03-20 15:21:10', '60.00', 'Créditos de celular', 4, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
+(213, '2022-03-26 15:21:27', '50.00', 'Comprar de itens de natação', 8, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
+(214, '2022-03-06 15:21:58', '2000.00', 'Dividêndos PETR4', 7, 'receita', 0, 'fechado', NULL, NULL, NULL, 1, 3),
+(215, '2022-02-20 15:23:44', '5000.00', 'salário', 5, 'receita', 0, 'fechado', NULL, NULL, NULL, 1, 3),
+(216, '2022-02-06 15:24:28', '1500.00', 'Compras de alimentos do mês', 1, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 2),
+(217, '2022-02-15 15:25:12', '3000.00', 'Viagem para Minas Gerais', 2, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
+(218, '2022-02-06 15:25:42', '600.00', 'Compras de frutas.', 3, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
+(219, '2022-12-25 15:39:50', '156.00', 'Dividêndo PETR4', 7, 'receita', 1, 'fechado', NULL, 1, NULL, 1, 2),
+(220, '2022-05-06 16:23:33', '3000.00', 'Compras de móveis para casa', 1, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 2),
+(221, '2022-05-28 16:24:20', '3252.00', 'Venda de Roupas.', 25, 'receita', 0, 'fechado', NULL, NULL, NULL, 1, 3),
+(222, '2022-06-06 16:35:22', '6000.00', 'Compras de alimentos do mês', 1, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
+(223, '2022-06-20 16:35:49', '1250.00', 'Venda de roupas.', 25, 'receita', 0, 'fechado', NULL, NULL, NULL, 1, 3),
+(224, '2022-07-06 16:45:40', '5000.00', 'Salário', 5, 'receita', 0, 'fechado', NULL, NULL, NULL, 1, 3),
+(225, '2022-07-06 16:46:10', '2798.50', 'Compras de alimentos do mês', 1, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
+(226, '2022-12-06 16:53:59', '250.00', 'Gasto em Água', 29, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 2),
+(227, '2022-12-06 17:06:23', '7.50', 'Mensalidade Academia', 2, 'despesa', 0, 'pendente', 1, NULL, NULL, 1, 1),
+(228, '2022-12-06 17:06:23', '50.00', 'Mensalidade Netflix', 2, 'despesa', 1, 'pendente', 2, NULL, NULL, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -391,7 +422,9 @@ INSERT INTO `transferencia` (`idTransferencia`, `valor`, `descricao`, `id_conta_
 (9, '60.00', '21dwqdqwd', 1, 2, 1, 'fechado', '2022-10-16 14:51:17'),
 (10, '32.00', 'wqdqwd', 1, 2, 1, 'fechado', '2022-10-29 14:41:56'),
 (11, '70.00', 'Teste', 8, 9, 4, 'fechado', '2022-11-08 11:38:29'),
-(12, '20.00', 'dqwqwdqwd', 9, 8, 4, 'fechado', '2022-11-08 11:52:43');
+(12, '20.00', 'dqwqwdqwd', 9, 8, 4, 'fechado', '2022-11-08 11:52:43'),
+(13, '300.00', 'Transferência teste', 1, 2, 1, 'fechado', '2022-12-06 14:23:20'),
+(14, '210.00', 'dwd', 1, 2, 1, 'aberto', '2022-12-05 14:24:00');
 
 -- --------------------------------------------------------
 

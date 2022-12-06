@@ -290,7 +290,7 @@ class Transacao extends Record
         foreach ($receitasFixas as $df)
         {
             //DESPESA FIXA
-            if($df->data_fim == '0000-00-00')
+            if($df->data_fim == '0000-00-00' || $df->data_fim == NULL)
             {
                 $timeZone = new \DateTimeZone('UTC');
 
