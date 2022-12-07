@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 06-Dez-2022 às 21:06
+-- Tempo de geração: 07-Dez-2022 às 20:55
 -- Versão do servidor: 10.4.24-MariaDB
 -- versão do PHP: 8.1.6
 
@@ -356,14 +356,14 @@ INSERT INTO `transacao` (`idTransacao`, `data_trans`, `valor`, `descricao`, `id_
 (180, '2022-11-21 15:21:50', '50.00', 'qdqwdwd', 14, 'despesa', 0, 'pendente', NULL, NULL, NULL, 3, 7),
 (181, '2022-11-29 12:12:34', '600.00', 'dqwdwd', 1, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
 (182, '2022-11-29 12:20:28', '250.00', 'dqwdqwd', 3, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
-(194, '2022-12-06 14:23:20', '300.00', 'Transferência teste', NULL, 'transferencia', 0, 'fechado', NULL, NULL, 13, 1, 1),
-(196, '2022-12-06 13:20:38', '200.00', 'Cinema', 2, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
-(197, '2022-12-06 13:20:54', '30.00', 'Pastel', 3, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
-(198, '2022-12-06 13:21:48', '20.00', 'Créditos de celular', 4, 'despesa', 0, 'pendente', NULL, NULL, NULL, 1, 1),
+(194, '2022-12-07 10:19:47', '300.00', 'Transferência teste', NULL, 'transferencia', 0, 'fechado', NULL, NULL, 13, 1, 1),
+(196, '2022-12-08 10:19:09', '200.00', 'Cinema', 2, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
+(197, '2022-12-05 10:19:27', '30.00', 'Pastel', 3, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
+(198, '2022-12-19 10:21:23', '20.00', 'Créditos de celular', 4, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
 (199, '2022-12-06 13:22:15', '21.00', 'dwd', 9, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
-(201, '2022-12-06 14:16:12', '1300.00', 'Venda de roupas.', 25, 'receita', 0, 'fechado', NULL, NULL, NULL, 1, 1),
-(202, '2022-12-05 14:24:00', '210.00', 'dwd', NULL, 'transferencia', 0, 'pendente', NULL, NULL, 14, 1, 1),
-(203, '2022-12-06 14:27:36', '5000.00', 'Salário empresa Teste LTDA.', 5, 'receita', 1, 'fechado', NULL, 2, NULL, 1, 2),
+(201, '2022-12-05 10:19:55', '1300.00', 'Venda de roupas.', 25, 'receita', 0, 'fechado', NULL, NULL, NULL, 1, 1),
+(202, '2022-12-01 10:18:09', '210.00', 'dwd', NULL, 'transferencia', 0, 'pendente', NULL, NULL, 14, 1, 1),
+(203, '2022-12-04 10:19:19', '5000.00', 'Salário empresa Teste LTDA.', 5, 'receita', 1, 'fechado', NULL, 2, NULL, 1, 2),
 (204, '2022-04-06 14:38:44', '1000.00', 'Venda de roupas.', 25, 'receita', 0, 'fechado', NULL, NULL, NULL, 1, 3),
 (205, '2022-04-06 14:39:08', '5000.00', 'Salário empresa Teste LTDA.', 5, 'receita', 0, 'fechado', NULL, NULL, NULL, 1, 1),
 (206, '2022-04-20 14:39:40', '1200.00', 'Compras do mês', 1, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 2),
@@ -386,9 +386,21 @@ INSERT INTO `transacao` (`idTransacao`, `data_trans`, `valor`, `descricao`, `id_
 (223, '2022-06-20 16:35:49', '1250.00', 'Venda de roupas.', 25, 'receita', 0, 'fechado', NULL, NULL, NULL, 1, 3),
 (224, '2022-07-06 16:45:40', '5000.00', 'Salário', 5, 'receita', 0, 'fechado', NULL, NULL, NULL, 1, 3),
 (225, '2022-07-06 16:46:10', '2798.50', 'Compras de alimentos do mês', 1, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
-(226, '2022-12-06 16:53:59', '250.00', 'Gasto em Água', 29, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 2),
-(227, '2022-12-06 17:06:23', '7.50', 'Mensalidade Academia', 2, 'despesa', 0, 'pendente', 1, NULL, NULL, 1, 1),
-(228, '2022-12-06 17:06:23', '50.00', 'Mensalidade Netflix', 2, 'despesa', 1, 'pendente', 2, NULL, NULL, 1, 1);
+(226, '2022-12-15 10:17:52', '250.00', 'Gasto em Água', 29, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 2),
+(227, '2022-12-10 10:18:02', '7.50', 'Mensalidade Academia', 2, 'despesa', 0, 'fechado', 1, NULL, NULL, 1, 1),
+(228, '2022-12-16 10:20:47', '50.00', 'Mensalidade Netflix', 2, 'despesa', 1, 'fechado', 2, NULL, NULL, 1, 1),
+(229, '2022-12-02 10:18:17', '7.50', 'Mensalidade Academia', 2, 'despesa', 0, 'pendente', 1, NULL, NULL, 1, 1),
+(230, '2022-12-06 10:18:18', '7.50', 'Mensalidade Academia', 2, 'despesa', 0, 'fechado', 1, NULL, NULL, 1, 1),
+(231, '2022-12-03 10:20:18', '5000.00', 'Salário empresa Teste LTDA.', 5, 'receita', 1, 'pendente', NULL, 2, NULL, 1, 2),
+(233, '2022-12-09 10:21:38', '5000.00', 'Salário empresa Teste LTDA.', 5, 'receita', 1, 'fechado', NULL, 2, NULL, 1, 2),
+(234, '2022-12-23 10:52:25', '50.00', 'Mensalidade Netflix', 2, 'despesa', 1, 'fechado', 2, NULL, NULL, 1, 1),
+(235, '2022-12-27 10:52:48', '5000.00', 'Salário empresa Teste LTDA.', 5, 'receita', 1, 'pendente', NULL, 2, NULL, 1, 2),
+(236, '2022-12-28 10:36:07', '214.00', 'Compras de utensílios domésticos', 1, 'despesa', 0, 'fechado', NULL, NULL, NULL, 1, 1),
+(237, '2022-12-06 10:52:26', '50.00', 'Mensalidade Netflix', 2, 'despesa', 1, 'pendente', 2, NULL, NULL, 1, 1),
+(238, '2022-12-08 10:53:02', '5000.00', 'Salário empresa Teste LTDA.', 5, 'receita', 1, 'pendente', NULL, 2, NULL, 1, 2),
+(239, '2022-12-11 10:53:17', '5000.00', 'Salário empresa Teste LTDA.', 5, 'receita', 1, 'pendente', NULL, 2, NULL, 1, 2),
+(240, '2022-12-06 10:53:18', '5000.00', 'Salário empresa Teste LTDA.', 5, 'receita', 1, 'pendente', NULL, 2, NULL, 1, 2),
+(241, '2022-12-27 11:20:09', '500.00', 'Teste', NULL, 'transferencia', 0, 'fechado', NULL, NULL, 15, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -423,8 +435,9 @@ INSERT INTO `transferencia` (`idTransferencia`, `valor`, `descricao`, `id_conta_
 (10, '32.00', 'wqdqwd', 1, 2, 1, 'fechado', '2022-10-29 14:41:56'),
 (11, '70.00', 'Teste', 8, 9, 4, 'fechado', '2022-11-08 11:38:29'),
 (12, '20.00', 'dqwqwdqwd', 9, 8, 4, 'fechado', '2022-11-08 11:52:43'),
-(13, '300.00', 'Transferência teste', 1, 2, 1, 'fechado', '2022-12-06 14:23:20'),
-(14, '210.00', 'dwd', 1, 2, 1, 'aberto', '2022-12-05 14:24:00');
+(13, '300.00', 'Transferência teste', 1, 2, 1, 'fechado', '2022-12-07 10:19:47'),
+(14, '210.00', 'dwd', 1, 2, 1, 'aberto', '2022-12-01 10:18:09'),
+(15, '500.00', 'Teste', 1, 2, 1, 'fechado', '2022-12-27 11:20:09');
 
 -- --------------------------------------------------------
 
