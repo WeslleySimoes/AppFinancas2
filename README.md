@@ -1,4 +1,4 @@
-# AppFinancas2
+# TCC - AppFinancas2
 Projeto TCC
 
 Versão do PHP: 8.1.6
