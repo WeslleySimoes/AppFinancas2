@@ -10,4 +10,4 @@ Servidor web: Apache/2.4.53 (Win64)
 Gerênciador de dependências: COMPOSER
 Bibliotecas: PHPMAILER, CHART.JS
 
-![alt text](https://github.com/WeslleySimoes/AppFinancas2/blob/main/dashboard.JPG?raw=true)
+![alt text](https://github.com/WeslleySimoes/AppFinancas2/blob/main/appFinancas2.PNG)
